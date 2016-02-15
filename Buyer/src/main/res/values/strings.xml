@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Cashdesc</string>
+    
+    <!-- Strings related to login -->
+    <string name="get_code">Получить код активации</string>
+    <string name="title_activity_smsconfirmation">SMSConfirmationActivity</string>
+    <string name="confirm">Подтвердить</string>
+</resources>
