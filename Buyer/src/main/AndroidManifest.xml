@@ -27,7 +27,7 @@
             android:label="@string/title_activity_smsconfirmation"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-        <activity android:name=".SelectShopActivity" >
+        <activity android:name=".ScanShopCodeActivity" >
         </activity>
         <activity android:name=".ScanProdcutActivity" >
         </activity>
