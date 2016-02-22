@@ -1,9 +1,9 @@
 package com.volkdem.rest;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import com.common.model.Store;
+import com.volkdem.storage.StorageItems;
+
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.math.BigInteger;
@@ -17,8 +17,13 @@ public class GetStoreInfoRest {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getStore(@PathParam("store_barcode")BigInteger barcode) {
-        String out = "You successfully called method getStore() with barcode " + barcode;
+    public Response getStore(@QueryParam("store_id") String store_id) {
+        String out = "You successfully called method getStore() with barcode " + store_id;
+        Store store = StorageItems.storageStore.get(store_id);
+        out = out + store.getAddress();
+        out = out + store.getBarсode();
+        out = out + store.getName();
+        out = out + store.getStore_ID();
         return Response.status(200).entity(out).build();
     }
 

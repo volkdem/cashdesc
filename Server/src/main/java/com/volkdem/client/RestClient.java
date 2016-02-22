@@ -21,10 +21,19 @@ public class RestClient {
         DefaultHttpClient httpclient = new DefaultHttpClient();
         try {
             // specify the host, protocol, and port
-            HttpHost target = new HttpHost("localhost", 80, "http");
+            HttpHost target = new HttpHost("localhost", 8080, "http");
 
-            // specify the get request
-            HttpGet getRequest = new HttpGet("/store?store_barcode=123456789");
+
+            /*
+            All requests begin within:
+            localhost:8080/server.cashdesk/rest/...
+            For store info = localhost:8080/server.cashdesk/rest/store?store_barcode=123456
+            For product info = localhost:8080/server.cashdesk/rest/product?product_barcode=123456
+            For pay = localhost:8080/server.cashdesk/rest/pay
+            */
+
+
+            HttpGet getRequest = new HttpGet("/server.cashdesk/rest/store?store_barcode=123456789");
 
             System.out.println("executing request to " + target);
 
