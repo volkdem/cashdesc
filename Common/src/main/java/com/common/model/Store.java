@@ -1,6 +1,9 @@
 package com.common.model;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Vadim on 16.02.2016.
@@ -11,10 +14,16 @@ public class Store {
     public Store() { super(); }
 
  
-    private Long store_ID; //ID магазина
-    private String name; //Имя магазина
-    private String address; //Адрес магазина
-    private BigInteger barсode; //Штрих код
+    private Long store_ID; //Store id
+    private String name; //Store name
+    private String address; //Store address
+    private BigInteger barсode; //Store barcode
+
+    /*
+    Product ID.
+    Made product_ID in Store class because it easy to fetch all products belong to Store
+    */
+    private List<Long> product_ID = new ArrayList<Long>();
 
 
     public Long getStore_ID() {
@@ -48,6 +57,11 @@ public class Store {
     public void setBarсode(BigInteger barсode) {
         this.barсode = barсode;
     }
+
+    public List<Long> getProduct_ID() { return product_ID; }
+
+    public void setProduct_ID(List<Long> product_ID) { this.product_ID = product_ID; }
+
 
 
 }

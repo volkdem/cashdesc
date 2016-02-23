@@ -18,7 +18,10 @@ public class Product {
     private String productName; //Имя продукта
     private BigDecimal price; //Цена
     private BigInteger barcode; //Штрих код
-    private Long store_id; //ID магазина
+    /*
+    Product ID.
+    Made remove store_id from Product class because it harder to get products belong to particular Store
+    */
 
 
 
@@ -53,14 +56,5 @@ public class Product {
     public void setBarcode(BigInteger barcode) {
         this.barcode = barcode;
     }
-
-    public Long getStore_id() {
-        return store_id;
-    }
-
-    public void setStore_id(Long store_id) {
-        this.store_id = store_id;
-    }
-
 
 }
