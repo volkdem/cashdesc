@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
@@ -24,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.common.model.Store;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
@@ -37,8 +39,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.Map;
+import java.util.logging.Logger;
 
-public class ScanShopCodeActivity extends AppCompatActivity implements SurfaceHolder.Callback{
+public class ScanShopCodeActivity extends AppCompatActivity implements SurfaceHolder.Callback {
 
     private static final String TAG = ScanShopCodeActivity.class.getSimpleName();
 
@@ -58,7 +61,7 @@ public class ScanShopCodeActivity extends AppCompatActivity implements SurfaceHo
     private Result lastResult;
     private boolean hasSurface;
     private Collection<BarcodeFormat> decodeFormats;
-    private Map<DecodeHintType,?> decodeHints;
+    private Map<DecodeHintType, ?> decodeHints;
     private String characterSet;
 
     ViewfinderView getViewfinderView() {
@@ -82,6 +85,7 @@ public class ScanShopCodeActivity extends AppCompatActivity implements SurfaceHo
         setContentView(R.layout.activity_scan_shop_code);
 
         hasSurface = false;
+
     }
 
     @Override
@@ -104,18 +108,13 @@ public class ScanShopCodeActivity extends AppCompatActivity implements SurfaceHo
         handler = null;
         lastResult = null;
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
 
         resetStatusView();
 
 
-        Intent intent = getIntent();
-
         decodeFormats = null;
         characterSet = null;
-
 
 
         SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
@@ -130,7 +129,7 @@ public class ScanShopCodeActivity extends AppCompatActivity implements SurfaceHo
         }
     }
 
-   @Override
+    @Override
     protected void onPause() {
         if (handler != null) {
             handler.quitSynchronously();
@@ -199,9 +198,9 @@ public class ScanShopCodeActivity extends AppCompatActivity implements SurfaceHo
     /**
      * A valid barcode has been found, so give an indication of success and show the results.
      *
-     * @param rawResult The contents of the barcode.
+     * @param rawResult   The contents of the barcode.
      * @param scaleFactor amount by which thumbnail was scaled
-     * @param barcode   A greyscale bitmap of the camera data which was decoded.
+     * @param barcode     A greyscale bitmap of the camera data which was decoded.
      */
     public void handleDecode(Result rawResult, Bitmap barcode, float scaleFactor) {
         lastResult = rawResult;
@@ -211,25 +210,33 @@ public class ScanShopCodeActivity extends AppCompatActivity implements SurfaceHo
             drawResultPoints(barcode, scaleFactor, rawResult);
         }
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (fromLiveScan) {
             Toast.makeText(getApplicationContext(),
-                            getResources().getString(R.string.msg_bulk_mode_scanned) + " (" + rawResult.getText() + ')',
-                            Toast.LENGTH_SHORT).show();
-                    // Wait a moment or else it will scan the same barcode continuously about 3 times
-                    // TODO
-                    restartPreviewAfterDelay(BULK_MODE_SCAN_DELAY_MS);
-                    //handleDecodeInternally();
+                    getResources().getString(R.string.msg_bulk_mode_scanned) + " (" + rawResult.getText() + ')',
+                    Toast.LENGTH_SHORT).show();
+            // Wait a moment or else it will scan the same barcode continuously about 3 times
+            // TODO
+            restartPreviewAfterDelay(BULK_MODE_SCAN_DELAY_MS);
+            //handleDecodeInternally();
 
         }
+
+        // TODO get shop information from the server and only after that forward user to the shop
+        Store store = new Store();
+        store.setName( "First name");
+        Log.d( TAG, store.getName() );
+
+
+        Intent scanProductActivityIntent = new Intent(this, ScanProdcutActivity.class);
+        startActivity(scanProductActivityIntent);
     }
 
     /**
      * Superimpose a line for 1D or dots for 2D to highlight the key features of the barcode.
      *
-     * @param barcode   A bitmap of the captured image.
+     * @param barcode     A bitmap of the captured image.
      * @param scaleFactor amount by which thumbnail was scaled
-     * @param rawResult The decoded results which contains the points to draw.
+     * @param rawResult   The decoded results which contains the points to draw.
      */
     private void drawResultPoints(Bitmap barcode, float scaleFactor, Result rawResult) {
         ResultPoint[] points = rawResult.getResultPoints();
@@ -270,8 +277,6 @@ public class ScanShopCodeActivity extends AppCompatActivity implements SurfaceHo
     // Put up our own UI for how to handle the decoded contents.
     private void handleDecodeInternally(Result rawResult, Bitmap barcode) {
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         statusView.setVisibility(View.GONE);
         viewfinderView.setVisibility(View.GONE);
         resultView.setVisibility(View.VISIBLE);
@@ -289,7 +294,7 @@ public class ScanShopCodeActivity extends AppCompatActivity implements SurfaceHo
 
         TextView typeTextView = (TextView) findViewById(R.id.type_text_view);
         // TODO get from string.xml
-        typeTextView.setText( "Product");
+        typeTextView.setText("Product");
 
         DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
         TextView timeTextView = (TextView) findViewById(R.id.time_text_view);
@@ -300,10 +305,10 @@ public class ScanShopCodeActivity extends AppCompatActivity implements SurfaceHo
         View metaTextViewLabel = findViewById(R.id.meta_text_view_label);
         metaTextView.setVisibility(View.GONE);
         metaTextViewLabel.setVisibility(View.GONE);
-        Map<ResultMetadataType,Object> metadata = rawResult.getResultMetadata();
+        Map<ResultMetadataType, Object> metadata = rawResult.getResultMetadata();
         if (metadata != null) {
             StringBuilder metadataText = new StringBuilder(20);
-            for (Map.Entry<ResultMetadataType,Object> entry : metadata.entrySet()) {
+            for (Map.Entry<ResultMetadataType, Object> entry : metadata.entrySet()) {
                 if (DISPLAYABLE_METADATA_TYPES.contains(entry.getKey())) {
                     metadataText.append(entry.getValue()).append('\n');
                 }
@@ -316,12 +321,6 @@ public class ScanShopCodeActivity extends AppCompatActivity implements SurfaceHo
             }
         }
 
-        TextView contentsTextView = (TextView) findViewById(R.id.contents_text_view);
-        /*contentsTextView.setText(displayContents);
-        int scaledSize = Math.max(22, 32 - displayContents.length() / 4);
-
-        contentsTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaledSize);
-        */
 
         TextView supplementTextView = (TextView) findViewById(R.id.contents_supplement_text_view);
         supplementTextView.setText("");
@@ -380,5 +379,16 @@ public class ScanShopCodeActivity extends AppCompatActivity implements SurfaceHo
 
     public void drawViewfinder() {
         viewfinderView.drawViewfinder();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }
