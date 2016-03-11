@@ -47,7 +47,7 @@ public final class CaptureActivityHandler extends Handler {
 
   private static final String TAG = CaptureActivityHandler.class.getSimpleName();
 
-  private final ScanShopCodeActivity activity;
+  private final ScanCodeActivity activity;
   private final DecodeThread decodeThread;
   private State state;
   private final CameraManager cameraManager;
@@ -58,7 +58,7 @@ public final class CaptureActivityHandler extends Handler {
     DONE
   }
 
-  CaptureActivityHandler(ScanShopCodeActivity activity,
+  CaptureActivityHandler(ScanCodeActivity activity,
                          Collection<BarcodeFormat> decodeFormats,
                          Map<DecodeHintType,?> baseHints,
                          String characterSet,
