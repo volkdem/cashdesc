@@ -5,6 +5,7 @@ import com.common.model.Store;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,14 +30,17 @@ public class StorageItems {
         static {
 
                 milk.setBarcode(new BigInteger("54321"));
+                milk.setProductName("Молоко");
                 milk.setPrice(new BigDecimal(67.0));
                 milk.setProduct_id(1L);
 
                 bread.setBarcode(new BigInteger("654321"));
+                bread.setProductName("Хлеб");
                 bread.setPrice(new BigDecimal(30.5));
                 bread.setProduct_id(2L);
 
                 eggs.setBarcode(new BigInteger("7654321"));
+                eggs.setProductName("Яйца");
                 eggs.setPrice(new BigDecimal(56.70));
                 eggs.setProduct_id(3L);
 
@@ -49,20 +53,22 @@ public class StorageItems {
                 storageProduct.put("7654321", eggs);
 
                 magnit.setAddress("ш. Энтузиастов, 66");
-                magnit.setBarсode(new BigInteger("12345"));
+                magnit.setBarсode(new BigInteger("1234567"));
                 magnit.setName("Магнит");
                 magnit.setStore_ID(1L);
-                magnit.setProduct_ID();
+                magnit.setProduct_ID(new ArrayList<Long>() {{add(1L);}});
 
                 ashan.setAddress("Люблинская ул., 153");
-                ashan.setBarсode(new BigInteger("123456"));
+                ashan.setBarсode(new BigInteger("12345"));
                 ashan.setName("Ашан");
                 ashan.setStore_ID(2L);
+                ashan.setProduct_ID(new ArrayList<Long>() {{add(2L);}});
 
                 peterochka.setAddress("ул. Дзержинского, 2");
-                peterochka.setBarсode(new BigInteger("1234567"));
+                peterochka.setBarсode(new BigInteger("123456"));
                 peterochka.setName("Peterochka");
                 peterochka.setStore_ID(3L);
+                peterochka.setProduct_ID(new ArrayList<Long>() {{add(3L);}});
 
         }
 
@@ -82,4 +88,7 @@ public class StorageItems {
         public static void setStorageProduct(Map<String, Product> storageProduct) {
                 StorageItems.storageProduct = storageProduct;
         }
+
+
+
 }

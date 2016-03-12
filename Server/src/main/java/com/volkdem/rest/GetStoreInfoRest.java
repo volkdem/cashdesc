@@ -4,9 +4,12 @@ import com.common.model.Store;
 import com.volkdem.storage.StorageItems;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 
 /**
  * Created by Vadim on 18.02.2016.
@@ -19,11 +22,10 @@ public class GetStoreInfoRest {
     @Produces(MediaType.TEXT_PLAIN)
     public Response getStore(@QueryParam("store_barcode") String store_barcode) {
 
-        String out = "Метод getStore() вызван. Ищем магазин по штрихкоду: " + store_barcode + "\n";
+        String out = "Метод getStore() вызван. \n Ищем магазин по штрихкоду: " + store_barcode + "\n";
 
-        Store store = StorageItems.getStorageStore().get(store_barcode);
 
-        if(store == null) {
+        if(!StorageItems.getStorageStore().containsKey(store_barcode)) {
             out = "Не найден магазин по штрихкоду: " + store_barcode;
             Response.status(500).entity(out).build();
             try {
@@ -33,11 +35,21 @@ public class GetStoreInfoRest {
             }
         }
 
-        out = "Адрес: " + out + store.getAddress();
-        out = "Штрих код: " + out + store.getBarсode();
-        out = "Название магазина: " + out + store.getName();
-        out = out + store.getStore_ID();
-        return Response.status(200).entity(out).build();
+
+        Store store = StorageItems.getStorageStore().get(store_barcode);
+
+
+
+        out = out + " Найден магазин \n";
+        out = out + " Адрес: " + store.getAddress() + "\n";
+        out = out + " Штрих код: " + store.getBarсode() + "\n";
+        out = out + " Название магазина: " + store.getName() + "\n";
+        out = out + " ID магазина: " + store.getStore_ID() + "\n";
+
+        String outWithUTF = null;
+        try { outWithUTF = new String(out.getBytes(), "UTF-8"); } catch (UnsupportedEncodingException e) { e.printStackTrace(); }
+
+        return Response.status(Response.Status.OK).entity(outWithUTF).header("charset", "utf-8").build();
     }
 
 

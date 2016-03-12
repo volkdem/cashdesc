@@ -24,12 +24,14 @@ public class RestClient {
             HttpHost target = new HttpHost("localhost", 8080, "http");
 
 
+
+            //This is server url changed
             /*
             All requests begin within:
-            localhost:8080/server.cashdesk/rest/...
-            For store info = localhost:8080/server.cashdesk/rest/store?store_barcode=123456
-            For product info = localhost:8080/server.cashdesk/rest/product?product_barcode=123456
-            For pay = localhost:8080/server.cashdesk/rest/pay
+            localhost:8080/Server/rest/...
+            For store info = localhost:8080/Server/rest/store?store_barcode=123456
+            For product info = localhost:8080/Server/rest/product?product_barcode=123456
+            For pay = localhost:8080/Server/rest/pay
             */
 
 
