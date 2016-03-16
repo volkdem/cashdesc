@@ -222,9 +222,10 @@ public abstract class ScanCodeActivity extends AppCompatActivity implements Surf
         Log.d( TAG, store.getName() );
 
 
-        Intent scanProductActivityIntent = new Intent(this, ScanProdcutActivity.class);
-        startActivity(scanProductActivityIntent);
+        onDecode(rawResult, barcode, scaleFactor );
     }
+
+    protected abstract void onDecode(Result rawResult, Bitmap barcode, float scaleFactor);
 
     /**
      * Superimpose a line for 1D or dots for 2D to highlight the key features of the barcode.

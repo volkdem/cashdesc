@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.common.model.Store;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
@@ -34,6 +41,7 @@ import com.google.zxing.ResultPoint;
 import com.volkdem.cashdesc.camera.CameraManager;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -42,9 +50,37 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHolder.Callback {
+    private static final String TAG = ScanShopCodeActivity.class.getSimpleName();
 
     @Override
     protected int getLayout() {
         return R.layout.activity_scan_shop_code;
+    }
+
+    @Override
+    protected void onDecode(Result rawResult, Bitmap barcode, float scaleFactor) {
+        RequestQueue requestQueue = Volley.newRequestQueue( this );
+
+        final String url = "http://yandex.ru";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d( TAG, new String( response.getBytes( Charset.forName( "UTF-8")) ) );
+                Intent scanProductActivityIntent = new Intent(ScanShopCodeActivity.this, ScanProdcutActivity.class);
+                startActivity(scanProductActivityIntent);
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e( TAG, "onErrorResponse: " + error.getMessage() );
+            }
+        } );
+
+        requestQueue.add( stringRequest );
+
+
+
     }
 }
