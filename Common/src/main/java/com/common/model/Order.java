@@ -1,0 +1,101 @@
+package com.common.model;
+
+
+import com.common.model.Product;
+import com.common.model.Store;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by Evgeny on 05.12.2015.
+ */
+public class Order implements Serializable {
+    private String id;
+    private Store store;
+    private Date orderTime;
+    private Map<Product, Integer> products = new HashMap<>();
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId( String id ) {
+        this.id = id;
+    }
+
+
+    public void addProduct(Product product) {
+        Integer count = products.get( product );
+        if ( count == null ) {
+            products.put( product, new Integer( 0 ) );
+            return;
+        }
+
+        count++;
+
+        products.put( product, count );
+    }
+
+    public BigDecimal getCost() {
+        BigDecimal cost = new BigDecimal( 0 ).setScale( 2 );
+        for( Product product: products.keySet() ) {
+            cost = cost.add( product.getPrice().multiply( new BigDecimal( products.get( product ) ) ) );
+        }
+
+        return cost;
+    }
+
+    public boolean containsProduct( Product product ) {
+        return  products.containsKey( product );
+    }
+
+
+    public void removeProduct(Product product) {
+        products.remove( product );
+
+    }
+
+
+    public void clear() {
+        products.clear();
+    }
+
+
+
+    public Map<Product, Integer> getProducts() {
+        return products;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderID='" + id + '\'' +
+                ", itemsList=" + products +
+                '}';
+    }
+
+    public boolean isEmpty() {
+        return getProducts().size() == 0;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+    public int getSize() {
+        int size = 0;
+        for( Integer count: products.values() ) {
+            size += count;
+        }
+
+        return size;
+    }
+}

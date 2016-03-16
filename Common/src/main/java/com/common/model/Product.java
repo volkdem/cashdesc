@@ -14,11 +14,12 @@ public class Product {
 
 
 
-    private Long product_id; //ID продукта
-    private String productName; //Имя продукта
-    private BigDecimal price; //Цена
-    private BigInteger barcode; //Штрих код
-    private Long store_id; //ID магазина
+
+    private Long product_id; //product ID
+    private String productName; //product name
+    private BigDecimal price; //price
+    private BigInteger barcode; //bar code
+    private Long store_id; //store id
 
 
 

@@ -32,6 +32,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.common.model.Order;
 import com.common.model.Store;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
@@ -39,6 +40,9 @@ import com.google.zxing.Result;
 import com.google.zxing.ResultMetadataType;
 import com.google.zxing.ResultPoint;
 import com.volkdem.cashdesc.camera.CameraManager;
+import com.volkdem.cashdesc.stub.StubFactory;
+import com.volkdem.cashdesc.utils.Const;
+import com.volkdem.cashdesc.utils.StaticContainer;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -58,29 +62,45 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
     }
 
     @Override
-    protected void onDecode(Result rawResult, Bitmap barcode, float scaleFactor) {
+    protected void onDecode(final Result rawResult, Bitmap barcode, float scaleFactor) {
         RequestQueue requestQueue = Volley.newRequestQueue( this );
+        Log.d( TAG, "scanned code is " + rawResult.getText() );
 
-        final String url = "http://yandex.ru";
+        final String url = Const.URL;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
                 Log.d( TAG, new String( response.getBytes( Charset.forName( "UTF-8")) ) );
-                Intent scanProductActivityIntent = new Intent(ScanShopCodeActivity.this, ScanProdcutActivity.class);
-                startActivity(scanProductActivityIntent);
+
+                createOrder( StubFactory.getStore( rawResult.getText() ) );
+
+                goToScanProduct();
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                // TODO: show error message, check internet connection
                 Log.e( TAG, "onErrorResponse: " + error.getMessage() );
+
+                createOrder( StubFactory.getStore( rawResult.getText() ) );
+
+                goToScanProduct();
             }
         } );
 
         requestQueue.add( stringRequest );
+    }
 
+    private void createOrder(Store store) {
+        Order order = new Order();
+        order.setStore( store );
+        StaticContainer.setOrder( order );
+    }
 
-
+    private void goToScanProduct() {
+        Intent scanProductActivityIntent = new Intent(ScanShopCodeActivity.this, ScanProdcutActivity.class);
+        startActivity(scanProductActivityIntent);
     }
 }

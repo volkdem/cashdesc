@@ -11,10 +11,10 @@ public class Store {
     public Store() { super(); }
 
  
-    private Long store_ID; //ID магазина
-    private String name; //Имя магазина
-    private String address; //Адрес магазина
-    private BigInteger barсode; //Штрих код
+    private Long store_ID; //ID store
+    private String name; //store name
+    private String address; //store address
+    private BigInteger barсode; //bar code
 
 
     public Long getStore_ID() {
@@ -45,7 +45,7 @@ public class Store {
         return barсode;
     }
 
-    public void setBarсode(BigInteger barсode) {
+    public void setBarcode(BigInteger barсode) {
         this.barсode = barсode;
     }
 
