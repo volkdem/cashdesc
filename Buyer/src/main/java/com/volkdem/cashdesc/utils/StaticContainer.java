@@ -1,6 +1,7 @@
 package com.volkdem.cashdesc.utils;
 
 import com.common.model.Order;
+import com.volkdem.cashdesc.model.OrderWrapper;
 
 /**
  * Created by Evgeny on 16.03.2016.
@@ -8,13 +9,13 @@ import com.common.model.Order;
 
 // TODO replace to transfering between activities instead of static class
 public class StaticContainer {
-    private static volatile Order order;
+    private static volatile OrderWrapper order;
 
-    public static void setOrder( Order order ) {
+    public static void setOrder( OrderWrapper order ) {
         StaticContainer.order = order;
     }
 
-    public static Order getOrder() {
+    public static OrderWrapper getOrder() {
         return order;
     }
 }

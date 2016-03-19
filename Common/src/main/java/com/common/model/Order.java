@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
 
 /**
  * Created by Evgeny on 05.12.2015.
@@ -16,7 +17,6 @@ import java.util.Map;
 public class Order implements Serializable {
     private String id;
     private Store store;
-    private Date orderTime;
     private Map<Product, Integer> products = new HashMap<>();
 
     public String getId() {
@@ -90,12 +90,16 @@ public class Order implements Serializable {
         this.store = store;
     }
 
-    public int getSize() {
+    public int getTotalSize() {
         int size = 0;
         for( Integer count: products.values() ) {
             size += count;
         }
 
         return size;
+    }
+
+    public int getProductTypeSize() {
+        return products.size();
     }
 }

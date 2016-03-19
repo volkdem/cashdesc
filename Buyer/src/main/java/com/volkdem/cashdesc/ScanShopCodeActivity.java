@@ -40,18 +40,13 @@ import com.google.zxing.Result;
 import com.google.zxing.ResultMetadataType;
 import com.google.zxing.ResultPoint;
 import com.volkdem.cashdesc.camera.CameraManager;
+import com.volkdem.cashdesc.model.OrderWrapper;
 import com.volkdem.cashdesc.stub.StubFactory;
 import com.volkdem.cashdesc.utils.Const;
 import com.volkdem.cashdesc.utils.StaticContainer;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
-import java.text.DateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.Map;
-import java.util.logging.Logger;
+
 
 public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHolder.Callback {
     private static final String TAG = ScanShopCodeActivity.class.getSimpleName();
@@ -74,7 +69,6 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
                 Log.d( TAG, new String( response.getBytes( Charset.forName( "UTF-8")) ) );
 
                 createOrder( StubFactory.getStore( rawResult.getText() ) );
-
                 goToScanProduct();
             }
         }, new Response.ErrorListener() {
@@ -85,7 +79,6 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
                 Log.e( TAG, "onErrorResponse: " + error.getMessage() );
 
                 createOrder( StubFactory.getStore( rawResult.getText() ) );
-
                 goToScanProduct();
             }
         } );
@@ -94,7 +87,7 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
     }
 
     private void createOrder(Store store) {
-        Order order = new Order();
+        OrderWrapper order = new OrderWrapper ( new Order() );
         order.setStore( store );
         StaticContainer.setOrder( order );
     }

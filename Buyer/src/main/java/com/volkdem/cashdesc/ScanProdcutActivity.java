@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.common.model.Order;
 import com.google.zxing.Result;
+import com.volkdem.cashdesc.model.OrderWrapper;
 import com.volkdem.cashdesc.stub.StubFactory;
 import com.volkdem.cashdesc.utils.Const;
 import com.volkdem.cashdesc.utils.StaticContainer;
@@ -25,13 +26,13 @@ public class ScanProdcutActivity extends ScanCodeActivity {
     @Override
     protected void onDecode(Result rawResult, Bitmap barcode, float scaleFactor) {
         Log.d( TAG, "onDecode" );
-        Order order = StaticContainer.getOrder();
+        OrderWrapper order = StaticContainer.getOrder();
 
         order.addProduct( StubFactory.getProduct( order.getStore().getStore_ID(), rawResult.getText() ) );
 
-        Log.i( TAG, "orderSize=" + order.getSize() );
+        Log.i( TAG, "orderSize=" + order.getTotalSize() );
 
-        if( order.getSize() == Const.MAX_ORDER_SIZE ) {
+        if( order.getTotalSize() == Const.MAX_ORDER_SIZE ) {
             Intent paymentConfirmationActivityIntent = new Intent(this, PaymentConfirmationActivity.class);
             startActivity(paymentConfirmationActivityIntent);
         }
