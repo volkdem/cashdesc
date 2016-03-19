@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.common.model.Order;
 import com.common.model.Product;
 import com.volkdem.cashdesc.model.OrderWrapper;
+import com.volkdem.cashdesc.utils.Const;
 
 import java.math.RoundingMode;
 import java.util.Observable;
@@ -54,8 +55,16 @@ public class ProductListAdapter extends BaseAdapter implements Observer{
         View prodcutView = inflater.inflate( R.layout.layout_product, parent, false );
         TextView nameView = ( TextView )prodcutView.findViewById( R.id.product_name );
         nameView.setText( product.getProductName() );
+
+        TextView countView = ( TextView )prodcutView.findViewById( R.id.product_count );
+        String count = String.valueOf( order.getCount( product ) );
+        countView.setText( count + "x "); // TODO move to layout
+
         TextView priceView = (TextView )prodcutView.findViewById( R.id.product_price );
-        priceView.setText( product.getPrice().setScale( 2, RoundingMode.HALF_UP ).toString() );
+        priceView.setText( product.getPrice().setScale( 2, RoundingMode.HALF_UP ).toString() + " " + Const.CURRENCY ); // TODO move currency to layout
+
+        // TODO check for too long product name
+
 
         return prodcutView;
     }

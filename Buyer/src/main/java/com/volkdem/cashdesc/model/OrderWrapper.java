@@ -99,4 +99,7 @@ public class OrderWrapper extends Observable {
         return productOrder.get( position ).getProduct_id();
     }
 
+    public int getCount(Product product) {
+        return order.getCount( product );
+    }
 }

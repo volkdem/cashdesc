@@ -31,8 +31,7 @@ public class Order implements Serializable {
     public void addProduct(Product product) {
         Integer count = products.get( product );
         if ( count == null ) {
-            products.put( product, new Integer( 0 ) );
-            return;
+            count = 0;
         }
 
         count++;
@@ -101,5 +100,14 @@ public class Order implements Serializable {
 
     public int getProductTypeSize() {
         return products.size();
+    }
+
+    public int getCount(Product product) {
+        Integer count = products.get( product );
+        if( count == null ) {
+            return 0;
+        }
+
+        return count;
     }
 }
