@@ -1,28 +1,37 @@
 package com.common.model;
 
+import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Vadim on 16.02.2016.
  */
-public class Store {
+public class Store implements Serializable {
 
 
     public Store() { super(); }
 
  
-    private Long store_ID; //ID store
-    private String name; //store name
-    private String address; //store address
-    private BigInteger barсode; //bar code
+    private Long storeId;
+    private String name;
+    private String address;
+    private BigInteger barcode;
+
+    /*
+    Product ID.
+    Made productIdList in Store class because it easy to fetch all products belong to Store
+    */
+    private List<Product> productIdList = new ArrayList<Product>();
 
 
-    public Long getStore_ID() {
-        return store_ID;
+    public Long getStoreId() {
+        return storeId;
     }
 
-    public void setStore_ID(Long store_ID) {
-        this.store_ID = store_ID;
+    public void setStoreId(Long storeId) {
+        this.storeId = storeId;
     }
 
     public String getName() {
@@ -41,13 +50,23 @@ public class Store {
         this.address = address;
     }
 
-    public BigInteger getBarсode() {
-        return barсode;
+    public BigInteger getBarcode() { return barcode; }
+
+    public void setBarcode(BigInteger barcode) {this.barcode = barcode; }
+
+    public List<Product> getProductIdList() { return productIdList; }
+
+    public void setProductIdList(List<Product> productIdList) { this.productIdList = productIdList; }
+
+
+    @Override
+    public String toString() {
+        return "Store{" +
+                "storeId=" + storeId +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", barcode=" + barcode +
+                ", productIdList=" + productIdList +
+                '}';
     }
-
-    public void setBarcode(BigInteger barсode) {
-        this.barсode = barсode;
-    }
-
-
 }

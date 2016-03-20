@@ -1,23 +1,17 @@
 package com.common.model;
 
 
-import com.common.model.Product;
-import com.common.model.Store;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Observable;
-
 /**
  * Created by Evgeny on 05.12.2015.
  */
 public class Order implements Serializable {
     private String id;
     private Store store;
-    private Map<Product, Integer> products = new HashMap<>();
+    private Map<Product, Integer> products = new HashMap<Product, Integer>();
 
     public String getId() {
         return id;

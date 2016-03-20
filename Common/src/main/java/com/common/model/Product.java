@@ -1,12 +1,13 @@
 package com.common.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
  * Created by Vadim on 16.02.2016.
  */
-public class Product {
+public class Product implements Serializable {
 
 
 
@@ -14,21 +15,23 @@ public class Product {
 
 
 
+    private Long productId;
+    private String productName;
+    private BigDecimal price;
+    private BigInteger barcode;
+    /*
+    Product ID.
+    Made remove store_id from Product class because it harder to get products belong to particular Store
+    */
 
-    private Long product_id; //product ID
-    private String productName; //product name
-    private BigDecimal price; //price
-    private BigInteger barcode; //bar code
-    private Long store_id; //store id
 
 
-
-    public Long getProduct_id() {
-        return product_id;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(Long product_id) {
-        this.product_id = product_id;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public String getProductName() {
@@ -55,13 +58,40 @@ public class Product {
         this.barcode = barcode;
     }
 
-    public Long getStore_id() {
-        return store_id;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product product = (Product) o;
+
+        if (productId != null ? !productId.equals(product.productId) : product.productId != null) return false;
+        if (productName != null ? !productName.equals(product.productName) : product.productName != null) return false;
+        if (price != null ? !price.equals(product.price) : product.price != null) return false;
+        return !(barcode != null ? !barcode.equals(product.barcode) : product.barcode != null);
+
     }
 
-    public void setStore_id(Long store_id) {
-        this.store_id = store_id;
+    @Override
+    public int hashCode() {
+        int result = productId != null ? productId.hashCode() : 0;
+        result = 31 * result + (productName != null ? productName.hashCode() : 0);
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (barcode != null ? barcode.hashCode() : 0);
+        return result;
     }
 
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", price=" + price +
+                ", barcode=" + barcode +
+                '}';
+    }
 
 }
+

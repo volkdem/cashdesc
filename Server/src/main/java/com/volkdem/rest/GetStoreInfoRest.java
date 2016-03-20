@@ -1,12 +1,14 @@
 package com.volkdem.rest;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import com.common.model.Store;
+import com.volkdem.storage.StorageItems;
+
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.util.Map;
 
 /**
  * Created by Vadim on 18.02.2016.
@@ -15,14 +17,31 @@ import java.math.BigInteger;
 public class GetStoreInfoRest {
 
 
+
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response getStore(@PathParam("store_barcode")BigInteger barcode) {
-        String out = "You successfully called method getStore() with barcode " + barcode;
-        return Response.status(200).entity(out).build();
+    @Produces("application/json")
+    public Store getStore(@QueryParam("storeBarcode") String storeBarcode) {
+
+        for(Map.Entry<Long, Store> entry : StorageItems.getStorageStore().entrySet()) {
+
+            System.out.println(entry.getValue().toString());
+            Store store = (Store)entry.getValue();
+            if(store.getBarcode().equals(new BigInteger(storeBarcode))) {
+                return store;
+            }
+        }
+
+        String out = "Not found store by barcode: " + storeBarcode;
+        Response.status(500).entity(out).build();
+        try {
+            throw new Exception("Store not found in HashMap storage with store barcode " + storeBarcode);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
+        return null;
+
     }
-
-
 
 
 }
