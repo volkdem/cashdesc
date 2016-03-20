@@ -16,7 +16,24 @@
 
     </ListView>
 
+    <TextView
+        android:text="@string/sum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/product_list"/>
+
+    <TextView
+        android:id="@+id/sum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/product_list"/>
+
     <Button
+        android:id="@+id/pay_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/pay"

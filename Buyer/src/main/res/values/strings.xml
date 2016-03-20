@@ -5,6 +5,11 @@
     <string name="get_code">Получить код активации</string>
     <string name="title_activity_smsconfirmation">SMSConfirmationActivity</string>
     <string name="confirm">Подтвердить</string>
+    <string name="store_info" formatted="false">Магазин \nНазвание:%s\nАдрес:%s</string>
+    <string name="order" formatted="false">Корзина:</string>
+    <string name="product" formatted="false">%s %d x %.2f</string>
+    <string name="pay">Оплатить</string>
+    <string name="sum">Сумма</string>
     <!-- From Scanner-->
     <string name="app_picker_name">Applications</string>
     <string name="bookmark_picker_name">Bookmarks</string>
@@ -130,5 +135,6 @@
     <string name="result_wifi">Found WLAN Configuration</string>
     <string name="sbc_name">Google Book Search</string>
     <string name="wifi_changing_network">Requesting connection to network\u2026</string>
-    <string name="pay">Оплатить</string>
+    <string name="successfull_payment">Оплачено</string>
+
 </resources>
