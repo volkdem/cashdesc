@@ -3,6 +3,7 @@ package com.common.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 
 /**
  * Created by Vadim on 16.02.2016.
@@ -42,8 +43,9 @@ public class Product implements Serializable {
         this.productName = productName;
     }
 
+    // TODO move scaling to another place
     public BigDecimal getPrice() {
-        return price;
+        return price.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setPrice(BigDecimal price) {

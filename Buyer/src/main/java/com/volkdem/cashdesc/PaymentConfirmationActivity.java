@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 public class PaymentConfirmationActivity extends AppCompatActivity {
+    private static final String TAG = Const.TAG + PaymentConfirmationActivity.class.getSimpleName();
     public static final String PAYMENT_CODE = PaymentConfirmationActivity.class.getName() +  "PAYMENT_CODE";
 
     @Override

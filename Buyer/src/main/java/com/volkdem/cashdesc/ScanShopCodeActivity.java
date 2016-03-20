@@ -26,10 +26,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.common.model.Order;
@@ -42,14 +45,17 @@ import com.google.zxing.ResultPoint;
 import com.volkdem.cashdesc.camera.CameraManager;
 import com.volkdem.cashdesc.model.OrderWrapper;
 import com.volkdem.cashdesc.stub.StubFactory;
+import com.volkdem.cashdesc.utils.BaseJsonRequest;
 import com.volkdem.cashdesc.utils.Const;
 import com.volkdem.cashdesc.utils.StaticContainer;
+
+import org.json.JSONObject;
 
 import java.nio.charset.Charset;
 
 
 public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHolder.Callback {
-    private static final String TAG = ScanShopCodeActivity.class.getSimpleName();
+    private static final String TAG = Const.TAG + ScanShopCodeActivity.class.getSimpleName();
 
     @Override
     protected int getLayout() {
@@ -61,27 +67,41 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
         RequestQueue requestQueue = Volley.newRequestQueue( this );
         Log.d( TAG, "scanned code is " + rawResult.getText() );
 
-        final String url = Const.URL;
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
-            @Override
-            public void onResponse(String response) {
-                Log.d( TAG, new String( response.getBytes( Charset.forName( "UTF-8")) ) );
+        final String url = getStoreUrl( rawResult.getText());
+        // Const.URL;
+        BaseJsonRequest<Store> stringRequest = new BaseJsonRequest<Store>(Store.class, Request.Method.GET, url, null,
+                new Response.Listener<Store>() {
 
-                createOrder( StubFactory.getStore( rawResult.getText() ) );
-                goToScanProduct();
-            }
-        }, new Response.ErrorListener() {
+                    @Override
+                    public void onResponse(Store store) {
+                        Log.d(TAG, "Found store is " + store.toString());
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // TODO: show error message, check internet connection
-                Log.e( TAG, "onErrorResponse: " + error.getMessage() );
+                        createOrder(store);
+                        goToScanProduct();
+                    }
+                },
 
-                createOrder( StubFactory.getStore( rawResult.getText() ) );
-                goToScanProduct();
-            }
-        } );
+                new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: show error message, check internet connection
+                        Log.e(TAG, "onErrorResponse: " + error.getMessage());
+
+                        // TODO get message from string.xml
+                        Toast.makeText(ScanShopCodeActivity.this, "Requst error + " + error.getMessage(), Toast.LENGTH_LONG).show();
+
+                       /*
+                       createOrder( StubFactory.getStore( rawResult.getText() ) );
+                       goToScanProduct();
+                       */
+
+
+                    }
+                });
+
+
 
         requestQueue.add( stringRequest );
     }
@@ -95,5 +115,9 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
     private void goToScanProduct() {
         Intent scanProductActivityIntent = new Intent(ScanShopCodeActivity.this, ScanProdcutActivity.class);
         startActivity(scanProductActivityIntent);
+    }
+
+    private String getStoreUrl( String barCode ) {
+        return Const.URL + "store?storeBarcode=" + barCode;
     }
 }

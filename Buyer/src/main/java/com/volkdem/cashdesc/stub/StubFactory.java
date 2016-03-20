@@ -24,15 +24,14 @@ public class StubFactory {
         unknownStore = new Store();
         unknownStore.setName( "Unkown Store");
         unknownStore.setAddress( "Unknown Address");
-        unknownStore.setStore_ID( -1L );
+        unknownStore.setStoreId( -1L );
         unknownStore.setBarcode( new BigInteger( "0" ) );
         // ---- product
         unknownProduct = new Product();
         unknownProduct.setBarcode( new BigInteger( "0" ) );
         unknownProduct.setPrice( new BigDecimal( "0.0") );
-        unknownProduct.setProduct_id( 0L );
+        unknownProduct.setProductId( 0L );
         unknownProduct.setProductName( "Unknown Product" );
-        unknownProduct.setStore_id( unknownStore.getStore_ID() );
 
 
     }
@@ -40,7 +39,6 @@ public class StubFactory {
     public static Store getStore( String barCode ) {
         Store store = new Store();
         store.setBarcode( new BigInteger( barCode ) );
-        store.setStore_ID( Long.valueOf( barCode ) );
         store.setName("Store " + barCode);
         store.setAddress("Address " + barCode);
 
@@ -50,9 +48,8 @@ public class StubFactory {
 
     public static Product getProduct( Long storeId, String barCode ) {
         Product product = new Product();
-        product.setStore_id( storeId );
         product.setProductName( "Product name " + barCode);
-        product.setProduct_id( Long.valueOf( barCode ));
+        product.setProductId( Long.valueOf( barCode ));
         product.setBarcode( new BigInteger( barCode ) );
         product.setPrice( new BigDecimal( barCode ).setScale( 2 ) );
 

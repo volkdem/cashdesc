@@ -17,6 +17,7 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
 
         // Just to test
+        /*
         OrderWrapper order = new OrderWrapper( new Order() );
         StaticContainer.setOrder( order );
         order.setStore(StubFactory.getStore( "1"));
@@ -50,15 +51,15 @@ public class RegistrationActivity extends AppCompatActivity {
         order.addProduct( StubFactory.getProduct( order.getStore().getStore_ID(), "32000") );
         order.addProduct( StubFactory.getProduct( order.getStore().getStore_ID(), "22") );
         order.addProduct( StubFactory.getProduct( order.getStore().getStore_ID(), "42") );
-        */
+
 
         Intent paymentConfirmationAct = new Intent( getApplicationContext(), PaymentConfirmationActivity.class );
         startActivity(paymentConfirmationAct);
+    */
 
 
-
-        /*Intent startScanShopActivity = new Intent( getApplicationContext(), ScanShopCodeActivity.class );
+        Intent startScanShopActivity = new Intent( getApplicationContext(), ScanShopCodeActivity.class );
         startActivity(startScanShopActivity);
-        */
+
     }
 }
