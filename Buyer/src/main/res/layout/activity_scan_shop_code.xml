@@ -201,4 +201,6 @@
         android:text="@string/msg_default_status"
         android:textColor="@color/status_text"/>
 
+    <include layout="@layout/frame_loading_animation"/>
+
 </merge>

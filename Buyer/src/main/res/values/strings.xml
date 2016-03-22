@@ -136,5 +136,6 @@
     <string name="sbc_name">Google Book Search</string>
     <string name="wifi_changing_network">Requesting connection to network\u2026</string>
     <string name="successfull_payment">Оплачено</string>
+    <string name="cancel">Отмена</string>
 
 </resources>

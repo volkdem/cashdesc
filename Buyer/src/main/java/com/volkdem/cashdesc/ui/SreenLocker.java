@@ -1,0 +1,50 @@
+package com.volkdem.cashdesc.ui;
+
+import android.support.annotation.IdRes;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.volkdem.cashdesc.R;
+
+/**
+ * Created by Evgeny on 22.03.2016.
+ */
+public class SreenLocker {
+    private IViewFinder viewFinder;
+    private IUnlockListener unlockListener;
+
+    public SreenLocker(IViewFinder viewFinder) {
+        this.viewFinder = viewFinder;
+    }
+
+    public void lockScreen() {
+        ImageView loadingImage = (ImageView) findViewById( R.id.loading_image );
+        loadingImage.setVisibility(View.VISIBLE);
+        Button cancelButton = (Button) findViewById( R.id.cancel_button );
+        cancelButton.setVisibility( View.VISIBLE );
+    }
+
+    public void unlockScreen() {
+        ImageView loadingImage = (ImageView) findViewById( R.id.loading_image );
+        loadingImage.setVisibility(View.INVISIBLE);
+        Button cancelButton = (Button) findViewById( R.id.cancel_button );
+        cancelButton.setVisibility( View.INVISIBLE );
+    }
+
+    public View findViewById(@IdRes int id) {
+         return viewFinder.findViewById( id );
+    }
+
+    public void setUnlockListener(final IUnlockListener unlockListener) {
+        this.unlockListener = unlockListener;
+        Button cancelButton = (Button) findViewById(R.id.cancel_button);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unlockListener.onUnlock();
+            }
+        });
+    }
+}

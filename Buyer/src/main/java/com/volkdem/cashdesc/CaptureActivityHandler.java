@@ -137,6 +137,11 @@ public final class CaptureActivityHandler extends Handler {
     }
   }
 
+  @Override
+  public boolean sendMessageAtTime(Message msg, long uptimeMillis) {
+    return super.sendMessageAtTime(msg, uptimeMillis);
+  }
+
   public void quitSynchronously() {
     state = State.DONE;
     cameraManager.stopPreview();

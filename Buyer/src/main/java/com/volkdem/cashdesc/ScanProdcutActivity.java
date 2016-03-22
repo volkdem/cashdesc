@@ -17,6 +17,8 @@ import com.common.model.Product;
 import com.google.zxing.Result;
 import com.volkdem.cashdesc.model.OrderWrapper;
 import com.volkdem.cashdesc.stub.StubFactory;
+import com.volkdem.cashdesc.ui.IViewFinder;
+import com.volkdem.cashdesc.ui.SreenLocker;
 import com.volkdem.cashdesc.utils.BaseJsonRequest;
 import com.volkdem.cashdesc.utils.Const;
 import com.volkdem.cashdesc.utils.StaticContainer;
@@ -24,8 +26,16 @@ import com.volkdem.cashdesc.utils.StaticContainer;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
 
-public class ScanProdcutActivity extends ScanCodeActivity {
+public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder {
     private static final String TAG = Const.TAG + ScanProdcutActivity.class.getSimpleName();
+
+    private SreenLocker screenLocker;
+
+    @Override
+    public void onCreate(Bundle icicle) {
+        super.onCreate(icicle);
+        screenLocker = new SreenLocker( this );
+    }
 
     @Override
     protected int getLayout() {
@@ -51,6 +61,8 @@ public class ScanProdcutActivity extends ScanCodeActivity {
 
                         Log.i( TAG, "orderSize=" + order.getTotalSize() );
 
+                        screenLocker.unlockScreen();
+
                         if( order.getTotalSize() == Const.MAX_ORDER_SIZE ) {
                             Intent paymentConfirmationActivityIntent = new Intent(ScanProdcutActivity.this, PaymentConfirmationActivity.class);
                             startActivity(paymentConfirmationActivityIntent);
@@ -62,10 +74,12 @@ public class ScanProdcutActivity extends ScanCodeActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO user message from the strings.xml
+                        screenLocker.unlockScreen();
                         Toast.makeText(ScanProdcutActivity.this, "Error on getting product + " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
+        screenLocker.lockScreen();
         requestQueue.add( productRequest );
 
 
