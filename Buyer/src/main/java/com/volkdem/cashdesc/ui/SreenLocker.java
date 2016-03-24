@@ -4,6 +4,7 @@ import android.support.annotation.IdRes;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.volkdem.cashdesc.R;
@@ -20,17 +21,17 @@ public class SreenLocker {
     }
 
     public void lockScreen() {
-        ImageView loadingImage = (ImageView) findViewById( R.id.loading_image );
-        loadingImage.setVisibility(View.VISIBLE);
         Button cancelButton = (Button) findViewById( R.id.cancel_button );
         cancelButton.setVisibility( View.VISIBLE );
+        ProgressBar loadingPanelBar = (ProgressBar) findViewById( R.id.loading_panel );
+        loadingPanelBar.setVisibility(View.VISIBLE );
     }
 
     public void unlockScreen() {
-        ImageView loadingImage = (ImageView) findViewById( R.id.loading_image );
-        loadingImage.setVisibility(View.INVISIBLE);
         Button cancelButton = (Button) findViewById( R.id.cancel_button );
         cancelButton.setVisibility( View.INVISIBLE );
+        ProgressBar loadingPanelBar = (ProgressBar) findViewById( R.id.loading_panel );
+        loadingPanelBar.setVisibility(View.INVISIBLE );
     }
 
     public View findViewById(@IdRes int id) {
@@ -44,6 +45,7 @@ public class SreenLocker {
             @Override
             public void onClick(View v) {
                 unlockListener.onUnlock();
+                unlockScreen();
             }
         });
     }
