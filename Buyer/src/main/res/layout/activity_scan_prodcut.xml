@@ -26,6 +26,29 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:id="@+id/store_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/result_text"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/product_code_scanning"
+            android:textAlignment="center"
+            android:textColor="@color/result_text"
+            android:layout_below="@id/store_info"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
     <LinearLayout android:id="@+id/result_view"
         android:orientation="vertical"
         android:layout_width="fill_parent"

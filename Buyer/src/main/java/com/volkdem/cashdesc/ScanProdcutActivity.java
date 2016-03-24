@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -14,6 +15,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.common.model.Order;
 import com.common.model.Product;
+import com.common.model.Store;
 import com.google.zxing.Result;
 import com.volkdem.cashdesc.model.OrderWrapper;
 import com.volkdem.cashdesc.stub.StubFactory;
@@ -35,6 +37,12 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         screenLocker = new SreenLocker( this );
+
+        Store store = StaticContainer.getOrder().getStore();
+        TextView storeInfoView = (TextView) findViewById( R.id.store_info );
+        String storeInfo =  getResources().getString( R.string.store_info, new Object[] { store.getName(), store.getAddress() } );
+        storeInfoView.setText( storeInfo );;
+
     }
 
     @Override
