@@ -35,7 +35,7 @@ public class OrderWrapper extends Observable {
         productOrder.remove( product);
         productOrder.add( 0, product );
         setChanged();
-        notifyObservers();
+        notifyObservers( this );
     }
 
     public BigDecimal getCost() {
@@ -50,14 +50,14 @@ public class OrderWrapper extends Observable {
         order.removeProduct( product );
         productOrder.remove( product );
         setChanged();
-        notifyObservers();
+        notifyObservers( order );
     }
 
 
     public void clear() {
         order.clear();
         setChanged();
-        notifyObservers();
+        notifyObservers( order );
     }
 
 

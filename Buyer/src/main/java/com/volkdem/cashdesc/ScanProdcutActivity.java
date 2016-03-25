@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +29,10 @@ import com.volkdem.cashdesc.utils.StaticContainer;
 
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
+import java.util.Observable;
+import java.util.Observer;
 
-public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder {
+public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder, Observer {
     private static final String TAG = Const.TAG + ScanProdcutActivity.class.getSimpleName();
 
     private SreenLocker screenLocker;
@@ -38,10 +42,19 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
         super.onCreate(icicle);
         screenLocker = new SreenLocker( this );
 
-        Store store = StaticContainer.getOrder().getStore();
+        OrderWrapper order = StaticContainer.getOrder();
+        Store store = order.getStore();
         TextView storeInfoView = (TextView) findViewById( R.id.store_info );
         String storeInfo =  getResources().getString( R.string.store_info, new Object[] { store.getName(), store.getAddress() } );
-        storeInfoView.setText( storeInfo );;
+        storeInfoView.setText( storeInfo );
+        ImageView cartImage = (ImageView) findViewById(R.id.cart_image );
+        cartImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToThePaymentConfirmationAcitivity();
+            }
+        });
+        order.addObserver( this );
 
     }
 
@@ -72,8 +85,7 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
                         screenLocker.unlockScreen();
 
                         if( order.getTotalSize() == Const.MAX_ORDER_SIZE ) {
-                            Intent paymentConfirmationActivityIntent = new Intent(ScanProdcutActivity.this, PaymentConfirmationActivity.class);
-                            startActivity(paymentConfirmationActivityIntent);
+                            goToThePaymentConfirmationAcitivity();
                         }
                     }
                 },
@@ -96,5 +108,17 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
 
     private String getProductUrl(Long storeId, String productBarCode ) {
         return MessageFormat.format("{0}product?storeId={1}&productBarcode={2}", Const.URL, storeId, productBarCode );
-   }
+    }
+
+    private void goToThePaymentConfirmationAcitivity() {
+        Intent paymentConfirmationActivityIntent = new Intent(ScanProdcutActivity.this, PaymentConfirmationActivity.class);
+        startActivity(paymentConfirmationActivityIntent);
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        OrderWrapper order = (OrderWrapper) data;
+        TextView cartSizeView = (TextView)findViewById( R.id.cart_size );
+        cartSizeView.setText( String.valueOf( order.getTotalSize() ) );
+    }
 }
