@@ -1,6 +1,7 @@
 package com.volkdem.cashdesc;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.ResourceBundle;
 
 public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder, Observer {
     private static final String TAG = Const.TAG + ScanProdcutActivity.class.getSimpleName();
@@ -51,6 +53,11 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
         cartImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if ( StaticContainer.getOrder().getTotalSize() == 0 ) {
+                    Toast.makeText( ScanProdcutActivity.this, R.string.cart_is_emtpy, Toast.LENGTH_LONG ).show();
+                    return;
+                }
+
                 goToThePaymentConfirmationAcitivity();
             }
         });
@@ -128,6 +135,7 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
     @Override
     public void update(Observable observable, Object data) {
         OrderWrapper order = (OrderWrapper) data;
+
         TextView cartSizeView = (TextView)findViewById( R.id.cart_size );
         cartSizeView.setText( String.valueOf( order.getTotalSize() ) );
 
