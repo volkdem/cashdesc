@@ -56,6 +56,9 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
         });
         order.addObserver( this );
 
+        // to update cart information if user comes to this screen from the PaymentConfirmation screen by back button click
+        order.notifyObservers( order );
+
     }
 
     @Override

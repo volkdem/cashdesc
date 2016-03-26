@@ -1,8 +1,11 @@
 package com.volkdem.cashdesc;
 
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -34,6 +37,12 @@ public class PaymentConfirmationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_confirmation);
+
+        Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
+        setSupportActionBar( toolbar );
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+
 
         ListView prodcutListView = (ListView) findViewById(R.id.product_list);
         prodcutListView.setAdapter(new ProductListAdapter(StaticContainer.getOrder()));
@@ -78,7 +87,14 @@ public class PaymentConfirmationActivity extends AppCompatActivity {
         startActivity( goToSusscessPayment );
     }
 
-
-
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch( item.getItemId() ) {
+            case R.id.home: {
+                NavUtils.navigateUpFromSameTask( this );
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
