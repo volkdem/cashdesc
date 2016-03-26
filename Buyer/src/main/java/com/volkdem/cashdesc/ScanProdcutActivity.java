@@ -120,5 +120,8 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
         OrderWrapper order = (OrderWrapper) data;
         TextView cartSizeView = (TextView)findViewById( R.id.cart_size );
         cartSizeView.setText( String.valueOf( order.getTotalSize() ) );
+
+        TextView cartCostView = (TextView)findViewById( R.id.cart_cost );
+        cartCostView.setText( String.valueOf( order.getCost() + Const.CURRENCY ) );
     }
 }
