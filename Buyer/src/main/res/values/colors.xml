@@ -33,4 +33,6 @@
 
 
     <color name="viewfinder_mask">#60000000</color>
+    <color name="nobackground">#00000000</color>
+    <color name="cart_details">#1ce872</color>
 </resources>

@@ -82,6 +82,13 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
 
                         Log.i( TAG, "orderSize=" + order.getTotalSize() );
 
+                        TextView productNameView = (TextView) findViewById( R.id.product_name );
+                        productNameView.setText( product.getProductName() );
+
+                        TextView productPriceView = (TextView) findViewById( R.id.product_price );
+                        String price = product.getPrice().toString() + " "  + Const.CURRENCY;
+                        productPriceView.setText( price );
+
                         screenLocker.unlockScreen();
 
                         if( order.getTotalSize() == Const.MAX_ORDER_SIZE ) {
