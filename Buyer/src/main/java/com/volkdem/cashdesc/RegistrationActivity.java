@@ -59,7 +59,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
         Intent startScanShopActivity = new Intent( getApplicationContext(), ScanShopCodeActivity.class );
+        startScanShopActivity.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK );
         startActivity(startScanShopActivity);
+        finish();
 
     }
 }
