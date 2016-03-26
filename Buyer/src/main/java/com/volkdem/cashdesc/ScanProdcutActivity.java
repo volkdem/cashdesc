@@ -28,6 +28,7 @@ import com.volkdem.cashdesc.utils.BaseJsonRequest;
 import com.volkdem.cashdesc.utils.Const;
 import com.volkdem.cashdesc.utils.StaticContainer;
 
+import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.Observable;
@@ -64,7 +65,7 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
         order.addObserver( this );
 
         // to update cart information if user comes to this screen from the PaymentConfirmation screen by back button click
-        order.notifyObservers( order );
+        order.notifyObservers();
 
     }
 
@@ -118,9 +119,6 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
 
         screenLocker.lockScreen();
         requestQueue.add( productRequest );
-
-
-
     }
 
     private String getProductUrl(Long storeId, String productBarCode ) {
@@ -134,7 +132,7 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
 
     @Override
     public void update(Observable observable, Object data) {
-        OrderWrapper order = (OrderWrapper) data;
+        OrderWrapper order = (OrderWrapper) observable;
 
         TextView cartSizeView = (TextView)findViewById( R.id.cart_size );
         cartSizeView.setText( String.valueOf( order.getTotalSize() ) );
@@ -142,4 +140,5 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
         TextView cartCostView = (TextView)findViewById( R.id.cart_cost );
         cartCostView.setText( String.valueOf( order.getCost() + Const.CURRENCY ) );
     }
+
 }

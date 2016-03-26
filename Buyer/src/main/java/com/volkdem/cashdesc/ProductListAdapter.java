@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.common.model.Order;
@@ -25,8 +26,11 @@ public class ProductListAdapter extends BaseAdapter implements Observer{
 
     private OrderWrapper order;
 
-    public ProductListAdapter(OrderWrapper order) {
+    private boolean deleteButtonAvailable;
+
+    public ProductListAdapter(OrderWrapper order, boolean deleteButtonAvailable) {
         this.order = order;
+        this.deleteButtonAvailable = deleteButtonAvailable;
     }
 
     @Override
@@ -50,9 +54,10 @@ public class ProductListAdapter extends BaseAdapter implements Observer{
 
         Log.d( TAG, "getView( position = " + position + " )");
 
-        Product product = order.getItem( position );
+        final Product product = order.getItem( position );
 
         View prodcutView = inflater.inflate( R.layout.layout_product, parent, false );
+        // TODO check for too long product name
         TextView nameView = ( TextView )prodcutView.findViewById( R.id.product_name );
         nameView.setText( product.getProductName() );
 
@@ -61,13 +66,26 @@ public class ProductListAdapter extends BaseAdapter implements Observer{
         countView.setText( count + "x "); // TODO move to layout
 
         TextView priceView = (TextView )prodcutView.findViewById( R.id.product_price );
-        priceView.setText( product.getPrice().setScale( 2, RoundingMode.HALF_UP ).toString() + " " + Const.CURRENCY ); // TODO move currency to layout
+        // TODO move currency to layout
+        priceView.setText( product.getPrice().setScale( 2, RoundingMode.HALF_UP ).toString() + " " + Const.CURRENCY );
 
-        // TODO check for too long product name
-
+        Button removeButton = (Button) prodcutView.findViewById(R.id.remove_product);
+        if( deleteButtonAvailable ) {
+            removeButton.setVisibility( View.VISIBLE );
+            removeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    order.removeProduct( product );
+                    ProductListAdapter.this.notifyDataSetChanged();
+                }
+            });
+        } else {
+            removeButton.setVisibility( View.GONE );
+        }
 
         return prodcutView;
     }
+
 
     @Override
     public void update(Observable observable, Object data) {

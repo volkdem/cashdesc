@@ -143,5 +143,6 @@
     <string name="product_code_scanning">Отсканируйте штрих-код товара</string>
     <string name="msg_default_status">Чтобы отсканировать штрих-кгод, разместите его внутри прямоугольника</string>
     <string name="cart_is_emtpy">Корзина пуста</string>
+    <string name="remove_product">Удалить</string>
 
 </resources>

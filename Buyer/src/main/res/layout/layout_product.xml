@@ -29,5 +29,14 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"/>
 
+    <Button
+        android:id="@+id/remove_product"
+        android:text="@string/remove_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/product_price"/>
+
 
 </RelativeLayout>

@@ -28,8 +28,10 @@ import com.volkdem.cashdesc.utils.StaticContainer;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
-public class PaymentConfirmationActivity extends AppCompatActivity {
+public class PaymentConfirmationActivity extends AppCompatActivity implements Observer {
     private static final String TAG = Const.TAG + PaymentConfirmationActivity.class.getSimpleName();
     public static final String PAYMENT_CODE = PaymentConfirmationActivity.class.getName() +  "PAYMENT_CODE";
 
@@ -45,11 +47,12 @@ public class PaymentConfirmationActivity extends AppCompatActivity {
 
 
         ListView prodcutListView = (ListView) findViewById(R.id.product_list);
-        prodcutListView.setAdapter(new ProductListAdapter(StaticContainer.getOrder()));
+        prodcutListView.setAdapter(new ProductListAdapter(StaticContainer.getOrder(), true));
 
         OrderWrapper order = StaticContainer.getOrder();
-        TextView sumView = (TextView) findViewById(R.id.sum);
-        sumView.setText(order.getCost().toString());
+        updateSum( order.getCost() );
+
+        order.addObserver( this );
 
         Button payButton = (Button) findViewById(R.id.pay_button);
         payButton.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +72,8 @@ public class PaymentConfirmationActivity extends AppCompatActivity {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 // TODO take the message from the string.xml
-                                Toast.makeText(PaymentConfirmationActivity.this, "Invalid response " + error.getMessage(), Toast.LENGTH_LONG).show();
+                                goToSuccessPaymentActivity( "34353453");
+                                //Toast.makeText(PaymentConfirmationActivity.this, "Invalid response " + error.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
                 );
@@ -96,5 +100,20 @@ public class PaymentConfirmationActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateSum(BigDecimal sum) {
+        TextView sumView = (TextView) findViewById(R.id.sum);
+        sumView.setText(sum.toString());
+
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        OrderWrapper order = (OrderWrapper) observable;
+        updateSum( order.getCost() );
+
+        Button payButton = (Button) findViewById(R.id.pay_button);
+        payButton.setEnabled( order.getTotalSize() > 0 );
     }
 }

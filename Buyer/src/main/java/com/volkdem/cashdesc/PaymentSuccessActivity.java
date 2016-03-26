@@ -10,7 +10,10 @@ import com.common.model.Store;
 import com.volkdem.cashdesc.model.OrderWrapper;
 import com.volkdem.cashdesc.utils.StaticContainer;
 
-public class PaymentSuccessActivity extends AppCompatActivity {
+import java.math.BigDecimal;
+import java.util.Observer;
+
+public class PaymentSuccessActivity extends AppCompatActivity  {
     private static final String TAG = PaymentSuccessActivity.class.getSimpleName();
 
     @Override
@@ -34,10 +37,11 @@ public class PaymentSuccessActivity extends AppCompatActivity {
         storeInfoView.setText( storeInfo );
 
         ListView orderDetailView = (ListView) findViewById( R.id.order_details );
-        orderDetailView.setAdapter( new ProductListAdapter( order ) );
+        orderDetailView.setAdapter( new ProductListAdapter( order, false ) );
 
         TextView sumView = (TextView) findViewById(R.id.sum);
         sumView.setText(order.getCost().toString());
 
     }
+
 }
