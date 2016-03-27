@@ -102,4 +102,16 @@ public class OrderWrapper extends Observable {
     public int getCount(Product product) {
         return order.getCount( product );
     }
+
+    @Override
+    public void notifyObservers() {
+        super.setChanged();
+        super.notifyObservers();
+    }
+
+    @Override
+    public void notifyObservers(Object data) {
+        super.setChanged();
+        super.notifyObservers(data);
+    }
 }

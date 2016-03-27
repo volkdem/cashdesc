@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.common.model.Order;
 import com.common.model.Store;
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.volkdem.cashdesc.model.OrderWrapper;
 import com.volkdem.cashdesc.ui.IUnlockListener;
@@ -22,6 +23,8 @@ import com.volkdem.cashdesc.ui.SreenLocker;
 import com.volkdem.cashdesc.utils.BaseJsonRequest;
 import com.volkdem.cashdesc.utils.Const;
 import com.volkdem.cashdesc.utils.StaticContainer;
+
+import java.util.Collection;
 
 
 public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHolder.Callback, IViewFinder, IUnlockListener {
@@ -36,6 +39,11 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
         super.onCreate(icicle);
         screenLocker = new SreenLocker( this );
         requestQueue = Volley.newRequestQueue( this );
+    }
+
+    @Override
+    protected Collection<BarcodeFormat> getBarcodeFormats() {
+        return DecodeFormatManager.PRODUCT_FORMATS;
     }
 
     @Override
@@ -74,6 +82,8 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
                         Toast.makeText(ScanShopCodeActivity.this, "Requst error + " + error.getMessage(), Toast.LENGTH_LONG).show();
 
                         restartPreviewAfterDelay(0L);
+
+
                     }
                 });
 

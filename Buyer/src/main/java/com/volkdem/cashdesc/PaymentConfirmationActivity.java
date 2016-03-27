@@ -116,4 +116,11 @@ public class PaymentConfirmationActivity extends AppCompatActivity implements Ob
         Button payButton = (Button) findViewById(R.id.pay_button);
         payButton.setEnabled( order.getTotalSize() > 0 );
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        OrderWrapper order = StaticContainer.getOrder();
+        order.deleteObserver( this );
+    }
 }

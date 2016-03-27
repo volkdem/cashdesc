@@ -83,6 +83,8 @@ public abstract class ScanCodeActivity extends AppCompatActivity implements Surf
 
     }
 
+    protected abstract Collection<BarcodeFormat> getBarcodeFormats();
+
     @Override
     protected void onResume() {
         super.onResume();

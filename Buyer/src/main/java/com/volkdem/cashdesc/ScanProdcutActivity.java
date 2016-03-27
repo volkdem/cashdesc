@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.common.model.Product;
 import com.common.model.Store;
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.volkdem.cashdesc.model.OrderWrapper;
 import com.volkdem.cashdesc.ui.IViewFinder;
@@ -26,6 +27,7 @@ import com.volkdem.cashdesc.utils.Const;
 import com.volkdem.cashdesc.utils.StaticContainer;
 
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -56,11 +58,22 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
                 goToThePaymentConfirmationAcitivity();
             }
         });
-        order.addObserver( this );
 
+        order.addObserver(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         // to update cart information if user comes to this screen from the PaymentConfirmation screen by back button click
+        OrderWrapper order = StaticContainer.getOrder();
         order.notifyObservers();
+    }
 
+
+    @Override
+    protected Collection<BarcodeFormat> getBarcodeFormats() {
+        return DecodeFormatManager.PRODUCT_FORMATS;
     }
 
     @Override
@@ -152,4 +165,10 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
         cartCostView.setText( String.valueOf( order.getCost() + Const.CURRENCY ) );
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        OrderWrapper order = StaticContainer.getOrder();
+        order.deleteObserver( this );
+    }
 }
