@@ -89,6 +89,7 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
 
         if( isLimitExceeded( order )) {
             showLimitExceedingMessage();
+            restartPreviewAfterDelay(0L);
             return;
         }
 

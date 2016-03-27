@@ -1,8 +1,12 @@
 package com.volkdem.cashdesc;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -42,6 +46,28 @@ public class PaymentSuccessActivity extends AppCompatActivity  {
         TextView sumView = (TextView) findViewById(R.id.sum);
         sumView.setText(order.getCost().toString());
 
+        final Button newPurchase = (Button) findViewById( R.id.new_purchase );
+        newPurchase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToNewPurchase();
+            }
+        });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if( keyCode == KeyEvent.KEYCODE_BACK ) {
+            goToNewPurchase();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void goToNewPurchase() {
+        Intent newPurchaseIntent = new Intent( PaymentSuccessActivity.this, ScanShopCodeActivity.class );
+        newPurchaseIntent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
+        startActivity( newPurchaseIntent );
+        PaymentSuccessActivity.this.finish();
     }
 
 }

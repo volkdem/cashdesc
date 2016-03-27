@@ -5,6 +5,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +35,7 @@ import java.util.Observer;
 public class PaymentConfirmationActivity extends AppCompatActivity implements Observer {
     private static final String TAG = Const.TAG + PaymentConfirmationActivity.class.getSimpleName();
     public static final String PAYMENT_CODE = PaymentConfirmationActivity.class.getName() +  "PAYMENT_CODE";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +75,7 @@ public class PaymentConfirmationActivity extends AppCompatActivity implements Ob
                             public void onErrorResponse(VolleyError error) {
                                 // TODO take the message from the string.xml
                                 goToSuccessPaymentActivity( "34353453");
-                                //Toast.makeText(PaymentConfirmationActivity.this, "Invalid response " + error.getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(PaymentConfirmationActivity.this, "Invalid response " + error.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
                 );
@@ -81,6 +83,8 @@ public class PaymentConfirmationActivity extends AppCompatActivity implements Ob
                 paymentRequestQueue.add( paymentRequest );
             }
         });
+
+
     }
 
     private void goToSuccessPaymentActivity( String paymentCode ) {
@@ -88,7 +92,9 @@ public class PaymentConfirmationActivity extends AppCompatActivity implements Ob
         // TODO get from the response
         paymentCode = "64964968";
         goToSusscessPayment.putExtra( PAYMENT_CODE, paymentCode );
+        goToSusscessPayment.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
         startActivity( goToSusscessPayment );
+        finish();
     }
 
     @Override
