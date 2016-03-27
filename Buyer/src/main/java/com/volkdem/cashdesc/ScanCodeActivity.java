@@ -206,20 +206,14 @@ public abstract class ScanCodeActivity extends AppCompatActivity implements Surf
         }
 
         if (fromLiveScan) {
-            Toast.makeText(getApplicationContext(),
-                    getResources().getString(R.string.msg_bulk_mode_scanned) + " (" + rawResult.getText() + ')',
+            Toast.makeText(getApplicationContext(), rawResult.getText(),
                     Toast.LENGTH_SHORT).show();
             // Wait a moment or else it will scan the same barcode continuously about 3 times
             // TODO
-            restartPreviewAfterDelay(BULK_MODE_SCAN_DELAY_MS);
+            //restartPreviewAfterDelay(BULK_MODE_SCAN_DELAY_MS);
             //handleDecodeInternally();
 
         }
-
-        // TODO get shop information from the server and only after that forward user to the shop
-        Store store = new Store();
-        store.setName( "First name");
-        Log.d( TAG, store.getName() );
 
 
         onDecode(rawResult, barcode, scaleFactor );
@@ -360,7 +354,11 @@ public abstract class ScanCodeActivity extends AppCompatActivity implements Surf
 
     public void restartPreviewAfterDelay(long delayMS) {
         if (handler != null) {
-            handler.sendEmptyMessageDelayed(R.id.restart_preview, delayMS);
+            if (delayMS == 0) {
+                handler.sendEmptyMessage(R.id.restart_preview );
+            } else {
+                handler.sendEmptyMessageDelayed(R.id.restart_preview, delayMS);
+            }
         }
         resetStatusView();
     }

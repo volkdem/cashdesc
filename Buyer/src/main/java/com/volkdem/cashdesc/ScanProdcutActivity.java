@@ -3,7 +3,6 @@ package com.volkdem.cashdesc;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,24 +15,19 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.common.model.Order;
 import com.common.model.Product;
 import com.common.model.Store;
 import com.google.zxing.Result;
 import com.volkdem.cashdesc.model.OrderWrapper;
-import com.volkdem.cashdesc.stub.StubFactory;
 import com.volkdem.cashdesc.ui.IViewFinder;
 import com.volkdem.cashdesc.ui.SreenLocker;
 import com.volkdem.cashdesc.utils.BaseJsonRequest;
 import com.volkdem.cashdesc.utils.Const;
 import com.volkdem.cashdesc.utils.StaticContainer;
 
-import java.math.BigDecimal;
-import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.ResourceBundle;
 
 public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder, Observer {
     private static final String TAG = Const.TAG + ScanProdcutActivity.class.getSimpleName();
@@ -80,6 +74,11 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
 
         final OrderWrapper order = StaticContainer.getOrder();
 
+        if( isLimitExceeded( order )) {
+            showLimitExceedingMessage();
+            return;
+        }
+
         RequestQueue requestQueue = Volley.newRequestQueue( this );
         String url = getProductUrl( order.getStore().getStoreId(), rawResult.getText() );
 
@@ -102,8 +101,11 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
 
                         screenLocker.unlockScreen();
 
-                        if( order.getTotalSize() == Const.MAX_ORDER_SIZE ) {
+                        if(isLimitExceeded(order)) {
+                            showLimitExceedingMessage();
                             goToThePaymentConfirmationAcitivity();
+                        } else {
+                            restartPreviewAfterDelay(0L);
                         }
                     }
                 },
@@ -114,11 +116,20 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
                         // TODO user message from the strings.xml
                         screenLocker.unlockScreen();
                         Toast.makeText(ScanProdcutActivity.this, "Error on getting product + " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        restartPreviewAfterDelay(0L);
                     }
                 });
 
         screenLocker.lockScreen();
         requestQueue.add( productRequest );
+    }
+
+    private void showLimitExceedingMessage() {
+        Toast.makeText( this, getResources().getString( R.string.limit_is_exceeded, Const.MAX_ORDER_SIZE ), Toast.LENGTH_LONG ).show();
+    }
+
+    private boolean isLimitExceeded(OrderWrapper order) {
+        return order.getTotalSize() == Const.MAX_ORDER_SIZE;
     }
 
     private String getProductUrl(Long storeId, String productBarCode ) {

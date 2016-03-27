@@ -144,5 +144,6 @@
     <string name="msg_default_status">Чтобы отсканировать штрих-кгод, разместите его внутри прямоугольника</string>
     <string name="cart_is_emtpy">Корзина пуста</string>
     <string name="remove_product">Удалить</string>
+    <string name="limit_is_exceeded">В данном магазине с помощью приложения Вы можете купить максимум %s продукта за одну покупку</string>
 
 </resources>

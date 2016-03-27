@@ -73,12 +73,7 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
                         // TODO get message from string.xml
                         Toast.makeText(ScanShopCodeActivity.this, "Requst error + " + error.getMessage(), Toast.LENGTH_LONG).show();
 
-                       /*
-                       createOrder( StubFactory.getStore( rawResult.getText() ) );
-                       goToScanProduct();
-                       */
-
-
+                        restartPreviewAfterDelay(0L);
                     }
                 });
 
