@@ -27,17 +27,90 @@
         android:layout_height="fill_parent"/>
 
     <RelativeLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        >
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:title="@string/store"
+            android:subtitle="@string/store"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
         <TextView
+            android:id="@+id/start_your_perchases"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/store_code_scanning"
+            android:text="@string/start_your_perchases"
             android:textAlignment="center"
             android:textColor="@color/result_text"
-            android:layout_alignParentTop="true"
-            android:layout_centerInParent="true"/>
+            android:layout_below="@id/toolbar"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/scan_shop_code_text_margin"/>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/start_your_perchases"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:id="@+id/store_code_scanning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/store_code_scanning"
+                android:textAlignment="center"
+                android:textColor="@color/result_text"
+                android:layout_margin="@dimen/scan_shop_code_text_margin"/>
+
+            <ImageView
+                android:layout_width="@dimen/tip_size"
+                android:layout_height="@dimen/tip_size"
+                android:src="@drawable/tip"
+                />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true">
+
+
+            <ImageView
+                android:layout_width="@dimen/arrow_up_size"
+                android:layout_height="@dimen/arrow_up_size"
+                android:src="@drawable/arrow_up"
+                android:layout_gravity="center_horizontal">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/status_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:background="@color/transparent"
+                android:text="@string/msg_default_status"
+                android:textColor="@color/status_text"
+                android:gravity="center_horizontal"
+                android:layout_margin="@dimen/scan_shop_code_text_margin"/>
+        </LinearLayout>
+
+
+
+
+
+        <!-- just for DEBUG
         <ImageView
             android:id="@+id/scanned_image"
             android:layout_width="wrap_content"
@@ -46,6 +119,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             />
+            -->
     </RelativeLayout>
 
     <LinearLayout android:id="@+id/result_view"
@@ -216,13 +290,9 @@
 
     </LinearLayout>
 
-    <TextView android:id="@+id/status_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:background="@color/transparent"
-        android:text="@string/msg_default_status"
-        android:textColor="@color/status_text"/>
+
+
+
 
     <include layout="@layout/frame_loading_animation"/>
 

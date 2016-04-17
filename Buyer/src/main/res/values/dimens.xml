@@ -5,4 +5,8 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="standard_padding">8dip</dimen>
     <dimen name="half_padding">4dip</dimen>
+    <dimen name="scan_shop_code_text_margin">10dip</dimen>
+    <dimen name="tip_size">15dip</dimen>
+    <dimen name="arrow_up_size">25dip</dimen>
+
 </resources>

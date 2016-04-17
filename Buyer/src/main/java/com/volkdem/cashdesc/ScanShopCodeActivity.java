@@ -3,8 +3,12 @@ package com.volkdem.cashdesc;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.SurfaceHolder;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -38,6 +42,11 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
+        setSupportActionBar( toolbar );
+        getSupportActionBar().setTitle( R.string.store);
+
         screenLocker = new SreenLocker( this );
         requestQueue = Volley.newRequestQueue( this );
     }
@@ -105,6 +114,12 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
         stringRequest.setTag( TAG );
         requestQueue.add( stringRequest );
         screenLocker.lockScreen();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.store_menu, menu );
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void createOrder(Store store) {
