@@ -29,6 +29,8 @@ import com.volkdem.cashdesc.camera.open.OpenCameraInterface;
 
 
 import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.Arrays;
 
 /**
  * This object wraps the Camera service object and expects to be the only one talking to it. The
@@ -68,7 +70,7 @@ public final class CameraManager {
     this.configManager = new CameraConfigurationManager(context);
     previewCallback = new PreviewCallback(configManager);
   }
-  
+
   /**
    * Opens the camera driver and initializes the hardware parameters.
    *
@@ -226,6 +228,13 @@ public final class CameraManager {
       int width = findDesiredDimensionInRange(screenResolution.x, MIN_FRAME_WIDTH, MAX_FRAME_WIDTH);
       int height = findDesiredDimensionInRange(screenResolution.y, MIN_FRAME_HEIGHT, MAX_FRAME_HEIGHT);
 
+      // changed to PORTRAIT MODE
+      if (width < height) {
+        int var = width;
+        width = height;
+        height = var;
+      }
+
       int leftOffset = (screenResolution.x - width) / 2;
       int topOffset = (screenResolution.y - height) / 2;
       framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
@@ -233,7 +242,7 @@ public final class CameraManager {
     }
     return framingRect;
   }
-  
+
   private static int findDesiredDimensionInRange(int resolution, int hardMin, int hardMax) {
     int dim = 5 * resolution / 8; // Target 5/8 of each dimension
     if (dim < hardMin) {
@@ -264,6 +273,15 @@ public final class CameraManager {
         // Called early, before init even finished
         return null;
       }
+      // changed to PORTRAIT MODE
+      if (cameraResolution.x > cameraResolution.y) {
+        cameraResolution = new Point(cameraResolution.y, cameraResolution.x);
+      }
+      // changed to PORTRAIT MODE
+      if (screenResolution.x > screenResolution.y) {
+        screenResolution = new Point(screenResolution.y, screenResolution.x);
+      }
+
       rect.left = rect.left * cameraResolution.x / screenResolution.x;
       rect.right = rect.right * cameraResolution.x / screenResolution.x;
       rect.top = rect.top * cameraResolution.y / screenResolution.y;
@@ -273,7 +291,7 @@ public final class CameraManager {
     return framingRectInPreview;
   }
 
-  
+
   /**
    * Allows third party apps to specify the camera ID, rather than determine
    * it automatically based on available cameras and their orientation.
@@ -283,12 +301,12 @@ public final class CameraManager {
   public synchronized void setManualCameraId(int cameraId) {
     requestedCameraId = cameraId;
   }
-  
+
   /**
    * Allows third party apps to specify the scanning rectangle dimensions, rather than determine
    * them automatically based on screen resolution.
    *
-   * @param width The width in pixels to scan.
+   * @param width  The width in pixels to scan.
    * @param height The height in pixels to scan.
    */
   public synchronized void setManualFramingRect(int width, int height) {
@@ -315,8 +333,8 @@ public final class CameraManager {
    * A factory method to build the appropriate LuminanceSource object based on the format
    * of the preview buffers, as described by Camera.Parameters.
    *
-   * @param data A preview frame.
-   * @param width The width of the image.
+   * @param data   A preview frame.
+   * @param width  The width of the image.
    * @param height The height of the image.
    * @return A PlanarYUVLuminanceSource instance.
    */
@@ -325,9 +343,63 @@ public final class CameraManager {
     if (rect == null) {
       return null;
     }
+
+    // changed to PORTRAIT MODE
+    int originalLeft = (width - rect.height()) / 2;
+    int originalTop = (height - rect.width()) / 2;
+    // changed to PORTRAIT MODE: rotation of the being scanned area
+    rotate90(data, width, height, originalLeft, originalTop, rect.height(), rect.width());
     // Go ahead and assume it's YUV rather than die.
-    return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top,
-                                        rect.width(), rect.height(), false);
+    int rotatedLeft = (width - rect.width()) / 2;
+    int rotatedTop = (height - rect.height()) / 2;
+    return new PlanarYUVLuminanceSource(data, width, height, rotatedLeft, rotatedTop, rect.width(), rect.height(), false);
+    /*return new PlanarYUVLuminanceSource(data, width, height, left, top,
+            rect.height(), rect.width(), false);*/
+  }
+
+  /**
+   * Method rotatates to 90 being scanned rectange in the input image.
+   *
+   * @param data
+   * @param srcWidth
+   * @param srcHeight
+   * @param left
+   * @param top
+   * @param width
+   * @param height
+   */
+  private void rotate90(byte[] data, int srcWidth, int srcHeight, int left, int top, int width, int height) {
+    byte copyData[] = Arrays.copyOf(data, data.length);
+
+    int shiftX = left + width / 2;
+    int shiftY = top + height / 2;
+
+    // just to show scanned rectagle board
+    // int bold = 5;
+    for (int i = top; i < top + height; i++) {
+      for (int j = left; j < left + width; j++) {
+        int x = (-(i - shiftY)) + shiftX;
+        int y = (j - shiftX) + shiftY;
+        // just to show scanned rectagle board
+        /*if( x >= 0 && y >= 0 ) {
+          if (i <= (top + bold) || i >= (top + height - bold) || j <= (left + bold) || j >= (left + width - bold)) {
+        data[y * srcWidth + x] = (byte) 250;
+          } else {*/
+            data[y * srcWidth + x] = copyData[i * srcWidth + j];
+          //}
+      }
+    }
+
+  // just to show scanned rectagle board
+    /*
+    for( int i = top; i < top + height; i++ ) {
+      for( int j = left; j < left + width; j++ ) {
+        if( i <= (top + bold) || i >= (top + height - bold) || j <= ( left + bold ) || j >= ( left + width - bold )) {
+          data[ i * srcWidth + j ] = (byte)150;
+        }
+      }
+    }*/
+
   }
 
 }

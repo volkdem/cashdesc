@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -53,6 +54,19 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
 
     @Override
     protected void onDecode(final Result rawResult, Bitmap barcode, float scaleFactor) {
+
+
+        /*
+         * DEBUG ROTATION
+        ImageView image = (ImageView) findViewById(R.id.scanned_image );
+        image.setImageBitmap( barcode );
+
+        if( rawResult == null ) {
+            restartPreviewAfterDelay(0L);
+            return;
+        }
+         */
+
         Log.d( TAG, "scanned code is " + rawResult.getText() );
 
 

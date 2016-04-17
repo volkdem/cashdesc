@@ -105,7 +105,7 @@ public abstract class ScanCodeActivity extends AppCompatActivity implements Surf
         handler = null;
         lastResult = null;
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
 
         resetStatusView();
 
@@ -208,6 +208,7 @@ public abstract class ScanCodeActivity extends AppCompatActivity implements Surf
         }
 
         if (fromLiveScan) {
+            // DEBUG ROTATION: comment for debug
             Toast.makeText(getApplicationContext(), rawResult.getText(),
                     Toast.LENGTH_SHORT).show();
             // Wait a moment or else it will scan the same barcode continuously about 3 times
@@ -231,6 +232,7 @@ public abstract class ScanCodeActivity extends AppCompatActivity implements Surf
      * @param rawResult   The decoded results which contains the points to draw.
      */
     private void drawResultPoints(Bitmap barcode, float scaleFactor, Result rawResult) {
+        // DEBUG ROTATION: if( rawResult == null ) return;
         ResultPoint[] points = rawResult.getResultPoints();
         if (points != null && points.length > 0) {
             Canvas canvas = new Canvas(barcode);
