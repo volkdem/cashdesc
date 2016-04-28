@@ -8,5 +8,11 @@
     <dimen name="scan_shop_code_text_margin">10dip</dimen>
     <dimen name="tip_size">15dip</dimen>
     <dimen name="arrow_up_size">25dip</dimen>
+    <dimen name="main_menue_group_item_height">40dp</dimen>
+    <dimen name="main_menu_action_item_height">50dp</dimen>
+    <dimen name="main_menu_action_item_left_padding">20dp</dimen>
+    <dimen name="action_item_right_arrow_size">15dp</dimen>
+    <dimen name="title_height">50dp</dimen>
+    <dimen name="main_menue_item_text_size">20sp</dimen>
 
 </resources>

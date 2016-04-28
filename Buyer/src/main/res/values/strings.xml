@@ -148,6 +148,13 @@
     <string name="limit_is_exceeded">В данном магазине с помощью приложения Вы можете купить максимум %s продукта за одну покупку</string>
     <string name="new_purchase">Новая покупка</string>
     <string name="store">Магазин</string>
-    <string name="purchase_history">История</string>
+    <string name="history">История</string>
+    <string name="shopping">Покупки</string>
+    <string name="bank_cards">Банковские карты</string>
+    <string name="profile">Профиль</string>
+    <string name="settings">Настройки</string>
+    <string name="log_out">Выход</string>
+    <string name="purchase_history">История покупок</string>
+    <string name="main_menu_title">CashDesc</string>
 
 </resources>

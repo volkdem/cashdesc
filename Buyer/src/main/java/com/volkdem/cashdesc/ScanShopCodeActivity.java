@@ -2,14 +2,20 @@ package com.volkdem.cashdesc;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,6 +25,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.common.model.Order;
 import com.common.model.Store;
+import com.fasterxml.jackson.databind.deser.std.DateDeserializers;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.volkdem.cashdesc.model.OrderWrapper;
@@ -43,12 +53,36 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
-        setSupportActionBar( toolbar );
-        getSupportActionBar().setTitle( R.string.store);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.store);
 
-        screenLocker = new SreenLocker( this );
-        requestQueue = Volley.newRequestQueue( this );
+        screenLocker = new SreenLocker(this);
+        requestQueue = Volley.newRequestQueue(this);
+
+
+        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final RelativeLayout mainMenu = (RelativeLayout) findViewById( R.id.main_menu );
+
+        final ListView mainMenuList = (ListView) findViewById(R.id.main_menu_list);
+        mainMenuList.setAdapter( new MainMenuAdapter() );
+
+
+        drawerLayout.setDrawerListener(new ActionBarDrawerToggle(this, drawerLayout, R.string.button_open_browser, R.string.button_add_contact ) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                //getSupportActionBar().setTitle("opened");
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                //getSupportActionBar().setTitle("closed");
+            }
+        });
+
+
     }
 
     @Override
@@ -76,10 +110,10 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
         }
          */
 
-        Log.d( TAG, "scanned code is " + rawResult.getText() );
+        Log.d(TAG, "scanned code is " + rawResult.getText());
 
 
-        final String url = getStoreUrl( rawResult.getText());
+        final String url = getStoreUrl(rawResult.getText());
         // Const.URL;
         BaseJsonRequest<Store> stringRequest = new BaseJsonRequest<Store>(Store.class, Request.Method.GET, url, null,
                 new Response.Listener<Store>() {
@@ -111,21 +145,21 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
                 });
 
 
-        stringRequest.setTag( TAG );
-        requestQueue.add( stringRequest );
+        stringRequest.setTag(TAG);
+        requestQueue.add(stringRequest);
         screenLocker.lockScreen();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.store_menu, menu );
+        getMenuInflater().inflate(R.menu.store_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     private void createOrder(Store store) {
-        OrderWrapper order = new OrderWrapper ( new Order() );
-        order.setStore( store );
-        StaticContainer.setOrder( order );
+        OrderWrapper order = new OrderWrapper(new Order());
+        order.setStore(store);
+        StaticContainer.setOrder(order);
     }
 
     private void goToScanProduct() {
@@ -133,12 +167,13 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
         startActivity(scanProductActivityIntent);
     }
 
-    private String getStoreUrl( String barCode ) {
+    private String getStoreUrl(String barCode) {
         return Const.URL + "store?storeBarcode=" + barCode;
     }
 
     @Override
     public void onUnlock() {
-        requestQueue.cancelAll( TAG );
+        requestQueue.cancelAll(TAG);
     }
+
 }
