@@ -24,6 +24,7 @@ import com.volkdem.cashdesc.model.OrderWrapper;
 import com.volkdem.cashdesc.ui.IViewFinder;
 import com.volkdem.cashdesc.ui.SreenLocker;
 import com.volkdem.cashdesc.utils.BaseJsonRequest;
+import com.volkdem.cashdesc.utils.CashDescUtil;
 import com.volkdem.cashdesc.utils.Const;
 import com.volkdem.cashdesc.utils.StaticContainer;
 
@@ -53,8 +54,7 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
         OrderWrapper order = StaticContainer.getOrder();
         Store store = order.getStore();
         TextView storeInfoView = (TextView) findViewById( R.id.store_info );
-        String storeInfo =  getResources().getString( R.string.store_info, new Object[] { store.getName(), store.getAddress() } );
-        storeInfoView.setText( storeInfo );
+        storeInfoView.setText(  CashDescUtil.getStoreInfo( getResources(), store ) );
         ImageView cartImage = (ImageView) findViewById(R.id.cart_image );
         cartImage.setOnClickListener(new View.OnClickListener() {
             @Override

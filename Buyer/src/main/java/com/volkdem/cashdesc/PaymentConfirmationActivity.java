@@ -24,6 +24,7 @@ import com.common.model.Order;
 import com.common.model.Product;
 import com.common.model.Store;
 import com.volkdem.cashdesc.model.OrderWrapper;
+import com.volkdem.cashdesc.utils.CashDescUtil;
 import com.volkdem.cashdesc.utils.Const;
 import com.volkdem.cashdesc.utils.StaticContainer;
 
@@ -54,6 +55,9 @@ public class PaymentConfirmationActivity extends AppCompatActivity implements Ob
 
         OrderWrapper order = StaticContainer.getOrder();
         updateSum( order.getCost() );
+
+        TextView storeInfo = (TextView) findViewById( R.id.store_info );
+        storeInfo.setText(  CashDescUtil.getStoreInfo( getResources(), order.getStore() ) );
 
         order.addObserver( this );
 

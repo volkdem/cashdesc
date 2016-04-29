@@ -49,13 +49,20 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <ImageView
+        android:id="@+id/store_logo"
+        android:layout_width="@dimen/store_logo_size"
+        android:layout_height="@dimen/store_logo_size"
+        android:src="@drawable/pyterohka"
+        android:layout_below="@id/toolbar"
+        />
+
 
     <ListView
         android:id="@+id/product_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar">
-
+        android:layout_below="@id/store_logo">
     </ListView>
 
     <TextView
@@ -73,6 +80,53 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@id/product_list"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="@string/payment"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/bank_card_image"
+                android:layout_width="@dimen/bank_card_width"
+                android:layout_height="@dimen/bank_card_hieght"
+                android:src="@drawable/bank_card_visa"/>
+
+            <TextView
+                android:id="@+id/bank_card_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bank Card ********** 345"
+                android:layout_toRightOf="@id/bank_card_image"/>
+
+            <ImageView
+                android:layout_width="@dimen/action_item_right_arrow_size"
+                android:layout_height="@dimen/action_item_right_arrow_size"
+                android:src="@drawable/main_menu_action_item_right_arrow"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/store_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
 
 
 
