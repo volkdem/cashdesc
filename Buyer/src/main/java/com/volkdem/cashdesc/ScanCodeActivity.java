@@ -51,7 +51,7 @@ public abstract class ScanCodeActivity extends AppCompatActivity implements Surf
     private CameraManager cameraManager;
     private CaptureActivityHandler handler;
     private ViewfinderView viewfinderView;
-    private TextView statusView;
+    //private TextView statusView;
     private View resultView;
     private Result lastResult;
     private boolean hasSurface;
@@ -100,7 +100,7 @@ public abstract class ScanCodeActivity extends AppCompatActivity implements Surf
         viewfinderView.setCameraManager(cameraManager);
 
         resultView = findViewById(R.id.result_view);
-        statusView = (TextView) findViewById(R.id.status_view);
+        //statusView = (TextView) findViewById(R.id.status_view);
 
         handler = null;
         lastResult = null;
@@ -271,7 +271,7 @@ public abstract class ScanCodeActivity extends AppCompatActivity implements Surf
     // Put up our own UI for how to handle the decoded contents.
     private void handleDecodeInternally(Result rawResult, Bitmap barcode) {
 
-        statusView.setVisibility(View.GONE);
+        //statusView.setVisibility(View.GONE);
         viewfinderView.setVisibility(View.GONE);
         resultView.setVisibility(View.VISIBLE);
 
@@ -369,8 +369,8 @@ public abstract class ScanCodeActivity extends AppCompatActivity implements Surf
 
     private void resetStatusView() {
         resultView.setVisibility(View.GONE);
-        statusView.setText(R.string.msg_default_status);
-        statusView.setVisibility(View.VISIBLE);
+        //statusView.setText(R.string.msg_default_status);
+        //statusView.setVisibility(View.VISIBLE);
         viewfinderView.setVisibility(View.VISIBLE);
         lastResult = null;
     }

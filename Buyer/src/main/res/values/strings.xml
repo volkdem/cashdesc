@@ -142,7 +142,7 @@
     <string name="start_your_perchases">Начните свои покупки</string>
     <string name="store_code_scanning">Отсканируйте штрих-код магазина</string>
     <string name="product_code_scanning">Отсканируйте штрих-код товара</string>
-    <string name="msg_default_status">Чтобы отсканировать штрих-кгод, разместите его внутри прямоугольника</string>
+    <string name="msg_default_status">Чтобы отсканировать штрих-код, разместите его внутри прямоугольника</string>
     <string name="cart_is_emtpy">Корзина пуста</string>
     <string name="remove_product">Удалить</string>
     <string name="limit_is_exceeded">В данном магазине с помощью приложения Вы можете купить максимум %s продукта за одну покупку</string>
@@ -156,5 +156,9 @@
     <string name="log_out">Выход</string>
     <string name="purchase_history">История покупок</string>
     <string name="main_menu_title">CashDesc</string>
+    <string name="perchases">Покупки</string>
+    <string name="scan_your_first_item">Отсканируйте Ваш ПЕРВЫЙ товар</string>
+    <string name="payment">Оплата</string>
+    <string name="my_cart">Корзина</string>
 
 </resources>

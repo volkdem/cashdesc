@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,10 +36,18 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
     private static final String TAG = Const.TAG + ScanProdcutActivity.class.getSimpleName();
 
     private SreenLocker screenLocker;
+    private MainMenu menu;
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
+        setSupportActionBar( toolbar );
+        getSupportActionBar().setTitle( R.string.perchases );
+
+        menu = new MainMenu( this );
+
         screenLocker = new SreenLocker( this );
 
         OrderWrapper order = StaticContainer.getOrder();

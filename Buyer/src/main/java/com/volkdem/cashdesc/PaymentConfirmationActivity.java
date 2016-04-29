@@ -46,6 +46,7 @@ public class PaymentConfirmationActivity extends AppCompatActivity implements Ob
         setSupportActionBar( toolbar );
 
         getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+        getSupportActionBar().setTitle( R.string.my_cart );
 
 
         ListView prodcutListView = (ListView) findViewById(R.id.product_list);
