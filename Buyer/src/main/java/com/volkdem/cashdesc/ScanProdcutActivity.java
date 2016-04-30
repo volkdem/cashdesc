@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +46,7 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
 
         Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
-        getSupportActionBar().setTitle( R.string.perchases );
+        toolbar.setNavigationIcon( R.drawable.ic_drawer );
 
         menu = new MainMenu( this );
 

@@ -17,5 +17,8 @@
     <dimen name="store_logo_size">50dp</dimen>
     <dimen name="bank_card_width">25dp</dimen>
     <dimen name="bank_card_hieght">20dp</dimen>
+    <dimen name="red_circle_size">20dp</dimen>
+    <dimen name="cart_size">70dp</dimen>
+    <dimen name="cart_image_margin">9dp</dimen>
 
 </resources>

@@ -55,6 +55,7 @@
         android:layout_height="@dimen/store_logo_size"
         android:src="@drawable/pyterohka"
         android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
         />
 
 
@@ -125,6 +126,7 @@
             android:id="@+id/store_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             />
     </LinearLayout>
 

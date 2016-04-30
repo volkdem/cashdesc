@@ -19,7 +19,7 @@
     <!-- Android standard ICS color -->
 
 
-    <color name="result_text">#ffffffff</color>
+    <color name="scan_code_text">#ffffffff</color>
 
     <color name="result_view">#b0000000</color>
 
@@ -34,5 +34,6 @@
 
     <color name="viewfinder_mask">#60000000</color>
     <color name="nobackground">#00000000</color>
-    <color name="cart_details">#1ce872</color>
+    <color name="cart_details">#ffffff</color>
+    <color name="transparent50">#50000000</color>
 </resources>

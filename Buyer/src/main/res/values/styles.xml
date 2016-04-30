@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -24,5 +24,35 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
+    <style name="ScanActionBar">
+        <item name="android:background">@color/transparent50</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+    </style>
+
+    <style name="ScanActionBarTitle">
+        <item name="title" type="id">@id/title</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">80dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:background">@color/nobackground</item>
+    </style>
+
+    <style name="ScanCodeText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/scan_code_text</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_margin">@dimen/scan_shop_code_text_margin</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+
 
 </resources>

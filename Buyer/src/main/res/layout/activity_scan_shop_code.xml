@@ -42,25 +42,27 @@
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@color/colorPrimary"
-                    android:elevation="4dp"
-                    android:title="@string/store"
-                    android:subtitle="@string/store"
-                    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+                    style="@style/ScanActionBar">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:background="@color/transparent">
+
+                        <TextView
+                            style="@style/ScanActionBarTitle"
+                            android:text="@string/store"/>
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.Toolbar>
 
                 <TextView
                     android:id="@+id/start_your_perchases"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/ScanCodeText"
                     android:text="@string/start_your_perchases"
-                    android:textAlignment="center"
-                    android:textColor="@color/result_text"
-                    android:layout_below="@id/toolbar"
-                    android:layout_centerInParent="true"
-                    android:layout_margin="@dimen/scan_shop_code_text_margin"/>
+                    android:layout_below="@id/toolbar"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -71,12 +73,8 @@
 
                     <TextView
                         android:id="@+id/store_code_scanning"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/store_code_scanning"
-                        android:textAlignment="center"
-                        android:textColor="@color/result_text"
-                        android:layout_margin="@dimen/scan_shop_code_text_margin"/>
+                        style="@style/ScanCodeText"
+                        android:text="@string/store_code_scanning"/>
 
                     <ImageView
                         android:layout_width="@dimen/tip_size"
@@ -104,14 +102,10 @@
 
                     <TextView
                         android:id="@+id/status_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/ScanCodeText"
                         android:layout_gravity="bottom|center_horizontal"
-                        android:background="@color/transparent"
                         android:text="@string/msg_default_status"
-                        android:textColor="@color/status_text"
-                        android:gravity="center_horizontal"
-                        android:layout_margin="@dimen/scan_shop_code_text_margin"/>
+                        android:gravity="center_horizontal"/>
                 </LinearLayout>
 
 
@@ -254,8 +248,8 @@
                             <TextView android:id="@+id/contents_text_view"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/result_text"
-                                android:textColorLink="@color/result_text"
+                                android:textColor="@color/scan_code_text"
+                                android:textColorLink="@color/scan_code_text"
                                 android:textSize="22sp"
                                 android:paddingLeft="12dip"
                                 android:autoLink="web"
@@ -264,8 +258,8 @@
                             <TextView android:id="@+id/contents_supplement_text_view"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/result_text"
-                                android:textColorLink="@color/result_text"
+                                android:textColor="@color/scan_code_text"
+                                android:textColorLink="@color/scan_code_text"
                                 android:paddingLeft="12dip"
                                 android:autoLink="web"
                                 android:textIsSelectable="true"/>

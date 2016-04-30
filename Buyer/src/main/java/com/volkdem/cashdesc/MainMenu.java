@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -22,8 +24,7 @@ public class MainMenu {
         final ListView mainMenuList = (ListView) findViewById(R.id.main_menu_list);
         mainMenuList.setAdapter( new MainMenuAdapter() );
 
-
-        drawerLayout.setDrawerListener(new ActionBarDrawerToggle(activity, drawerLayout, R.string.button_open_browser, R.string.button_add_contact ) {
+        final ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(activity, drawerLayout, R.string.button_open_browser, R.string.button_add_contact ) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -35,7 +36,19 @@ public class MainMenu {
                 super.onDrawerClosed(drawerView);
                 //getSupportActionBar().setTitle("closed");
             }
+        };
+
+        drawerLayout.setDrawerListener( actionBarDrawerToggle );
+
+        Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(Gravity.LEFT);
+            }
         });
+
+
     }
 
     private View findViewById(int id) {

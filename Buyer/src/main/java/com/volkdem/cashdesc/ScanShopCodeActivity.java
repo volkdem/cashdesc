@@ -9,7 +9,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.ImageView;
@@ -56,7 +58,8 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.store);
+        toolbar.setNavigationIcon( R.drawable.ic_drawer );
+
 
         screenLocker = new SreenLocker(this);
         requestQueue = Volley.newRequestQueue(this);
@@ -132,11 +135,6 @@ public class ScanShopCodeActivity extends ScanCodeActivity implements SurfaceHol
         screenLocker.lockScreen();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.store_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
     private void createOrder(Store store) {
         OrderWrapper order = new OrderWrapper(new Order());
