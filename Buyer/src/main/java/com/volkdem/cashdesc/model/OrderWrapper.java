@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by Evgeny on 19.03.2016.
@@ -101,6 +102,11 @@ public class OrderWrapper extends Observable {
 
     public int getCount(Product product) {
         return order.getCount( product );
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        super.addObserver(observer);
     }
 
     @Override

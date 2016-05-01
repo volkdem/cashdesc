@@ -160,5 +160,6 @@
     <string name="scan_your_first_item">Отсканируйте Ваш ПЕРВЫЙ товар</string>
     <string name="payment">Оплата</string>
     <string name="my_cart">Корзина</string>
+    <string name="scan_your_next_item">Отсканируйте Ваш следующий товар</string>
 
 </resources>

@@ -1,14 +1,13 @@
 package com.volkdem.cashdesc;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +40,11 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
     private MainMenu menu;
 
     @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        super.surfaceChanged(holder, format, width, height);
+    }
+
+    @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
@@ -71,6 +75,7 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
 
         order.addObserver(this);
     }
+
 
     @Override
     protected void onResume() {
@@ -174,6 +179,9 @@ public class ScanProdcutActivity extends ScanCodeActivity implements IViewFinder
 
         TextView cartCostView = (TextView)findViewById( R.id.cart_cost );
         cartCostView.setText( String.valueOf( order.getCost() + Const.CURRENCY ) );
+
+        TextView scanYourItem = (TextView) findViewById( R.id.scan_your_item);
+        scanYourItem.setText( order.getProductTypeSize() == 0 ? R.string.scan_your_first_item : R.string.scan_your_next_item );
     }
 
     @Override
