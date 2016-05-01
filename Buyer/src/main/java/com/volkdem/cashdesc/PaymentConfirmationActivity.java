@@ -36,6 +36,8 @@ import java.util.Observer;
 public class PaymentConfirmationActivity extends AppCompatActivity implements Observer {
     private static final String TAG = Const.TAG + PaymentConfirmationActivity.class.getSimpleName();
     public static final String PAYMENT_CODE = PaymentConfirmationActivity.class.getName() +  "PAYMENT_CODE";
+    private MainMenu mainMenu;
+
 
 
     @Override
@@ -45,9 +47,9 @@ public class PaymentConfirmationActivity extends AppCompatActivity implements Ob
 
         Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
+        toolbar.setNavigationIcon( R.drawable.ic_drawer );
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
-        getSupportActionBar().setTitle( R.string.my_cart );
+        mainMenu = new MainMenu( this );
 
 
         ListView prodcutListView = (ListView) findViewById(R.id.product_list);

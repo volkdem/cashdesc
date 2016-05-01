@@ -15,10 +15,15 @@
     <dimen name="title_height">50dp</dimen>
     <dimen name="main_menue_item_text_size">20sp</dimen>
     <dimen name="store_logo_size">50dp</dimen>
-    <dimen name="bank_card_width">25dp</dimen>
-    <dimen name="bank_card_hieght">20dp</dimen>
-    <dimen name="red_circle_size">20dp</dimen>
+    <dimen name="bank_card_width">40dp</dimen>
+    <dimen name="bank_card_hieght">35dp</dimen>
+    <dimen name="red_circle_size">25dp</dimen>
     <dimen name="cart_size">70dp</dimen>
     <dimen name="cart_image_margin">9dp</dimen>
-
+    <dimen name="button_text_size">15sp</dimen>
+    <dimen name="button_height">37sp</dimen>
+    <dimen name="product_item_margin">5dp</dimen>
+    <dimen name="product_item_text_size">15sp</dimen>
+    <dimen name="cart_text_size">17sp</dimen>
+    <dimen name="cart_text_margin">8dp</dimen>
 </resources>

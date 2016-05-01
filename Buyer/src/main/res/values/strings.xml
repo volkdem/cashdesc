@@ -132,11 +132,12 @@
     <string name="get_code">Получить код активации</string>
     <string name="title_activity_smsconfirmation">SMSConfirmationActivity</string>
     <string name="confirm">Подтвердить</string>
-    <string name="store_info" formatted="false">Магазин \nНазвание:%s\nАдрес:%s</string>
+    <string name="store_info" formatted="false">%s\nАдрес:%s</string>
     <string name="order" formatted="false">Корзина:</string>
     <string name="product" formatted="false">%s %d x %.2f</string>
     <string name="pay">Оплатить</string>
     <string name="sum">Сумма</string>
+    <string name="sumToPay">К оплате</string>
     <string name="successfull_payment">Оплачено</string>
     <string name="cancel">Отмена</string>
     <string name="start_your_perchases">Начните свои покупки</string>
@@ -158,7 +159,7 @@
     <string name="main_menu_title">CashDesc</string>
     <string name="perchases">Покупки</string>
     <string name="scan_your_first_item">Отсканируйте Ваш ПЕРВЫЙ товар</string>
-    <string name="payment">Оплата</string>
+    <string name="payment_method">Способ оплаты</string>
     <string name="my_cart">Корзина</string>
     <string name="scan_your_next_item">Отсканируйте Ваш следующий товар</string>
 

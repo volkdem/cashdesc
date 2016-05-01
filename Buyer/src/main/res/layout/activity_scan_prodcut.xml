@@ -109,39 +109,32 @@
                 android:layout_margin="@dimen/scan_shop_code_text_margin"/>
 
 
-
-            <TextView
-                android:id="@+id/product_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/toolbar"
-                android:background="@color/nobackground"
-                android:textColor="#ffffff"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"/>
-
-            <TextView
-                android:id="@+id/product_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/nobackground"
-                android:textColor="#ffffff"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@id/product_name"/>
-
-
-
-
         </RelativeLayout>
 
             <LinearLayout
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/product_price"
+                        style="@style/ScanCodeText"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"/>
+
+                    <TextView
+                        android:id="@+id/product_name"
+                        style="@style/ScanCodeText"
+                        android:layout_toLeftOf="@id/product_price"/>
+
+                </RelativeLayout>
 
                 <ImageView
                     android:layout_width="@dimen/arrow_up_size"

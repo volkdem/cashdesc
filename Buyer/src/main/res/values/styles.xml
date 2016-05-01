@@ -54,5 +54,30 @@
     </style>
 
 
+    <style name="Button">
+        <item name="android:background">@drawable/button</item>
+        <item name="android:textColor">@color/button_text</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="ProductItemText">
+        <item name="android:textSize">@dimen/product_item_text_size</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/product_item_text_color</item>
+    </style>
+
+    <style name="CartText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/cart_text_size</item>
+        <item name="android:layout_margin">@dimen/cart_text_margin</item>
+        <item name="android:textColor">@color/product_item_text_color</item>
+    </style>
+
+
 
 </resources>
