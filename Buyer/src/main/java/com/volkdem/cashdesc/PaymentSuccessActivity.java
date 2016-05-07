@@ -3,6 +3,7 @@ package com.volkdem.cashdesc;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,18 +15,20 @@ import com.common.model.Store;
 import com.volkdem.cashdesc.model.OrderWrapper;
 import com.volkdem.cashdesc.utils.StaticContainer;
 
-import java.math.BigDecimal;
-import java.util.Observer;
-
 public class PaymentSuccessActivity extends AppCompatActivity  {
     private static final String TAG = PaymentSuccessActivity.class.getSimpleName();
+    private MainMenu mainMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_success);
 
+        Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
+        setSupportActionBar( toolbar );
+        toolbar.setNavigationIcon( R.drawable.ic_drawer );
 
+        mainMenu = new MainMenu(this);
 
         String paymentCode = this.getIntent().getStringExtra( PaymentConfirmationActivity.PAYMENT_CODE );
         Log.d( TAG, "Payment code: " + paymentCode );
@@ -35,7 +38,7 @@ public class PaymentSuccessActivity extends AppCompatActivity  {
 
         OrderWrapper order = StaticContainer.getOrder();
         Store store = order.getStore();
-        // TODO get data from string.xml
+
         String storeInfo =  getResources().getString( R.string.store_info, new Object[] { store.getName(), store.getAddress() } );
         TextView storeInfoView = (TextView) findViewById( R.id.store_info );
         storeInfoView.setText( storeInfo );
@@ -43,7 +46,7 @@ public class PaymentSuccessActivity extends AppCompatActivity  {
         ListView orderDetailView = (ListView) findViewById( R.id.order_details );
         orderDetailView.setAdapter( new ProductListAdapter( order, false ) );
 
-        TextView sumView = (TextView) findViewById(R.id.sum);
+        TextView sumView = (TextView) findViewById(R.id.paid);
         sumView.setText(order.getCost().toString());
 
         final Button newPurchase = (Button) findViewById( R.id.new_purchase );

@@ -5,7 +5,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,19 +16,14 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.common.model.Order;
-import com.common.model.Product;
-import com.common.model.Store;
 import com.volkdem.cashdesc.model.OrderWrapper;
 import com.volkdem.cashdesc.utils.CashDescUtil;
 import com.volkdem.cashdesc.utils.Const;
 import com.volkdem.cashdesc.utils.StaticContainer;
 
 import java.math.BigDecimal;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -97,7 +91,7 @@ public class PaymentConfirmationActivity extends AppCompatActivity implements Ob
     private void goToSuccessPaymentActivity( String paymentCode ) {
         Intent goToSusscessPayment = new Intent( PaymentConfirmationActivity.this, PaymentSuccessActivity.class );
         // TODO get from the response
-        paymentCode = "64964968";
+        paymentCode = "64";
         goToSusscessPayment.putExtra( PAYMENT_CODE, paymentCode );
         goToSusscessPayment.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
         startActivity( goToSusscessPayment );
@@ -116,7 +110,7 @@ public class PaymentConfirmationActivity extends AppCompatActivity implements Ob
     }
 
     private void updateSum(BigDecimal sum) {
-        TextView sumView = (TextView) findViewById(R.id.sum);
+        TextView sumView = (TextView) findViewById(R.id.paid);
         sumView.setText(sum.toString());
 
     }

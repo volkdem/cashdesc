@@ -59,7 +59,7 @@
         </ListView>
 
         <TextView
-            android:id="@+id/sum"
+            android:id="@+id/paid"
             style="@style/CartText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
         <TextView
             android:text="@string/sumToPay"
             style="@style/CartText"
-            android:layout_toLeftOf="@id/sum"
+            android:layout_toLeftOf="@id/paid"
             android:layout_below="@id/product_list"/>
 
         <LinearLayout

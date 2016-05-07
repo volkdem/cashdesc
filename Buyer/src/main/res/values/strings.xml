@@ -136,9 +136,9 @@
     <string name="order" formatted="false">Корзина:</string>
     <string name="product" formatted="false">%s %d x %.2f</string>
     <string name="pay">Оплатить</string>
-    <string name="sum">Сумма</string>
+    <string name="paid">Оплачено:</string>
     <string name="sumToPay">К оплате</string>
-    <string name="successfull_payment">Оплачено</string>
+    <string name="successfull_payment">ОПЛАЧЕНО УСПЕШНО</string>
     <string name="cancel">Отмена</string>
     <string name="start_your_perchases">Начните свои покупки</string>
     <string name="store_code_scanning">Отсканируйте штрих-код магазина</string>
@@ -162,5 +162,6 @@
     <string name="payment_method">Способ оплаты</string>
     <string name="my_cart">Корзина</string>
     <string name="scan_your_next_item">Отсканируйте Ваш следующий товар</string>
+    <string name="store_detail">Магазин:</string>
 
 </resources>

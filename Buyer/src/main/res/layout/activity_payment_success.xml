@@ -1,67 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.volkdem.cashdesc.PaymentSuccessActivity">
 
-    <TextView
-        android:id="@+id/successfull_payment"
-        android:text="@string/successfull_payment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-
-    <TextView
-        android:id="@+id/payment_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/successfull_payment"/>
-
-    <TextView
-        android:id="@+id/store_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/payment_code"
-        android:layout_centerHorizontal="true"
-        />
-
-    <ListView
-        android:id="@+id/order_details"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/store_info"
-        android:layout_centerHorizontal="true"
-        android:scrollbars="horizontal"
-        />
+        android:layout_height="match_parent"
+        tools:context="com.volkdem.cashdesc.PaymentSuccessActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sum"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/order_details" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/ScanActionBar">
 
-    <TextView
-        android:id="@+id/sum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/order_details" />
 
-    <Button
-        android:id="@+id/new_purchase"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/new_purchase"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:background="@color/transparent">
 
-</RelativeLayout>
+                <TextView
+                    android:id="@+id/title"
+                    style="@style/ScanActionBarTitle"
+                    android:text="@string/successfull_payment"/>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_margin="@dimen/default_margin"
+            android:id="@+id/top_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/toolbar">
+
+            <ImageView
+                android:layout_width="@dimen/store_logo_size"
+                android:layout_height="@dimen/store_logo_size"
+                android:src="@drawable/pyterohka"
+                android:layout_weight="100"/>
+
+            <View style="@style/VerticalPaymentSuccessDivider"/>
+            
+            <TextView
+                android:id="@+id/payment_date"
+                android:text="07.05.2016\n15:30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_weight="100"/>
+
+            <View style="@style/VerticalPaymentSuccessDivider"/>
+
+            <TextView
+                android:id="@+id/payment_code"
+                android:layout_width="@dimen/store_logo_size"
+                android:layout_height="@dimen/store_logo_size"
+                android:background="@drawable/payment_code"
+                android:textSize="25sp"
+                android:layout_weight="100"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="@color/scan_code_text"
+                />
+        </LinearLayout>
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/frame"
+            android:layout_below="@id/top_panel"
+            android:layout_margin="@dimen/default_margin">
+
+            <TextView style="@style/PaymentSuccessLabel"
+                android:id="@+id/store_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/store_detail"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="@dimen/default_margin"/>
+
+            <TextView style="@style/PaymentSuccessText"
+                android:id="@+id/store_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/default_margin"/>
+
+            <View style="@style/HorizontalPaymentSucessDivider"
+                android:id="@+id/store_divider"
+                android:layout_below="@id/store_info"/>
+
+            <TextView style="@style/PaymentSuccessLabel"
+                android:text="@string/paid"
+                android:layout_below="@id/store_divider" />
+
+            <TextView style="@style/PaymentSuccessText"
+                android:id="@+id/paid"
+                android:layout_below="@id/store_divider"
+                android:background="@color/grey"/>
+
+            <ListView
+                android:id="@+id/order_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/paid"
+                android:layout_centerHorizontal="true"
+                android:scrollbars="horizontal"
+                />
+
+            <View style="@style/HorizontalPaymentSucessDivider"
+                android:id="@+id/order_details_divider"
+                android:layout_below="@id/order_details"/>
+
+
+
+
+
+            <Button
+                android:id="@+id/new_purchase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/new_purchase"/>
+
+
+        </RelativeLayout>
+
+
+
+
+
+
+    </RelativeLayout>
+
+    <include layout="@layout/main_menu_drawer"/>
+
+</android.support.v4.widget.DrawerLayout>

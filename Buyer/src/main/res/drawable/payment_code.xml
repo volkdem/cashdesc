@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="ring"
+
+
+    android:innerRadius="0dp"
+    android:thickness="25dp"
+    android:useLevel="false"
+    >
+
+
+
+    <stroke android:color="@color/payment_code"/>
+
+
+    <solid android:color="@color/payment_code"/>
+
+    <size
+        android:width="@dimen/store_logo_size"
+        android:height="@dimen/store_logo_size"/>
+
+</shape>

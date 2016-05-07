@@ -5,9 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.common.model.Order;
+import com.common.model.Product;
+import com.common.model.Store;
 import com.volkdem.cashdesc.model.OrderWrapper;
 import com.volkdem.cashdesc.stub.StubFactory;
 import com.volkdem.cashdesc.utils.StaticContainer;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -57,8 +62,44 @@ public class RegistrationActivity extends AppCompatActivity {
         startActivity(paymentConfirmationAct);
     */
 
+        OrderWrapper order = new OrderWrapper( new Order() );
 
-        Intent startScanShopActivity = new Intent( getApplicationContext(), ScanShopCodeActivity.class );
+        order.setId( "11");
+        Store store = new Store();
+        store.setAddress("Aviacionnay street, 55, ap.345");
+        store.setBarcode( new BigInteger( "584561316574" ) );
+        store.setName( "Пятёрочка");
+        store.setStoreId( 1857L );
+
+
+        order.setStore( store );
+
+        Product product = new Product();
+        product.setBarcode( new BigInteger( "564564" ) );
+        product.setPrice( new BigDecimal(84.34));
+        product.setProductId( 4654L );
+        product.setProductName( "ZEWA: Бумажные одноразовые салфетки ");
+
+        order.addProduct( product );
+        order.addProduct( product );
+
+        product = new Product();
+        product.setBarcode( new BigInteger( "564523" ) );
+        product.setPrice( new BigDecimal(198.33));
+        product.setProductId( 46543L );
+        product.setProductName( "Бородинский хлеб");
+        order.addProduct( product );
+
+        product = new Product();
+        product.setBarcode( new BigInteger( "545564523" ) );
+        product.setPrice( new BigDecimal(158.33));
+        product.setProductId( 46542L );
+        product.setProductName( "Торт \"Наполеон нежный\"");
+        order.addProduct( product );
+
+        StaticContainer.setOrder( order );
+
+        Intent startScanShopActivity = new Intent( getApplicationContext(), PaymentConfirmationActivity.class );
         startScanShopActivity.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK );
         startActivity(startScanShopActivity);
         finish();
