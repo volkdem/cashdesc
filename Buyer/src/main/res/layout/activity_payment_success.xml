@@ -78,7 +78,10 @@
             android:layout_height="match_parent"
             android:background="@drawable/frame"
             android:layout_below="@id/top_panel"
-            android:layout_margin="@dimen/default_margin">
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginBottom="120dp">
 
             <TextView style="@style/PaymentSuccessLabel"
                 android:id="@+id/store_label"
@@ -161,7 +164,7 @@
                     android:gravity="center_vertical"/>
 
             </RelativeLayout>
-            
+
         </RelativeLayout>
 
         <Button
