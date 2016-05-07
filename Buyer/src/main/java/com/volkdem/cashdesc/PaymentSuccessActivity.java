@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.common.model.Store;
 import com.volkdem.cashdesc.model.OrderWrapper;
+import com.volkdem.cashdesc.utils.Const;
 import com.volkdem.cashdesc.utils.StaticContainer;
 
 public class PaymentSuccessActivity extends AppCompatActivity  {
@@ -44,10 +45,10 @@ public class PaymentSuccessActivity extends AppCompatActivity  {
         storeInfoView.setText( storeInfo );
 
         ListView orderDetailView = (ListView) findViewById( R.id.order_details );
-        orderDetailView.setAdapter( new ProductListAdapter( order, false ) );
+        orderDetailView.setAdapter( new PaidProductListAdapter( order ) );
 
         TextView sumView = (TextView) findViewById(R.id.paid);
-        sumView.setText(order.getCost().toString());
+        sumView.setText(order.getCost().toString() + " " + Const.CURRENCY);
 
         final Button newPurchase = (Button) findViewById( R.id.new_purchase );
         newPurchase.setOnClickListener(new View.OnClickListener() {

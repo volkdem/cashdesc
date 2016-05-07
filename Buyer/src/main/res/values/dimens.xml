@@ -29,5 +29,6 @@
     <dimen name="payment_code_radius">50dp</dimen>
     <dimen name="divider_margin">10dp</dimen>
     <dimen name="default_margin">10dp</dimen>
-    <dimen name="divider_left_margin">50dp</dimen>
+    <dimen name="divider_left_margin">90dp</dimen>
+    <dimen name="paid_text_size">20dp</dimen>
 </resources>

@@ -47,7 +47,7 @@ public class PaymentConfirmationActivity extends AppCompatActivity implements Ob
 
 
         ListView prodcutListView = (ListView) findViewById(R.id.product_list);
-        prodcutListView.setAdapter(new ProductListAdapter(StaticContainer.getOrder(), true));
+        prodcutListView.setAdapter( new ProductListAdapter(StaticContainer.getOrder() ));
 
         OrderWrapper order = StaticContainer.getOrder();
         updateSum( order.getCost() );
