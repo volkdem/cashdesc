@@ -43,4 +43,6 @@
     <color name="payment_code">#FF0000</color>
     <color name="grey">#aaaaaa</color>
     <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="thanks_text_background">#368A33</color>
 </resources>

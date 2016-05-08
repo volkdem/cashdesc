@@ -31,7 +31,11 @@
         <item name="android:layout_height">?attr/actionBarSize</item>
     </style>
 
-    <style name="ScanActionBarTitle">
+    <style name="Title.ScanActionBarTitle">
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="Title">
         <item name="title" type="id">@id/title</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -39,7 +43,6 @@
         <item name="android:layout_marginLeft">80dp</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#ffffff</item>
         <item name="android:background">@color/nobackground</item>
     </style>
 

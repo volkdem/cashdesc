@@ -47,7 +47,7 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        style="@style/ScanActionBarTitle"
+                        style="@style/Title.ScanActionBarTitle"
                         android:text="@string/perchases"/>
 
                     <ImageView

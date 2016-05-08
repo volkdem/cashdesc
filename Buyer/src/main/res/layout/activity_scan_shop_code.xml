@@ -51,7 +51,7 @@
                         android:background="@color/transparent">
 
                         <TextView
-                            style="@style/ScanActionBarTitle"
+                            style="@style/Title.ScanActionBarTitle"
                             android:text="@string/store"/>
 
                     </RelativeLayout>

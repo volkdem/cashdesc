@@ -14,7 +14,8 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            style="@style/ScanActionBar">
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
 
 
             <RelativeLayout
@@ -23,14 +24,32 @@
                 android:orientation="horizontal"
                 android:background="@color/transparent">
 
+                <ImageView
+                    android:layout_width="@dimen/success_icon_size"
+                    android:layout_height="@dimen/success_icon_size"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:src="@drawable/success"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/title"/>
+
                 <TextView
-                    android:id="@+id/title"
-                    style="@style/ScanActionBarTitle"
-                    android:text="@string/successfull_payment"/>
+                    android:id="@id/title"
+                    style="@style/Title"
+                    android:textColor="@color/black"
+                    android:text="@string/successfull_payment"
+                    android:layout_centerHorizontal="true"/>
 
             </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
+
+        <View
+            android:id="@+id/toolbar_divider"
+            style="@style/HorizontalPaymentSucessDivider"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_below="@id/toolbar"/>
 
         <LinearLayout
             android:layout_margin="@dimen/default_margin"
@@ -38,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@id/toolbar">
+            android:layout_below="@id/toolbar_divider">
 
             <ImageView
                 android:layout_width="@dimen/store_logo_size"
@@ -56,6 +75,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textSize="20sp"
+                android:textColor="@color/black"
                 android:layout_weight="100"/>
 
             <View style="@style/VerticalPaymentSuccessDivider"/>
@@ -78,10 +98,8 @@
             android:layout_height="match_parent"
             android:background="@drawable/frame"
             android:layout_below="@id/top_panel"
-            android:layout_marginTop="@dimen/default_margin"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginRight="@dimen/default_margin"
-            android:layout_marginBottom="120dp">
+            android:layout_margin="@dimen/default_margin"
+            android:layout_above="@+id/thanks_for_purchase">
 
             <TextView style="@style/PaymentSuccessLabel"
                 android:id="@+id/store_label"
@@ -167,13 +185,28 @@
 
         </RelativeLayout>
 
+        <TextView
+            android:id="@id/thanks_for_purchase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/thanks_for_purchase"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:padding="@dimen/default_margin"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/new_purchase"
+            android:background="@color/thanks_text_background"/>
+
         <Button
-            android:id="@+id/new_purchase"
+            android:id="@id/new_purchase"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/new_purchase"/>
+            android:text="@string/new_purchase"
+            android:textColor="@color/white"
+            android:background="@color/grey"
+            android:layout_margin="@dimen/default_margin"/>
 
 
 

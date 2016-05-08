@@ -163,5 +163,6 @@
     <string name="my_cart">Корзина</string>
     <string name="scan_your_next_item">Отсканируйте Ваш следующий товар</string>
     <string name="store_detail">Магазин:</string>
+    <string name="thanks_for_purchase">СПАСИБО ЗА ПОКУПКУ</string>
 
 </resources>
