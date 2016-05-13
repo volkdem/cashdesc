@@ -29,7 +29,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"/>
 
-            <com.volkdem.cashdesc.ViewfinderView
+            <com.volkdem.cashdesc.buyer.ViewfinderView
                 android:id="@+id/viewfinder_view"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"/>
