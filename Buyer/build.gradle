@@ -4,7 +4,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
     defaultConfig {
-        applicationId "com.volkdem.cashdesc"
+        applicationId "com.volkdem.cashdesc.buyer"
         minSdkVersion 17
         targetSdkVersion 18
         versionCode 1
