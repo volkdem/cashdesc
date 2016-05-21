@@ -7,13 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.common.model.Order;
+import com.common.model.Product;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Evgeny on 21.05.2016.
@@ -86,8 +89,23 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             footer.setVisibility( View.VISIBLE );
             arrowImage.setImageResource( R.drawable.arrow_up );
 
-            ListView productListView = (ListView) itemView.findViewById( R.id.product_list );
-            productListView.setAdapter( new ProductListAdapter( order ) );
+            LinearLayout productListView = (LinearLayout) itemView.findViewById( R.id.product_list );
+            productListView.removeAllViews();
+            for(Map.Entry<Product, Integer > entry: order.getProducts().entrySet() ) {
+                LayoutInflater inflater = LayoutInflater.from( itemView.getContext() );
+                View productView = inflater.inflate(R.layout.product_item, null);
+
+                Product product = entry.getKey();
+
+                TextView productNameView = (TextView) productView.findViewById( R.id.product_name );
+                productNameView.setText( product.getProductName() );
+
+                TextView productCountView = (TextView) productView.findViewById( R.id.product_count );
+                productCountView.setText( String.valueOf( order.getCount( product ) ) );
+
+                productListView.addView( productView );
+            }
+
             Button checkButton = (Button) itemView.findViewById( R.id.check_product );
             checkButton.setOnClickListener(new View.OnClickListener() {
                 @Override

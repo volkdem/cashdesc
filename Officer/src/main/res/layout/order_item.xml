@@ -51,12 +51,16 @@
         android:layout_marginLeft="@dimen/product_margin_left"
         android:visibility="gone">
 
-        <ListView
+
+        <!-- filled programmatically -->
+        <LinearLayout
             android:id="@+id/product_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_alignParentTop="true">
-        </ListView>
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/check_product"
