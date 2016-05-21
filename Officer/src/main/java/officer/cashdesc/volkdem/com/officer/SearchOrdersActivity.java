@@ -5,9 +5,16 @@ import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
+
+import com.common.model.Order;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchOrdersActivity extends AppCompatActivity {
 
@@ -17,6 +24,18 @@ public class SearchOrdersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_orders);
 
         handleIntent( getIntent() );
+
+        RecyclerView orderListView = (RecyclerView) findViewById( R.id.order_list );
+        orderListView.setHasFixedSize( true );
+
+        RecyclerView.LayoutManager orderListLayoutManager = new LinearLayoutManager( this );
+        orderListView.setLayoutManager( orderListLayoutManager );
+
+        // TODO: remove stub
+        List< Order > orders = OrderFactory.generateOrders( 7, 5 );
+
+        OrderListAdapter orderListAdapter = new OrderListAdapter( orders );
+        orderListView.setAdapter( orderListAdapter );
     }
 
     @Override

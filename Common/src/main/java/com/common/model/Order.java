@@ -3,6 +3,8 @@ package com.common.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -11,6 +13,7 @@ import java.util.Map;
 public class Order implements Serializable {
     private String id;
     private Store store;
+    private Date paymentDate;
     private Map<Product, Integer> products = new HashMap<Product, Integer>();
 
     public String getId() {
@@ -21,6 +24,13 @@ public class Order implements Serializable {
         this.id = id;
     }
 
+    public Date getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(Date paymentDate) {
+        this.paymentDate = paymentDate;
+    }
 
     public void addProduct(Product product) {
         Integer count = products.get( product );
