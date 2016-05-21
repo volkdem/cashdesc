@@ -1,14 +1,17 @@
 package officer.cashdesc.volkdem.com.officer;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.common.model.Order;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -16,7 +19,10 @@ import java.util.List;
  * Created by Evgeny on 21.05.2016.
  */
 public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final String TAG = OrderListAdapter.class.getName();
+    private final int NONE = -1;
     private List<Order> orders;
+    private int expanded = NONE;
 
     public OrderListAdapter(List<Order> orders) {
         this.orders = orders;
@@ -39,26 +45,90 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from( parent.getContext() );
-        View orderItemView = inflater.inflate( R.layout.order_item, parent, false );
+        ViewGroup orderItemView = (ViewGroup) inflater.inflate( R.layout.order_item, parent, false );
         RecyclerView.ViewHolder viewHolder = new ViewHolder( orderItemView );
+        Log.d( TAG, "onCreateViewHolder: new holder with type: " + viewType );
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        // TODO place as adapters's property
-        SimpleDateFormat dateFormat = new SimpleDateFormat( "dd.MM.yyyy HH:mm");
-        View itemView = holder.itemView;
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        Log.d( TAG, "onBindViewHolder: bind holder to position: " + position );
+        final View itemView = holder.itemView;
         TextView paymentCodeView = (TextView) itemView.findViewById( R.id.payment_code );
         Order order = orders.get( position );
         // TODO: replace id to paymentCode
         paymentCodeView.setText( order.getId() );
 
+        // TODO: move dataFormat to adapters's property
+        SimpleDateFormat dateFormat = new SimpleDateFormat( "dd.MM.yyyy HH:mm");
         TextView paymentDateView = (TextView) itemView.findViewById( R.id.payment_date );
         paymentDateView.setText( dateFormat.format( order.getPaymentDate() ) );
 
         TextView orderSize = (TextView) itemView.findViewById( R.id.order_size );
         orderSize.setText( String.valueOf( order.getTotalSize() ) );
+
+        View.OnClickListener itemClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expandOrCollapse( position );
+            }
+        };
+
+        itemView.setOnClickListener( itemClickListener );
+
+        View footer = itemView.findViewById( R.id.order_footer );
+        footer.setOnClickListener( itemClickListener );
+        ImageView arrowImage = (ImageView) itemView.findViewById( R.id.arrow );
+
+        // Fill order footer
+        if( holder.getItemViewType() == ViewType.EXPANDED.getCode() ) {
+            footer.setVisibility( View.VISIBLE );
+            arrowImage.setImageResource( R.drawable.arrow_up );
+
+            ListView productListView = (ListView) itemView.findViewById( R.id.product_list );
+            productListView.setAdapter( new ProductListAdapter( order ) );
+            Button checkButton = (Button) itemView.findViewById( R.id.check_product );
+            checkButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removeOrder( position );
+                }
+            });
+        } else {
+            footer.setVisibility( View.GONE );
+            arrowImage.setImageResource( R.drawable.arrow_down );
+        }
+    }
+
+    private void removeOrder( int position ) {
+        orders.remove( position );
+        notifyItemRemoved( position );
+        if( expanded == position ) {
+            expanded = NONE;
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if( position == expanded ) {
+            return ViewType.EXPANDED.getCode();
+        } else {
+            return ViewType.COLLAPSED.getCode();
+        }
+    }
+
+    private void expandOrCollapse(int position ) {
+        Log.d( TAG, "expandOrCollapse position: " + position );
+        if( expanded == position ) {
+            expanded = NONE;
+        } else {
+            if( expanded != NONE ) {
+                notifyItemChanged( expanded );
+            }
+            expanded = position;
+        }
+        notifyItemChanged( position );
     }
 
     @Override
@@ -66,5 +136,29 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return orders.size();
     }
 
+    enum ViewType {
+        EXPANDED( 1 ),
+        COLLAPSED( 2 );
 
+        private ViewType(int code) {
+            this.code = code;
+        }
+
+        private int code;
+
+        public int getCode() {
+            return code;
+        }
+
+        public static ViewType getViewType(int code) {
+            for( ViewType value: values() ) {
+                if( value.getCode() == code ) {
+                    return value;
+                }
+            }
+
+            throw new RuntimeException( "Undefined view type code: " + code );
+        }
+
+    }
 }

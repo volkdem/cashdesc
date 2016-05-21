@@ -13,4 +13,8 @@
         <item name="android:layout_margin">@dimen/order_item_text_margin</item>
     </style>
 
+    <style name="ProductItemText">
+        <item name="android:textSize">@dimen/product_item_text_size</item>
+        <item name="android:layout_margin">@dimen/product_item_margin</item>
+    </style>
 </resources>
