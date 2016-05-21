@@ -64,7 +64,7 @@ public class OrderFactory {
         // TODO: id replace to paymentCode
         order.setId( String.valueOf( random.nextInt( 100 ) ) );
         Calendar date = Calendar.getInstance();
-        date.set( Calendar.DAY_OF_MONTH, random.nextInt( 30 ));
+        date.set( Calendar.DAY_OF_MONTH, random.nextInt( 31 ));
         order.setPaymentDate( date.getTime() );
 
         for( int i = 0; i < size; i++ ) {

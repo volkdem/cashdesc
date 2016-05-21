@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.common.model.Order;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -44,6 +46,8 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        // TODO place as adapters's property
+        SimpleDateFormat dateFormat = new SimpleDateFormat( "dd.MM.yyyy HH:mm");
         View itemView = holder.itemView;
         TextView paymentCodeView = (TextView) itemView.findViewById( R.id.payment_code );
         Order order = orders.get( position );
@@ -51,7 +55,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         paymentCodeView.setText( order.getId() );
 
         TextView paymentDateView = (TextView) itemView.findViewById( R.id.payment_date );
-        paymentDateView.setText( order.getPaymentDate().toString() );
+        paymentDateView.setText( dateFormat.format( order.getPaymentDate() ) );
 
         TextView orderSize = (TextView) itemView.findViewById( R.id.order_size );
         orderSize.setText( String.valueOf( order.getTotalSize() ) );

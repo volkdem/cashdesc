@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="OrderItemText">
+        <item name="android:textSize">@dimen/order_item_text_size</item>
+        <item name="android:layout_margin">@dimen/order_item_text_margin</item>
+    </style>
+
 </resources>
