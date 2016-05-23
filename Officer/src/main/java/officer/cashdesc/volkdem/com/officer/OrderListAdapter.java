@@ -81,7 +81,6 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         itemView.setOnClickListener( itemClickListener );
 
         View footer = itemView.findViewById( R.id.order_footer );
-        footer.setOnClickListener( itemClickListener );
         ImageView arrowImage = (ImageView) itemView.findViewById( R.id.arrow );
 
         // Fill order footer
@@ -138,6 +137,21 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private void expandOrCollapse(int position ) {
         Log.d( TAG, "expandOrCollapse position: " + position );
+        Log.d( TAG, "expandOrCollapse expaned: " + expanded);
+
+        /* Code fixes error
+        * Error description:
+        * 1. Confirm any not last order.
+        * 2. Confirm last order
+        * 3. Confirm any not last order.
+        * 4. Try to expaned last order. It is not expaned.
+        * TODO: Fix error basing on the workflow (right way).
+        */
+        if (position == orders.size() ) {
+            Log.e( TAG, "Position value is out of the array: " + position + ", - correct it to last array's element" );
+            position = orders.size() - 1;
+        }
+
         if( expanded == position ) {
             expanded = NONE;
         } else {
