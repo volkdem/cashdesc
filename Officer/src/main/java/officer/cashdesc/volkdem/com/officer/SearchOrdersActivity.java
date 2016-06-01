@@ -1,22 +1,38 @@
 package officer.cashdesc.volkdem.com.officer;
 
 import android.app.SearchManager;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQuery;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 
 import com.common.model.Order;
+import com.common.model.Product;
 
+import java.math.BigDecimal;
+import java.text.MessageFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SearchOrdersActivity extends AppCompatActivity {
+    private static final String TAG = SearchOrdersActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +52,34 @@ public class SearchOrdersActivity extends AppCompatActivity {
 
         OrderListAdapter orderListAdapter = new OrderListAdapter( orders );
         orderListView.setAdapter( orderListAdapter );
+
+
+        OrdersDatabase ordersDB = new OrdersDatabase( this );
+        ordersDB.addOrders( orders );
+
+        OrdersSearchCriteria searchCriteria = new OrdersSearchCriteria();
+        int position = 0;
+        for( ; position < orders.size(); position ++ ) {
+            Order order = orders.get( position );
+            Log.d( TAG, "Test id = " + order.getId() );
+            if( order.getId().length() > 1 ) {
+                Log.d( TAG, "Satisfing id = " + order.getId() + " with position = " + position );
+                break;
+            }
+        }
+        Long orderId = Long.valueOf( orders.get( position ).getId().substring( 0, 1 ) );
+        Log.d( TAG, "Found orderId = " + orderId );
+        searchCriteria.setPaymentCode( String.valueOf( orderId ) );
+        Cursor orderCursor = ordersDB.getOrders( searchCriteria );
+        Order order = OrderMapper.getOrder( orderCursor );
+        Log.d( TAG, "Order: " + order  );
+        Map<Product, Integer> products = OrderMapper.getProducts( ordersDB.getProducts( Long.valueOf( order.getId() ) ) );
+        Log.d( TAG, "\t\tproducts: " + products );
+
+        /*
+        OrdersSearchCriteria searchCriteria = new OrdersSearchCriteria();
+        Cursor cursor = ordersDB.getOrders( searchCriteria );
+        */
     }
 
     @Override
@@ -61,3 +105,7 @@ public class SearchOrdersActivity extends AppCompatActivity {
         }
     }
 }
+/*s
+
+
+*/
