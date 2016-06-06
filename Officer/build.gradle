@@ -5,9 +5,9 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.volkdem.cashdesc.officer"
+        applicationId "officer.cashdesc.volkdem.com.officer"
         minSdkVersion 17
-        targetSdkVersion 18
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
