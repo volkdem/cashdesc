@@ -36,7 +36,7 @@ public class SearchOrdersActivity extends AppCompatActivity {
         orderListView.setLayoutManager( orderListLayoutManager );
 
         // TODO: remove stub
-        List< Order > orders = OrderFactory.generateOrders( 50, 5 );
+        List< Order > orders = OrderFactory.generateOrders( 10, 5 );
 
         OrdersDatabase ordersDB = new OrdersDatabase( this );
         ordersDB.addOrders( orders );
