@@ -31,14 +31,22 @@ class OrdersDatabase {
         openHelper = new DatabaseOpenHelper( context );
     }
 
+    class CheckStatus {
+        public static final int UNCHECKED = 0;
+        public static final int CHECKED = 1;
+    }
+
+
+
     class OrderColumn {
-        private static final String ID = "_ID";
+        private static final String ID = "_id";
         private static final String PAYMENT_CODE = "PAYMENT_CODE";
         private static final String PAYMENT_DATE = "PAYMENT_DATE";
+        private static final String CHECK_STATUS = "CHECK_STATUS";
     }
 
     class ProductColumn {
-        private static final String ID = "_ID";
+        private static final String ID = "_id";
         private static final String ORDER_ID = "ORDER_ID";
         private static final String NAME = "NAME";
         private static final String COUNT = "COUNT";
@@ -57,10 +65,10 @@ class OrdersDatabase {
 
         private final Context contex;
         private SQLiteDatabase database;
-        private static final int DATABASE_VERSION = 2;
+        private static final int DATABASE_VERSION = 4;
 
         private static final String ORDERS_TABLE_CREATE = generateCreateVirtualTableStatement(
-                ORDERS_TABLE_NAME, OrderColumn.ID, OrderColumn.PAYMENT_CODE, OrderColumn.PAYMENT_DATE );
+                ORDERS_TABLE_NAME, OrderColumn.ID, OrderColumn.PAYMENT_CODE, OrderColumn.PAYMENT_DATE, OrderColumn.CHECK_STATUS );
 
         private static final String PRODUCTS_TABLE_CREATE = generateCreateVirtualTableStatement(
                 PRODUCTS_TABLE_NAME, ProductColumn.ID, ProductColumn.ORDER_ID, ProductColumn.NAME, ProductColumn.COUNT, ProductColumn.PRICE );
@@ -91,9 +99,9 @@ class OrdersDatabase {
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             Log.d( TAG, MessageFormat.format( "Upgrade database old version from {0} to {1} which will destroy all data.", oldVersion, newVersion ) );
-            database.execSQL( "DROP TABLE IF EXISTS " + ORDERS_TABLE_NAME );
-            database.execSQL( "DROP TABLE IF EXISTS " + PRODUCTS_TABLE_NAME );
-            onCreate( database );
+            db.execSQL( "DROP TABLE IF EXISTS " + ORDERS_TABLE_NAME );
+            db.execSQL( "DROP TABLE IF EXISTS " + PRODUCTS_TABLE_NAME );
+            onCreate( db );
         }
 
         public void addOrders( List< Order > orders) {
@@ -117,6 +125,9 @@ class OrdersDatabase {
             // TODO: replace order.getId() to original payment code
             initialValues.put( OrderColumn.PAYMENT_CODE, order.getId() );
             initialValues.put( OrderColumn.PAYMENT_DATE, OrderMapper.formatDatetime( order.getPaymentDate() ) );
+            // TODO: get check status from the Order
+            int checkStatus = ( order.isCheckStatus() ) ? CheckStatus.CHECKED : CheckStatus.UNCHECKED;
+            initialValues.put( OrderColumn.CHECK_STATUS, checkStatus );
 
             database.beginTransaction();
             try {
@@ -151,12 +162,13 @@ class OrdersDatabase {
     }
 
     public Cursor getOrders( OrdersSearchCriteria searchCriteria ) {
-        final String[] columns = new String[] { OrderColumn.ID, OrderColumn.PAYMENT_CODE, OrderColumn.PAYMENT_DATE };
+        final String[] columns = new String[] { OrderColumn.ID, OrderColumn.PAYMENT_CODE, OrderColumn.PAYMENT_DATE, OrderColumn.CHECK_STATUS };
 
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables( ORDERS_TABLE_NAME );
         builder.appendColumns( new StringBuilder(), columns);
-        Cursor cursor = builder.query( openHelper.getReadableDatabase(), columns, OrderColumn.PAYMENT_CODE + " LIKE ?", new String[] { searchCriteria.getPaymentCode() + "%" }, null, null, null );
+        Cursor cursor = builder.query( openHelper.getReadableDatabase(), columns,
+                OrderColumn.PAYMENT_CODE + " LIKE ?", new String[] { /*searchCriteria.getPaymentCode() + */"%" }, null, null, null );
 
         if (cursor == null) {
             return null;
@@ -186,6 +198,16 @@ class OrdersDatabase {
         return cursor;
     }
 
+    public void setCheckStatus(Long id, boolean checkStatusB) {
+        int checkStatus = ( checkStatusB ) ? CheckStatus.CHECKED : CheckStatus.UNCHECKED;
+        ContentValues values = new ContentValues( 1 );
+        values.put( OrderColumn.CHECK_STATUS, checkStatus );
+        int count = openHelper.getWritableDatabase().update( ORDERS_TABLE_NAME, values, OrderColumn.ID + " = ?", new String[] { id.toString() } );
+        if( count != 1 ) {
+            throw new RuntimeException( "Not one row has been updated (count=" + count);
+        }
+    }
+
 }
 
 
@@ -193,6 +215,7 @@ class OrdersSearchCriteria {
     private String paymentCode;
     private Date from;
     private Date to;
+    private Boolean checked;
 
     public String getPaymentCode() {
         return paymentCode;
@@ -200,5 +223,29 @@ class OrdersSearchCriteria {
 
     public void setPaymentCode(String paymentCode) {
         this.paymentCode = paymentCode;
+    }
+
+    public Date getFrom() {
+        return from;
+    }
+
+    public void setFrom(Date from) {
+        this.from = from;
+    }
+
+    public Date getTo() {
+        return to;
+    }
+
+    public void setTo(Date to) {
+        this.to = to;
+    }
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
     }
 }

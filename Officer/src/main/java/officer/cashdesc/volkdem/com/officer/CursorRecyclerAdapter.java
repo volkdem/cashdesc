@@ -28,6 +28,7 @@ import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Filter;
 import android.widget.FilterQueryProvider;
 import android.widget.Filterable;
@@ -62,6 +63,7 @@ public abstract class CursorRecyclerAdapter<VH
 
     public CursorRecyclerAdapter( Cursor cursor) {
         init(cursor);
+        Log.d( "CursorRecyclerAdapter:", "count = " + cursor.getCount() );
     }
 
     void init(Cursor c) {
