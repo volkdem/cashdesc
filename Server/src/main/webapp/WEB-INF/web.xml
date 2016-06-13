@@ -4,6 +4,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
 	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <display-name>server.cashdesk</display-name>
+    
 
     <servlet>
         <servlet-name>jersey-serlvet</servlet-name>
@@ -19,9 +20,12 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+
     <servlet-mapping>
         <servlet-name>jersey-serlvet</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
 
+
+    
 </web-app>

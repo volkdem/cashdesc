@@ -49,12 +49,12 @@ public class SearchOrdersActivity extends AppCompatActivity {
         for( ; position < orders.size(); position ++ ) {
             Order order = orders.get( position );
             Log.d( TAG, "Test id = " + order.getId() );
-            if( order.getId().length() > 1 ) {
+            if( order.getId() > 1 ) {
                 Log.d( TAG, "Satisfing id = " + order.getId() + " with position = " + position );
                 break;
             }
         }
-        Long orderId = Long.valueOf( orders.get( position ).getId().substring( 0, 1 ) );
+        Long orderId = Long.valueOf( orders.get( position ).getId());
         Log.d( TAG, "Found orderId = " + orderId );
         searchCriteria.setPaymentCode( String.valueOf( orderId ) );
         Cursor orderCursor = ordersDB.getOrders( searchCriteria );

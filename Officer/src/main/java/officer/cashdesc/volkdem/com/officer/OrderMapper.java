@@ -20,7 +20,7 @@ public class OrderMapper {
     public static Order getOrder(Cursor cursor ) {
         Order order = new Order();
         int columnIndex = 0;
-        order.setId( String.valueOf( cursor.getLong( columnIndex++ ) ) );
+        order.setId( Long.valueOf( cursor.getLong( columnIndex++ ) ) );
         // TODO get payment and set payment code
         order.setPaymentDate( parseDatetime( cursor.getString( columnIndex ++ )) );
         return order;

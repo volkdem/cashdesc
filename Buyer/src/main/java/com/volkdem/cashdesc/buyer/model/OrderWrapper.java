@@ -22,11 +22,11 @@ public class OrderWrapper extends Observable {
     }
 
 
-    public String getId() {
+    public Long getId() {
         return order.getId();
     }
 
-    public void setId( String id ) {
+    public void setId( Long id ) {
         this.order.setId( id );
     }
 

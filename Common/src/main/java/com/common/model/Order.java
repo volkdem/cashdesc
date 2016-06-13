@@ -1,6 +1,8 @@
 package com.common.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -11,18 +13,18 @@ import java.util.Map;
  * Created by Evgeny on 05.12.2015.
  */
 public class Order implements Serializable {
-    private String id;
+
+
+    private Long id;
+    private Integer paymentCode;
     private Store store;
     private Date paymentDate;
     private Map<Product, Integer> products = new HashMap<Product, Integer>();
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId( String id ) {
-        this.id = id;
-    }
+    public Long getId() { return id; }
+
+    public void setId(Long id) { this.id = id; }
 
     public Date getPaymentDate() {
         return paymentDate;
@@ -32,17 +34,25 @@ public class Order implements Serializable {
         this.paymentDate = paymentDate;
     }
 
+    public Integer getPaymentCode() {
+        return paymentCode;
+    }
+
+    public void setPaymentCode(Integer paymentCode) {
+        this.paymentCode = paymentCode;
+    }
+
     public void addProduct(Product product) {
         Integer count = products.get( product );
-        if ( count == null ) {
+        if ( count == null )
             count = 0;
-        }
 
         count++;
 
         products.put( product, count );
     }
 
+    @JsonIgnore
     public BigDecimal getCost() {
         BigDecimal cost = new BigDecimal( 0 ).setScale( 2 );
         for( Product product: products.keySet() ) {
@@ -52,6 +62,7 @@ public class Order implements Serializable {
         return cost;
     }
 
+    @JsonIgnore
     public boolean containsProduct( Product product ) {
         return  products.containsKey( product );
     }
@@ -81,6 +92,7 @@ public class Order implements Serializable {
                 '}';
     }
 
+    @JsonIgnore
     public boolean isEmpty() {
         return getProducts().size() == 0;
     }
@@ -93,6 +105,7 @@ public class Order implements Serializable {
         this.store = store;
     }
 
+    @JsonIgnore
     public int getTotalSize() {
         int size = 0;
         for( Integer count: products.values() ) {
@@ -102,10 +115,12 @@ public class Order implements Serializable {
         return size;
     }
 
+    @JsonIgnore
     public int getProductTypeSize() {
         return products.size();
     }
 
+    @JsonIgnore
     public int getCount(Product product) {
         Integer count = products.get( product );
         if( count == null ) {

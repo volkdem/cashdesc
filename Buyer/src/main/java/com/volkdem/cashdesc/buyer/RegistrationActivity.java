@@ -64,7 +64,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         OrderWrapper order = new OrderWrapper( new Order() );
 
-        order.setId( "11");
+        order.setId(11L);
         Store store = new Store();
         store.setAddress("Aviacionnay street, 55, ap.345");
         store.setBarcode( new BigInteger( "584561316574" ) );

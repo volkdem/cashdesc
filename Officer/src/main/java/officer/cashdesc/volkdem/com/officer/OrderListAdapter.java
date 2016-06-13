@@ -60,7 +60,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         TextView paymentCodeView = (TextView) itemView.findViewById( R.id.payment_code );
         Order order = orders.get( position );
         // TODO: replace id to paymentCode
-        paymentCodeView.setText( order.getId() );
+        paymentCodeView.setText(String.valueOf(order.getId()));
 
         // TODO: move dataFormat to adapters's property
         SimpleDateFormat dateFormat = new SimpleDateFormat( "dd.MM.yyyy HH:mm");
