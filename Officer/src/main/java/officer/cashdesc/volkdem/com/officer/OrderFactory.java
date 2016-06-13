@@ -75,6 +75,7 @@ public class OrderFactory {
         Calendar date = Calendar.getInstance();
         date.set( Calendar.DAY_OF_MONTH, random.nextInt( 31 ));
         order.setPaymentDate( date.getTime() );
+        order.setCheckStatus( ( random.nextInt(1) == 0 ) ? false : true );
 
         for( int i = 0; i < size + 1; i++ ) {
             order.addProduct( getProduct() );

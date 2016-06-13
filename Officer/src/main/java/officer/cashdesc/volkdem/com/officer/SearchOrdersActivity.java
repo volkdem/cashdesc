@@ -20,6 +20,7 @@ import java.util.Map;
 
 public class SearchOrdersActivity extends AppCompatActivity {
     private static final String TAG = SearchOrdersActivity.class.getName();
+    private OrderListAdapter orderListAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +36,17 @@ public class SearchOrdersActivity extends AppCompatActivity {
         orderListView.setLayoutManager( orderListLayoutManager );
 
         // TODO: remove stub
-        List< Order > orders = OrderFactory.generateOrders( 7, 5 );
-
-        OrderListAdapter orderListAdapter = new OrderListAdapter( orders );
-        orderListView.setAdapter( orderListAdapter );
-
+        List< Order > orders = OrderFactory.generateOrders( 10, 5 );
 
         OrdersDatabase ordersDB = new OrdersDatabase( this );
         ordersDB.addOrders( orders );
+
+        OrderListAdapter orderListAdapter = new OrderListAdapter( ordersDB );
+        orderListView.setAdapter( orderListAdapter );
+
+        orderListAdapter.notifyDataSetChanged();
+
+
 
         OrdersSearchCriteria searchCriteria = new OrdersSearchCriteria();
         int position = 0;
@@ -56,12 +60,13 @@ public class SearchOrdersActivity extends AppCompatActivity {
         }
         Long orderId = Long.valueOf( orders.get( position ).getId());
         Log.d( TAG, "Found orderId = " + orderId );
-        searchCriteria.setPaymentCode( String.valueOf( orderId ) );
+        //searchCriteria.setPaymentCode( String.valueOf( orderId ) );
         Cursor orderCursor = ordersDB.getOrders( searchCriteria );
         Order order = OrderMapper.getOrder( orderCursor );
         Log.d( TAG, "Order: " + order  );
         Map<Product, Integer> products = OrderMapper.getProducts( ordersDB.getProducts( Long.valueOf( order.getId() ) ) );
         Log.d( TAG, "\t\tproducts: " + products );
+
 
         /*
         OrdersSearchCriteria searchCriteria = new OrdersSearchCriteria();

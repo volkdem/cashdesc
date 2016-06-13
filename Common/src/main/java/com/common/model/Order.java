@@ -19,6 +19,12 @@ public class Order implements Serializable {
     private Integer paymentCode;
     private Store store;
     private Date paymentDate;
+    private boolean checkStatus;    // Define if officer has checked this order
+
+    public void setProducts(Map<Product, Integer> products) {
+        this.products = products;
+    }
+
     private Map<Product, Integer> products = new HashMap<Product, Integer>();
 
 
@@ -128,5 +134,13 @@ public class Order implements Serializable {
         }
 
         return count;
+    }
+
+    public boolean isCheckStatus() {
+        return checkStatus;
+    }
+
+    public void setCheckStatus(boolean checkStatus) {
+        this.checkStatus = checkStatus;
     }
 }

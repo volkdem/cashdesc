@@ -1,5 +1,6 @@
 package officer.cashdesc.volkdem.com.officer;
 
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,51 +15,29 @@ import com.common.model.Order;
 import com.common.model.Product;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Created by Evgeny on 21.05.2016.
  */
-public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHolder> {
     private static final String TAG = OrderListAdapter.class.getName();
     private final int NONE = -1;
-    private List<Order> orders;
     private int expanded = NONE;
+    private OrdersDatabase db;
 
-    public OrderListAdapter(List<Order> orders) {
-        this.orders = orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-        this.notifyDataSetChanged();
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        View itemView;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            this.itemView = itemView;
-        }
+    public OrderListAdapter( OrdersDatabase db) {
+        super(db.getOrders( new OrdersSearchCriteria() ) );
+        this.db = db;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from( parent.getContext() );
-        ViewGroup orderItemView = (ViewGroup) inflater.inflate( R.layout.order_item, parent, false );
-        RecyclerView.ViewHolder viewHolder = new ViewHolder( orderItemView );
-        Log.d( TAG, "onCreateViewHolder: new holder with type: " + viewType );
-        return viewHolder;
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolderCursor(RecyclerView.ViewHolder holder, final Cursor cursor, final int position) {
         Log.d( TAG, "onBindViewHolder: bind holder to position: " + position );
         final View itemView = holder.itemView;
         TextView paymentCodeView = (TextView) itemView.findViewById( R.id.payment_code );
-        Order order = orders.get( position );
+        final Order order = OrderMapper.getOrder( cursor );
+        order.setProducts( OrderMapper.getProducts( db.getProducts( Long.valueOf( order.getId() ) ) ) );
         // TODO: replace id to paymentCode
         paymentCodeView.setText(String.valueOf(order.getId()));
 
@@ -108,7 +87,9 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             checkButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    removeOrder( position );
+                    cursor.moveToPosition( position );
+                    // TODO invert order's check status (remove hardcoded 'true')
+                    setOrderCheckStatus( Long.valueOf( order.getId() ), position, true );
                 }
             });
         } else {
@@ -117,13 +98,34 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    private void removeOrder( int position ) {
-        orders.remove( position );
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from( parent.getContext() );
+        ViewGroup orderItemView = (ViewGroup) inflater.inflate( R.layout.order_item, parent, false );
+        RecyclerView.ViewHolder viewHolder = new ViewHolder( orderItemView );
+        Log.d( TAG, "onCreateViewHolder: new holder with type: " + viewType );
+        return viewHolder;
+    }
+
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        View itemView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            this.itemView = itemView;
+        }
+    }
+
+
+    private void setOrderCheckStatus(Long id, int position, boolean checkStatus ) {
+        db.setCheckStatus( id, checkStatus );
         notifyItemRemoved( position );
         if( expanded == position ) {
             expanded = NONE;
         }
     }
+
 
     @Override
     public int getItemViewType(int position) {
@@ -146,9 +148,10 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         * 4. Try to expaned last order. It is not expaned.
         * TODO: Fix error basing on the workflow (right way).
         */
-        if (position == orders.size() ) {
+
+        if (position == getItemCount() ) {
             Log.e( TAG, "Position value is out of the array: " + position + ", - correct it to last array's element" );
-            position = orders.size() - 1;
+            position = getItemCount() - 1;
         }
 
         if( expanded == position ) {
@@ -162,10 +165,12 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyItemChanged( position );
     }
 
+    /*
     @Override
     public int getItemCount() {
         return orders.size();
     }
+    */
 
     enum ViewType {
         EXPANDED( 1 ),
