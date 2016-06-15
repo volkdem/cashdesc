@@ -7,6 +7,9 @@ apply plugin: 'war'
 apply plugin: 'jetty'
 
 
+compileJava.options.encoding = 'UTF-8'
+
+
 //JDK 7
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
