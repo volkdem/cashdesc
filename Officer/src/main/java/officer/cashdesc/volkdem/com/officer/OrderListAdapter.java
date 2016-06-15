@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.common.model.Order;
@@ -37,6 +38,7 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
         final View itemView = holder.itemView;
         TextView paymentCodeView = (TextView) itemView.findViewById( R.id.payment_code );
         final Order order = OrderMapper.getOrder( cursor );
+        Log.d( TAG, "onBindViewHolder: bind holder to id: " + order.getId() );
         order.setProducts( OrderMapper.getProducts( db.getProducts( Long.valueOf( order.getId() ) ) ) );
         // TODO: replace id to paymentCode
         paymentCodeView.setText(String.valueOf(order.getId()));
@@ -92,6 +94,7 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
                     setOrderCheckStatus( Long.valueOf( order.getId() ), position, true );
                 }
             });
+
         } else {
             footer.setVisibility( View.GONE );
             arrowImage.setImageResource( R.drawable.arrow_down );
@@ -120,10 +123,14 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
 
     private void setOrderCheckStatus(Long id, int position, boolean checkStatus ) {
         db.setCheckStatus( id, checkStatus );
-        notifyItemRemoved( position );
+        this.changeCursor( db.getOrders( new OrdersSearchCriteria() ) );
+        this.notifyDataSetChanged();
+        this.notifyItemChanged(position);
+        this.notifyItemRemoved( position );
         if( expanded == position ) {
             expanded = NONE;
         }
+
     }
 
 
@@ -139,6 +146,7 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
     private void expandOrCollapse(int position ) {
         Log.d( TAG, "expandOrCollapse position: " + position );
         Log.d( TAG, "expandOrCollapse expaned: " + expanded);
+        Log.d( TAG, "expandOrCollapse itemCount: " + getItemCount() );
 
         /* Code fixes error
         * Error description:
@@ -162,6 +170,7 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
             }
             expanded = position;
         }
+
         notifyItemChanged( position );
     }
 

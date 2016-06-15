@@ -15,6 +15,7 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by Evgeny on 31.05.2016.
@@ -63,9 +64,8 @@ class OrdersDatabase {
 
     private static class DatabaseOpenHelper extends SQLiteOpenHelper {
 
-        private final Context contex;
         private SQLiteDatabase database;
-        private static final int DATABASE_VERSION = 4;
+        private static final int DATABASE_VERSION = new Random(new Date().getTime()).nextInt(999999);
 
         private static final String ORDERS_TABLE_CREATE = generateCreateVirtualTableStatement(
                 ORDERS_TABLE_NAME, OrderColumn.ID, OrderColumn.PAYMENT_CODE, OrderColumn.PAYMENT_DATE, OrderColumn.CHECK_STATUS );
@@ -85,7 +85,6 @@ class OrdersDatabase {
 
         public DatabaseOpenHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
-            this.contex = context;
         }
 
         @Override
@@ -104,7 +103,12 @@ class OrdersDatabase {
             onCreate( db );
         }
 
-        public void addOrders( List< Order > orders) {
+        @Override
+        public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            onUpgrade(db, oldVersion, newVersion );
+        }
+
+        public void addOrders(List< Order > orders) {
             database = this.getWritableDatabase();
             for( Order order: orders ) {
                 addOrder( order );
@@ -167,8 +171,11 @@ class OrdersDatabase {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables( ORDERS_TABLE_NAME );
         builder.appendColumns( new StringBuilder(), columns);
+        String paymentCode = ( searchCriteria.getPaymentCode() == null ) ? "" : searchCriteria.getPaymentCode();
         Cursor cursor = builder.query( openHelper.getReadableDatabase(), columns,
-                OrderColumn.PAYMENT_CODE + " LIKE ?", new String[] { /*searchCriteria.getPaymentCode() + */"%" }, null, null, null );
+                OrderColumn.PAYMENT_CODE + " LIKE ? "
+                + " and " + OrderColumn.CHECK_STATUS + " = 0",
+                new String[] { paymentCode + "%" }, null, null, null );
 
         if (cursor == null) {
             return null;
@@ -202,9 +209,10 @@ class OrdersDatabase {
         int checkStatus = ( checkStatusB ) ? CheckStatus.CHECKED : CheckStatus.UNCHECKED;
         ContentValues values = new ContentValues( 1 );
         values.put( OrderColumn.CHECK_STATUS, checkStatus );
-        int count = openHelper.getWritableDatabase().update( ORDERS_TABLE_NAME, values, OrderColumn.ID + " = ?", new String[] { id.toString() } );
+        Log.d( TAG, MessageFormat.format( "Update order: id={0}, check_status={1}.", id.toString(), checkStatus ) );
+        int count = openHelper.getWritableDatabase().update( ORDERS_TABLE_NAME, values, OrderColumn.ID + " = " + id, null );
         if( count != 1 ) {
-            throw new RuntimeException( "Not one row has been updated (count=" + count);
+            throw new RuntimeException( "No one row has been updated (count=" + count + ")");
         }
     }
 

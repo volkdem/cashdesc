@@ -20,9 +20,8 @@ public class OrderMapper {
     public static Order getOrder(Cursor cursor ) {
         Order order = new Order();
         int columnIndex = 0;
-        order.setId( String.valueOf( cursor.getLong( columnIndex++ ) ) );
-        // TODO get payment and set payment code instead of second ID
-        order.setId( String.valueOf( cursor.getLong( columnIndex++ ) ) );
+        order.setId( cursor.getLong( columnIndex++ ) );
+        order.setPaymentCode( cursor.getInt( columnIndex++ ) );
         order.setPaymentDate( parseDatetime( cursor.getString( columnIndex ++ )) );
         order.setCheckStatus( ( cursor.getInt( columnIndex++ ) == OrdersDatabase.CheckStatus.CHECKED ) ? true : false);
         return order;

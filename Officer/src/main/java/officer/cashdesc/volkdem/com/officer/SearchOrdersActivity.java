@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 
 import com.common.model.Order;
 import com.common.model.Product;
-
 import java.util.List;
 import java.util.Map;
 
@@ -36,12 +35,12 @@ public class SearchOrdersActivity extends AppCompatActivity {
         orderListView.setLayoutManager( orderListLayoutManager );
 
         // TODO: remove stub
-        List< Order > orders = OrderFactory.generateOrders( 10, 5 );
+        List< Order > orders = OrderFactory.generateOrders( 3, 5 );
 
         OrdersDatabase ordersDB = new OrdersDatabase( this );
         ordersDB.addOrders( orders );
 
-        OrderListAdapter orderListAdapter = new OrderListAdapter( ordersDB );
+        orderListAdapter = new OrderListAdapter( ordersDB );
         orderListView.setAdapter( orderListAdapter );
 
         orderListAdapter.notifyDataSetChanged();

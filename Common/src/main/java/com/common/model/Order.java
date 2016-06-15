@@ -143,4 +143,9 @@ public class Order implements Serializable {
     public void setCheckStatus(boolean checkStatus) {
         this.checkStatus = checkStatus;
     }
+
+    @JsonIgnore
+    public void setCheckStatus(int checkStatus) {
+        this.checkStatus = ( checkStatus == 0 ) ? false : true;
+    }
 }
