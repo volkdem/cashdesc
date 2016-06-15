@@ -126,8 +126,7 @@ class OrdersDatabase {
 
             ContentValues initialValues = new ContentValues();
             initialValues.put( OrderColumn.ID, order.getId() );
-            // TODO: replace order.getId() to original payment code
-            initialValues.put( OrderColumn.PAYMENT_CODE, order.getId() );
+            initialValues.put( OrderColumn.PAYMENT_CODE, order.getPaymentCode() );
             initialValues.put( OrderColumn.PAYMENT_DATE, OrderMapper.formatDatetime( order.getPaymentDate() ) );
             // TODO: get check status from the Order
             int checkStatus = ( order.isCheckStatus() ) ? CheckStatus.CHECKED : CheckStatus.UNCHECKED;

@@ -20,6 +20,7 @@ import java.util.Map;
 public class SearchOrdersActivity extends AppCompatActivity {
     private static final String TAG = SearchOrdersActivity.class.getName();
     private OrderListAdapter orderListAdapter = null;
+    OrdersSearchCriteria searchCriteria = new OrdersSearchCriteria();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,19 +36,19 @@ public class SearchOrdersActivity extends AppCompatActivity {
         orderListView.setLayoutManager( orderListLayoutManager );
 
         // TODO: remove stub
-        List< Order > orders = OrderFactory.generateOrders( 3, 5 );
+        List< Order > orders = OrderFactory.generateOrders( 30, 5 );
 
         OrdersDatabase ordersDB = new OrdersDatabase( this );
         ordersDB.addOrders( orders );
 
-        orderListAdapter = new OrderListAdapter( ordersDB );
+        orderListAdapter = new OrderListAdapter( ordersDB, searchCriteria );
         orderListView.setAdapter( orderListAdapter );
 
         orderListAdapter.notifyDataSetChanged();
 
 
 
-        OrdersSearchCriteria searchCriteria = new OrdersSearchCriteria();
+
         int position = 0;
         for( ; position < orders.size(); position ++ ) {
             Order order = orders.get( position );

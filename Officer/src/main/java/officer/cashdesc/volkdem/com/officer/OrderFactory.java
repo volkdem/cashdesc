@@ -14,6 +14,7 @@ import java.util.Random;
  * Created by Evgeny on 21.05.2016.
  */
 public class OrderFactory {
+    private static long id = 0;
     private static Random random = new Random( );
 
     private static Product[] products = new Product[] {
@@ -61,17 +62,17 @@ public class OrderFactory {
     public static List< Order > generateOrders( int count, int maxOrderSize ) {
         List< Order > orders = new ArrayList<>( count );
         for( int i = 0; i < count; i++ ) {
-            orders.add( generateOrder( random.nextInt( maxOrderSize ) ) );
+            orders.add( generateOrder( i,  random.nextInt( maxOrderSize ) ) );
         }
 
         return orders;
     }
 
-    public static Order generateOrder( int size ) {
+    public static Order generateOrder( int id, int size ) {
 
         Order order = new Order();
-        // TODO: id replace to paymentCode
-        order.setId(Long.valueOf( random.nextInt( 100 ) ) );
+        order.setId( Long.valueOf( id ) );
+        order.setPaymentCode( random.nextInt( 100 ) );
         Calendar date = Calendar.getInstance();
         date.set( Calendar.DAY_OF_MONTH, random.nextInt( 31 ));
         order.setPaymentDate( date.getTime() );

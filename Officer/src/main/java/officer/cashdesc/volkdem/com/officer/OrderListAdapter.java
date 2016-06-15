@@ -26,9 +26,11 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
     private final int NONE = -1;
     private int expanded = NONE;
     private OrdersDatabase db;
+    private OrdersSearchCriteria searchCriteria = null;
 
-    public OrderListAdapter( OrdersDatabase db) {
-        super(db.getOrders( new OrdersSearchCriteria() ) );
+    public OrderListAdapter( OrdersDatabase db, OrdersSearchCriteria searchCriteria) {
+        super(db.getOrders( searchCriteria ) );
+        this.searchCriteria = searchCriteria;
         this.db = db;
     }
 
@@ -41,7 +43,7 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
         Log.d( TAG, "onBindViewHolder: bind holder to id: " + order.getId() );
         order.setProducts( OrderMapper.getProducts( db.getProducts( Long.valueOf( order.getId() ) ) ) );
         // TODO: replace id to paymentCode
-        paymentCodeView.setText(String.valueOf(order.getId()));
+        paymentCodeView.setText(String.valueOf(order.getPaymentCode()));
 
         // TODO: move dataFormat to adapters's property
         SimpleDateFormat dateFormat = new SimpleDateFormat( "dd.MM.yyyy HH:mm");
@@ -123,9 +125,8 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
 
     private void setOrderCheckStatus(Long id, int position, boolean checkStatus ) {
         db.setCheckStatus( id, checkStatus );
-        this.changeCursor( db.getOrders( new OrdersSearchCriteria() ) );
+        this.changeCursor( db.getOrders( searchCriteria ) );
         this.notifyDataSetChanged();
-        this.notifyItemChanged(position);
         this.notifyItemRemoved( position );
         if( expanded == position ) {
             expanded = NONE;
