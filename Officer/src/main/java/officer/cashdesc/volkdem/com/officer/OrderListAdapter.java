@@ -206,4 +206,10 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
         }
 
     }
+
+    public void setSearchCriteria(OrdersSearchCriteria searchCriteria) {
+        this.searchCriteria = searchCriteria;
+        this.changeCursor( db.getOrders( searchCriteria ) );
+        notifyDataSetChanged();
+    }
 }
