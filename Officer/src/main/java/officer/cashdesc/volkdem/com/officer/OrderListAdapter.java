@@ -126,7 +126,6 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
     private void setOrderCheckStatus(Long id, int position, boolean checkStatus ) {
         db.setCheckStatus( id, checkStatus );
         this.changeCursor( db.getOrders( searchCriteria ) );
-        this.notifyDataSetChanged();
         this.notifyItemRemoved( position );
         if( expanded == position ) {
             expanded = NONE;
