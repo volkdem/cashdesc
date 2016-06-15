@@ -58,8 +58,7 @@ public class GetProductInfoRest {
                 }
             }
         }
-        String ifNothingHappendEventially = "Could not process request with store id " + storeId + " product barcode " + productBarcode + ", maybe product barcode is wrong";
-        return Response.status(500).entity(ifNothingHappendEventially).build();
+        return null;
     }
 
 
