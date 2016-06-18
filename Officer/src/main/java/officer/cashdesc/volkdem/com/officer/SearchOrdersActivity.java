@@ -11,6 +11,8 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.common.model.Order;
 import com.common.model.Product;
@@ -35,8 +37,21 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
         RecyclerView.LayoutManager orderListLayoutManager = new LinearLayoutManager( this );
         orderListView.setLayoutManager( orderListLayoutManager );
 
+        LinearLayout extendedSearch = (LinearLayout) findViewById(R.id.extended_search );
+        extendedSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout searchPanel = (LinearLayout) findViewById( R.id.search_panel );
+                if(  searchPanel.getVisibility() == View.GONE ) {
+                    searchPanel.setVisibility( View.VISIBLE );
+                } else {
+                    searchPanel.setVisibility( View.GONE );
+                }
+            }
+        });
+
         // TODO: remove stub
-        List< Order > orders = OrderFactory.generateOrders( 1000, 5 );
+        List< Order > orders = OrderFactory.generateOrders( 100, 5 );
 
         OrdersDatabase ordersDB = new OrdersDatabase( this );
         ordersDB.addOrders( orders );

@@ -9,4 +9,7 @@
     <dimen name="product_item_text_size">25sp</dimen>
     <dimen name="product_item_margin">15dp</dimen>
     <dimen name="arrow_size">25dp</dimen>
+    <dimen name="date_height">50dp</dimen>
+    <dimen name="date_width">100dp</dimen>
+    <dimen name="main_text_size">20sp</dimen>
 </resources>
