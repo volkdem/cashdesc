@@ -6,6 +6,7 @@ import com.common.model.Store;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -15,7 +16,7 @@ import java.util.Observer;
  */
 public class OrderWrapper extends Observable {
     private Order order;
-    private ArrayList< Product > productOrder = new ArrayList<>();
+    private List< Product > productOrder = new ArrayList<>();
 
     public OrderWrapper(Order order) {
         this.order = order;
@@ -119,5 +120,27 @@ public class OrderWrapper extends Observable {
     public void notifyObservers(Object data) {
         super.setChanged();
         super.notifyObservers(data);
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder( Order order) {
+        List< Product > newProductOrder = new ArrayList<>( productOrder );
+        for( Product product: order.getProducts().keySet() ) {
+            for( int i = 0; i < productOrder.size(); i++ ) {
+                if( productOrder.get( i ).getBarcode().equals( product.getBarcode()  ) ) {
+                    newProductOrder.set(i, product);
+                }
+            }
+        }
+
+        this.productOrder = newProductOrder;
+        this.order = order;
+    }
+
+    public Object getPaymentCode() {
+        return order.getPaymentCode();
     }
 }

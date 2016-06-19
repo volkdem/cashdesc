@@ -77,6 +77,11 @@ public class Product implements Serializable {
     }
 
     @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
     public int hashCode() {
         int result = productId != null ? productId.hashCode() : 0;
         result = 31 * result + (productName != null ? productName.hashCode() : 0);

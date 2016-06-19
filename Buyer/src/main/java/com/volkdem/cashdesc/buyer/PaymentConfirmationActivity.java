@@ -18,7 +18,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.common.jackson.ProductDeserializer;
+import com.common.model.Order;
 import com.volkdem.cashdesc.R;
+import com.volkdem.cashdesc.buyer.communication.requests.CustomPostRequst;
 import com.volkdem.cashdesc.buyer.model.OrderWrapper;
 import com.volkdem.cashdesc.buyer.utils.CashDescUtil;
 import com.volkdem.cashdesc.buyer.utils.Const;
@@ -50,7 +53,7 @@ public class PaymentConfirmationActivity extends AppCompatActivity implements Ob
         ListView prodcutListView = (ListView) findViewById(R.id.product_list);
         prodcutListView.setAdapter( new ProductListAdapter(StaticContainer.getOrder() ));
 
-        OrderWrapper order = StaticContainer.getOrder();
+        final OrderWrapper order = StaticContainer.getOrder();
         updateSum( order.getCost() );
 
         TextView storeInfo = (TextView) findViewById( R.id.store_info );
@@ -63,12 +66,13 @@ public class PaymentConfirmationActivity extends AppCompatActivity implements Ob
             @Override
             public void onClick(View v) {
                 RequestQueue paymentRequestQueue = Volley.newRequestQueue(PaymentConfirmationActivity.this);
-                StringRequest paymentRequest = new StringRequest(Request.Method.GET, Const.URL,
-                        new Response.Listener<String>() {
+                CustomPostRequst<Order, Order> paymentRequest = new CustomPostRequst<Order, Order>(Order.class, getPayUrl(), order.getOrder(), new ProductDeserializer(),
+                        new Response.Listener<Order>() {
 
                             @Override
-                            public void onResponse(String paymentCode) {
-                                goToSuccessPaymentActivity( paymentCode );
+                            public void onResponse(Order updatedOrder) {
+                                order.setOrder( updatedOrder );
+                                goToSuccessPaymentActivity( String.valueOf( updatedOrder.getPaymentCode() ) );
                             }
                         },
 
@@ -85,15 +89,14 @@ public class PaymentConfirmationActivity extends AppCompatActivity implements Ob
                 paymentRequestQueue.add( paymentRequest );
             }
         });
+    }
 
-
+    private String getPayUrl() {
+        return Const.URL + "pay";
     }
 
     private void goToSuccessPaymentActivity( String paymentCode ) {
         Intent goToSusscessPayment = new Intent( PaymentConfirmationActivity.this, PaymentSuccessActivity.class );
-        // TODO get from the response
-        paymentCode = "64";
-        goToSusscessPayment.putExtra( PAYMENT_CODE, paymentCode );
         goToSusscessPayment.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
         startActivity( goToSusscessPayment );
         finish();
