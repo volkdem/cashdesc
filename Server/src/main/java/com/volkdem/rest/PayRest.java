@@ -3,13 +3,13 @@ package com.volkdem.rest;
 import com.common.jackson.ProductDeserializer;
 import com.common.model.Order;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.volkdem.storage.PaymentCodePool;
+import com.volkdem.storage.OrderIdPool;
+import com.volkdem.storage.PayPoolIteration;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.util.Random;
 
 /**
  * Created by Vadim on 19.02.2016.
@@ -30,7 +30,7 @@ public class PayRest {
 
         if(orderJSON == null) {
             try {
-                throw new Exception("String JSON order is null and cannot be used...");
+                throw new Exception("JSON Order is null и не может быть корректно обработан.");
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -48,12 +48,15 @@ public class PayRest {
 
             theOrder = mapper.readValue(orderJSON, Order.class);
 
-            theOrder.setPaymentCode(new PaymentCodePool().getPayCodeFromPool());
+
+            theOrder.setPaymentCode(new PayPoolIteration().getCodeFromPool());
+            theOrder.setId(Long.valueOf(new OrderIdPool().getCodeFromPool()));
+
 
             boolean isProductsNotExist = theOrder.getProducts().isEmpty();
 
             if(isProductsNotExist) {
-                String out = "Nothing to pay for, no products found" + theOrder.getProducts().toString();
+                String out = "Невозможно соверщить оплату, продукт не найден: " + theOrder.getProducts().toString();
                 return Response.status(500).entity(out).build();
             } else {
                 jsonInString = mapper.writeValueAsString(theOrder);
