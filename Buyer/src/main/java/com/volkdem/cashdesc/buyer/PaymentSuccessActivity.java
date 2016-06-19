@@ -17,6 +17,8 @@ import com.volkdem.cashdesc.buyer.model.OrderWrapper;
 import com.volkdem.cashdesc.buyer.utils.Const;
 import com.volkdem.cashdesc.buyer.utils.StaticContainer;
 
+import java.text.MessageFormat;
+
 public class PaymentSuccessActivity extends AppCompatActivity  {
     private static final String TAG = PaymentSuccessActivity.class.getSimpleName();
     private MainMenu mainMenu;
@@ -32,13 +34,12 @@ public class PaymentSuccessActivity extends AppCompatActivity  {
 
         mainMenu = new MainMenu(this);
 
-        String paymentCode = this.getIntent().getStringExtra( PaymentConfirmationActivity.PAYMENT_CODE );
-        Log.d( TAG, "Payment code: " + paymentCode );
+        OrderWrapper order = StaticContainer.getOrder();
+        Log.d( TAG, MessageFormat.format("Payment code: {0}, id: {1}.", order.getPaymentCode(), order.getId() ) );
 
         TextView paymentCodeView = (TextView) findViewById( R.id.payment_code );
-        paymentCodeView.setText( paymentCode );
+        paymentCodeView.setText( String.valueOf( order.getPaymentCode() ) );
 
-        OrderWrapper order = StaticContainer.getOrder();
         Store store = order.getStore();
 
         String storeInfo =  getResources().getString( R.string.store_info, new Object[] { store.getName(), store.getAddress() } );
