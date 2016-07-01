@@ -1,4 +1,4 @@
-package com.volkdem.storage;
+package com.volkdem.requirments;
 
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class PayPoolIteration implements IPayPool {
       empty and we need to generate new bulk of files
     */
     private static int current_pool_size = -1;
-    private static final int DEFAULT_NUM_AMOUNT_TO_INCREMENT_INPOOL = 50;
+    private static final int DEFAULT_NUM_AMOUNT_TO_INCREMENT_INPOOL = 20;
 
 
     static

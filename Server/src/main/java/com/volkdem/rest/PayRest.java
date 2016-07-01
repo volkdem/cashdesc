@@ -3,8 +3,9 @@ package com.volkdem.rest;
 import com.common.jackson.ProductDeserializer;
 import com.common.model.Order;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.volkdem.storage.OrderIdPool;
-import com.volkdem.storage.PayPoolIteration;
+import com.volkdem.requirments.OrderIdPool;
+import com.volkdem.requirments.PayPoolIteration;
+import com.volkdem.storage.PaymentsSaver;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -60,6 +61,8 @@ public class PayRest {
                 return Response.status(500).entity(out).build();
             } else {
                 jsonInString = mapper.writeValueAsString(theOrder);
+                PaymentsSaver paymentsSaver = new PaymentsSaver(theOrder);
+                paymentsSaver.saveOrderToMemory();
             }
 
         } catch (IOException e) {

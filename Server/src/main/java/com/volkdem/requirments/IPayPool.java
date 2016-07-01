@@ -1,4 +1,4 @@
-package com.volkdem.storage;
+package com.volkdem.requirments;
 
 /**
  * Created by Vadim on 13.06.2016.
