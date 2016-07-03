@@ -143,4 +143,8 @@ public class OrderWrapper extends Observable {
     public Object getPaymentCode() {
         return order.getPaymentCode();
     }
+
+    public boolean isCheckStatus() {
+        return order.isCheckStatus();
+    }
 }

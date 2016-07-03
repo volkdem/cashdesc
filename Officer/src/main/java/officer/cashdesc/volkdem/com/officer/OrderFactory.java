@@ -1,5 +1,7 @@
 package officer.cashdesc.volkdem.com.officer;
 
+import android.util.Log;
+
 import com.common.model.Order;
 import com.common.model.Product;
 
@@ -74,9 +76,9 @@ public class OrderFactory {
         order.setId( Long.valueOf( id ) );
         order.setPaymentCode( random.nextInt( 100 ) );
         Calendar date = Calendar.getInstance();
-        date.set( Calendar.DAY_OF_MONTH, random.nextInt( 31 ));
+        date.add( Calendar.MINUTE, - random.nextInt( 60 ));
         order.setPaymentDate( date.getTime() );
-        order.setCheckStatus( ( random.nextInt(1) == 0 ) ? false : true );
+        order.setCheckStatus( ( random.nextInt(2) == 1 ) ? false : true );
 
         for( int i = 0; i < size + 1; i++ ) {
             order.addProduct( getProduct() );

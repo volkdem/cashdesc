@@ -137,7 +137,7 @@ class OrdersDatabase {
                 database.insert(ORDERS_TABLE_NAME, null, initialValues);
 
                 for (Map.Entry product : order.getProducts().entrySet()) {
-                    addProduct(new Long(order.getId()), (Product) product.getKey(), (Integer) product.getValue());
+                    addProduct(order.getId(), (Product) product.getKey(), (Integer) product.getValue());
                 }
                 database.setTransactionSuccessful();
             } catch (Exception e) {
@@ -171,9 +171,12 @@ class OrdersDatabase {
         builder.setTables( ORDERS_TABLE_NAME );
         builder.appendColumns( new StringBuilder(), columns);
         String paymentCode = ( searchCriteria.getPaymentCode() == null ) ? "" : searchCriteria.getPaymentCode();
-        Cursor cursor = builder.query( openHelper.getReadableDatabase(), columns,
+        /*Cursor cursor = builder.query( openHelper.getReadableDatabase(), columns,
                 OrderColumn.PAYMENT_CODE + " LIKE ? "
-                + " and " + OrderColumn.CHECK_STATUS + " = 0",
+                + " and " + OrderColumn.CHECK_STATUS + " = " + CheckStatus.CHECKED,
+                new String[] { paymentCode + "%" }, null, null, null );*/
+        Cursor cursor = builder.query( openHelper.getReadableDatabase(), columns,
+                OrderColumn.PAYMENT_CODE + " LIKE ? ",
                 new String[] { paymentCode + "%" }, null, null, null );
 
         if (cursor == null) {

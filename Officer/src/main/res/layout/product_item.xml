@@ -10,16 +10,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_toLeftOf="@+id/product_count"
+        android:layout_marginRight="@dimen/product_text_margin_right"
+        android:layout_marginLeft="@dimen/product_text_margin_left"/>
 
     <TextView
         style="@style/ProductItemText"
-        android:id="@+id/product_count"
+        android:id="@id/product_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
 
 </RelativeLayout>

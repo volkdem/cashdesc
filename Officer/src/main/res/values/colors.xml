@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="grey">#DDDDDD</color>
+    <color name="newOrder">#F87877</color>
+    <color name="expiredOrder">#F1F1F1</color>
+    <color name="approvedOrder">#81C97D</color>
 </resources>
