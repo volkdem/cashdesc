@@ -33,7 +33,7 @@ public class GetProductInfoRest {
         System.out.println("Store is exist: " + isStoreExist);
 
         if(!isStoreExist) {
-            String out = "Store not found with id: " + storeId;
+            String out = "Мазазин не найден с id: " + storeId;
             return Response.status(500).entity(out).build();
         } else {
 

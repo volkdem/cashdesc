@@ -148,4 +148,6 @@ public class Order implements Serializable {
     public void setCheckStatus(int checkStatus) {
         this.checkStatus = ( checkStatus == 0 ) ? false : true;
     }
+
+
 }

@@ -1,18 +1,21 @@
 package com.volkdem.storage;
 
+import com.common.model.Order;
 import com.common.model.Product;
 import com.common.model.Store;
+import com.sun.javafx.scene.control.TableColumnComparatorBase;
+import sun.reflect.generics.tree.Tree;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * Created by Vadim on 22.02.2016.
  */
 public class StorageItems {
+
 
 
 
@@ -25,6 +28,10 @@ public class StorageItems {
         private static Product napkin = new Product();
         private static Product chocolate = new Product();
         private static Product soap = new Product();
+
+
+        private static TreeMap<Timestamp, Order> paidOrders = new TreeMap<Timestamp, Order>(new TimeTreeMapComparator());
+
 
 
         static {
@@ -66,6 +73,8 @@ public class StorageItems {
 
                 storageStore.put(1L, testStore);
 
+                PaymentsSaver.saveOrdersWhileShutDown();
+
         }
 
 
@@ -81,10 +90,14 @@ public class StorageItems {
                 return storageProduct;
         }
 
-        public static void setStorageProduct(Map<String, Product> storageProduct) {
-                StorageItems.storageProduct = storageProduct;
-        }
+        public static void setStorageProduct(Map<String, Product> storageProduct) { StorageItems.storageProduct = storageProduct; }
 
+
+        public static TreeMap<Timestamp, Order> getPaidOrders() { return paidOrders; }
+
+        public static void setPaidOrderMap(TreeMap<Timestamp, Order> orderMap) { paidOrders = orderMap; }
+
+        public static void setPaidOrder(Order paidOrder) { paidOrders.put(new Timestamp(new Date().getTime()), paidOrder); }
 
 
 }
