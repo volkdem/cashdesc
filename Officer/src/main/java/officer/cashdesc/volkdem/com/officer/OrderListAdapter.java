@@ -15,7 +15,9 @@ import android.widget.TextView;
 import com.common.model.Order;
 import com.common.model.Product;
 
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Map;
 
 /**
@@ -38,8 +40,13 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
     public void onBindViewHolderCursor(RecyclerView.ViewHolder holder, final Cursor cursor, final int position) {
         Log.d( TAG, "onBindViewHolder: bind holder to position: " + position );
         final View itemView = holder.itemView;
-        TextView paymentCodeView = (TextView) itemView.findViewById( R.id.payment_code );
         final Order order = OrderMapper.getOrder( cursor );
+        Log.d( TAG, " id=" + order.getId()  + ", code=" + order.getPaymentCode() + ", status=" + order.isCheckStatus() );
+
+        itemView.setBackgroundResource( getOrderColor( order ) );
+
+        TextView paymentCodeView = (TextView) itemView.findViewById( R.id.payment_code );
+
         Log.d( TAG, "onBindViewHolder: bind holder to id: " + order.getId() );
         order.setProducts( OrderMapper.getProducts( db.getProducts( Long.valueOf( order.getId() ) ) ) );
         // TODO: replace id to paymentCode
@@ -49,6 +56,9 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
         SimpleDateFormat dateFormat = new SimpleDateFormat( "dd.MM.yyyy HH:mm");
         TextView paymentDateView = (TextView) itemView.findViewById( R.id.payment_date );
         paymentDateView.setText( dateFormat.format( order.getPaymentDate() ) );
+
+        TextView orderSizePostfixView = (TextView) itemView.findViewById( R.id.order_size_postfix );
+        orderSizePostfixView.setText( getOrderSizePrefixId( order ) );
 
         TextView orderSize = (TextView) itemView.findViewById( R.id.order_size );
         orderSize.setText( String.valueOf( order.getTotalSize() ) );
@@ -63,12 +73,10 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
         itemView.setOnClickListener( itemClickListener );
 
         View footer = itemView.findViewById( R.id.order_footer );
-        ImageView arrowImage = (ImageView) itemView.findViewById( R.id.arrow );
 
         // Fill order footer
         if( holder.getItemViewType() == ViewType.EXPANDED.getCode() ) {
             footer.setVisibility( View.VISIBLE );
-            arrowImage.setImageResource( R.drawable.arrow_up );
 
             LinearLayout productListView = (LinearLayout) itemView.findViewById( R.id.product_list );
             productListView.removeAllViews();
@@ -99,8 +107,37 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
 
         } else {
             footer.setVisibility( View.GONE );
-            arrowImage.setImageResource( R.drawable.arrow_down );
         }
+    }
+
+    private int getOrderColor(Order order) {
+        if ( order.isCheckStatus() ) {
+            return R.color.approvedOrder;
+        } else if( isOrderExpired( order ) ) {
+            return R.color.expiredOrder;
+        } else {
+            return R.color.newOrder;
+        }
+    }
+
+    private int getOrderSizePrefixId(Order order) {
+        int tail = order.getTotalSize() % 10;
+        if( tail == 1 ) {
+            return R.string.good1;
+        } else if( 1 < tail && tail < 5 ) {
+            return R.string.good2;
+        } else {
+            return R.string.good5;
+        }
+    }
+
+    private boolean isOrderExpired(Order order) {
+        final int expirationTime = 30; // in minutes
+        Calendar cur = Calendar.getInstance();
+        Calendar payDate = Calendar.getInstance();
+        payDate.setTime( order.getPaymentDate() );
+        payDate.add(Calendar.MINUTE, 30 );
+        return cur.compareTo( payDate ) > 0;
     }
 
     @Override
