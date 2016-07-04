@@ -15,16 +15,18 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/payment_code_left_margin"/>
 
         <TextView
             style="@style/OrderItemText"
             android:id="@+id/payment_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/payment_code"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/datetime_left_margin"
+            android:paddingLeft="@dimen/datetime_left_margin"
             />
 
         <TextView

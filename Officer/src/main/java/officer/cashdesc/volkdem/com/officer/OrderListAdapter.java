@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
 
+import officer.cashdesc.volkdem.com.officer.utils.DateUtil;
+
 /**
  * Created by Evgeny on 21.05.2016.
  */
@@ -52,10 +54,8 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
         // TODO: replace id to paymentCode
         paymentCodeView.setText(String.valueOf(order.getPaymentCode()));
 
-        // TODO: move dataFormat to adapters's property
-        SimpleDateFormat dateFormat = new SimpleDateFormat( "dd.MM.yyyy HH:mm");
         TextView paymentDateView = (TextView) itemView.findViewById( R.id.payment_date );
-        paymentDateView.setText( dateFormat.format( order.getPaymentDate() ) );
+        paymentDateView.setText( DateUtil.format( order.getPaymentDate() ) );
 
         TextView orderSizePostfixView = (TextView) itemView.findViewById( R.id.order_size_postfix );
         orderSizePostfixView.setText( getOrderSizePrefixId( order ) );
