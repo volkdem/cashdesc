@@ -104,7 +104,7 @@ public class PaymentsSaver {
 
         System.out.println("ShutDown hook активирован, вызываем getOrderHistory()");
         if(getOrderHistory()) {
-            System.out.println("Найден и загружен список заказов сохраненых на локальном диске.");
+            System.out.println("Найден и загружен список заказов сохраненых на локальном диске. Размер равен: " + StorageItems.getPaidOrders().size());
         } else {
             System.out.println("Не найден список заказов сохраненный на локальном диске. Будет создан новый.");
         }

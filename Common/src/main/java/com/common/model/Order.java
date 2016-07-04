@@ -90,13 +90,19 @@ public class Order implements Serializable {
         return products;
     }
 
+
     @Override
     public String toString() {
         return "Order{" +
-                "orderID='" + id + '\'' +
-                ", itemsList=" + products +
+                "id=" + id +
+                ", paymentCode=" + paymentCode +
+                ", store=" + store +
+                ", paymentDate=" + paymentDate +
+                ", checkStatus=" + checkStatus +
+                ", products=" + products +
                 '}';
     }
+
 
     @JsonIgnore
     public boolean isEmpty() {

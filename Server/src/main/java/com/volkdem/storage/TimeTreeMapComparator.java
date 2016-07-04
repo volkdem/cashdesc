@@ -13,6 +13,6 @@ public class TimeTreeMapComparator implements Comparator<Timestamp>, Serializabl
 
     @Override
     public int compare(Timestamp timeStamp1, Timestamp timeStamp2) {
-        return timeStamp1.before(timeStamp1) ? 1 : -1;
+        return timeStamp1.before(timeStamp1) ? 0 : -1;
     }
 }
