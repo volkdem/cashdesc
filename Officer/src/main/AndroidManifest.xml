@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="officer.cashdesc.volkdem.com.officer" >
 
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,6 +26,36 @@
             <meta-data android:name="android.app.searchable"
                 android:resource="@xml/order_searchable"/>
         </activity>
+
+        <service android:name=".services.AuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator"/>
+        </service>
+
+        
+        <service android:name="officer.cashdesc.volkdem.com.officer.services.OrderSyncService"
+            android:exported="true"
+            android:process=":sync">
+
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/orders_sync_adapter"/>
+        </service>
+
+        <provider
+            android:authorities="officer.cashdesc.volkdem.com.officer.provider"
+            android:name="officer.cashdesc.volkdem.com.officer.OrderProvider"
+            android:exported="false"
+            android:syncable="true"/>
+
     </application>
 
 </manifest>

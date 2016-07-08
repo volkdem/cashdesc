@@ -1,6 +1,10 @@
 package officer.cashdesc.volkdem.com.officer;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.SearchManager;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -22,11 +26,38 @@ import java.util.Map;
 public class SearchOrdersActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
     private static final String TAG = SearchOrdersActivity.class.getName();
     private OrderListAdapter orderListAdapter = null;
-    OrdersSearchCriteria searchCriteria = new OrdersSearchCriteria();
+    private OrdersSearchCriteria searchCriteria = new OrdersSearchCriteria();
+
+    private static final String AUTHORITY = "officer.cashdesc.volkdem.com.officer.provider";
+    private static final String ACCOUNT_TYPE = "officer.cashdesc.volkdem";
+    private static final String ACCOUNT = "officer";
+    private Account account;
+
+
+    private ContentResolver contentResolver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        account = createOrdersSyncAccount(this);
+
+        contentResolver = getContentResolver();
+        contentResolver.setSyncAutomatically( account, AUTHORITY, true );
+
+        contentResolver.addPeriodicSync( account, AUTHORITY, Bundle.EMPTY, 1L );
+        contentResolver.setIsSyncable( account, AUTHORITY, 1);
+        contentResolver.requestSync( account, AUTHORITY, Bundle.EMPTY );
+        contentResolver.requestSync( account, AUTHORITY, Bundle.EMPTY );
+        contentResolver.requestSync( account, AUTHORITY, Bundle.EMPTY );
+        contentResolver.requestSync( account, AUTHORITY, Bundle.EMPTY );
+
+
+
+
+
+
+
         setContentView(R.layout.activity_search_orders);
 
         handleIntent( getIntent() );
@@ -103,6 +134,20 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
         searchCriteria.setPaymentCode( query );
         orderListAdapter.setSearchCriteria( searchCriteria );
         return true;
+    }
+
+    private static Account createOrdersSyncAccount(Context context) {
+
+        Account newAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
+        AccountManager accountManager = (AccountManager)context.getSystemService(ACCOUNT_SERVICE);
+        if (accountManager.addAccountExplicitly( newAccount, null, null ) ) {
+
+        } else {
+            Log.e( TAG, "Can not add account");
+            //throw new RuntimeException( "Can not add new account");
+        }
+
+        return newAccount;
     }
 }
 /*s
