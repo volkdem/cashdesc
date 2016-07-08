@@ -44,17 +44,7 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
 
         contentResolver = getContentResolver();
         contentResolver.setSyncAutomatically( account, AUTHORITY, true );
-
-        contentResolver.addPeriodicSync( account, AUTHORITY, Bundle.EMPTY, 1L );
-        contentResolver.setIsSyncable( account, AUTHORITY, 1);
-        contentResolver.requestSync( account, AUTHORITY, Bundle.EMPTY );
-        contentResolver.requestSync( account, AUTHORITY, Bundle.EMPTY );
-        contentResolver.requestSync( account, AUTHORITY, Bundle.EMPTY );
-        contentResolver.requestSync( account, AUTHORITY, Bundle.EMPTY );
-
-
-
-
+        ContentResolver.addPeriodicSync( account, AUTHORITY, Bundle.EMPTY, 1L );
 
 
 
@@ -118,6 +108,8 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
             Log.d( TAG, "handle search, query=" + query );
             searchCriteria.setPaymentCode( query );
             orderListAdapter.setSearchCriteria( searchCriteria );
+
+            forseSyncRequest();
         }
     }
 
@@ -126,6 +118,7 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
     public boolean onQueryTextSubmit(String query) {
         searchCriteria.setPaymentCode( query );
         orderListAdapter.setSearchCriteria( searchCriteria );
+        forseSyncRequest();
         return true;
     }
 
@@ -133,6 +126,7 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
     public boolean onQueryTextChange(String query ) {
         searchCriteria.setPaymentCode( query );
         orderListAdapter.setSearchCriteria( searchCriteria );
+        forseSyncRequest();
         return true;
     }
 
@@ -148,6 +142,13 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
         }
 
         return newAccount;
+    }
+
+    private void forseSyncRequest() {
+        Bundle settingsBugnle = new Bundle();
+        settingsBugnle.putBoolean( ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBugnle.putBoolean( ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        ContentResolver.requestSync( account, AUTHORITY, settingsBugnle );
     }
 }
 /*s
