@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,8 @@ import android.widget.LinearLayout;
 import com.common.model.Order;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import officer.cashdesc.volkdem.com.officer.R;
 
@@ -32,6 +35,8 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
     private static final String ACCOUNT_TYPE = "com.volkdem.ecashier.officer";
     private static final String ACCOUNT = "officer";
     private Account account;
+    private Timer timer = new Timer();
+    private Handler hander = new Handler();
 
 
     private ContentResolver contentResolver;
@@ -81,6 +86,21 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
         orderListView.setAdapter( orderListAdapter );
 
         orderListAdapter.notifyDataSetChanged();
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Log.d( TAG, "Called by timer");
+                hander.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d( TAG, "Called by handler");
+                        SearchOrdersActivity.this.forseSyncRequest();
+                    }
+                });
+            }
+        }, 0, 2000);
+
     }
 
     @Override
