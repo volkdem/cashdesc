@@ -1,0 +1,61 @@
+{
+  "project_info": {
+    "project_number": "226585017849",
+    "project_id": "officer-6ac9b"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226585017849:android:574c0dde7b9e2810",
+        "android_client_info": {
+          "package_name": "com.volkdev.ecashier.officer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqAjt1Z2CYlMfO-T2fXVQxBnPIgQHODBU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226585017849:android:9a555a85f7a3f9cb",
+        "android_client_info": {
+          "package_name": "com.volkdem.ecashier.officer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqAjt1Z2CYlMfO-T2fXVQxBnPIgQHODBU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

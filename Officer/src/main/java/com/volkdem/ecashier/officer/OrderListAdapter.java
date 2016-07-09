@@ -1,4 +1,4 @@
-package officer.cashdesc.volkdem.com.officer;
+package com.volkdem.ecashier.officer;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
@@ -7,20 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.common.model.Order;
 import com.common.model.Product;
 
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
 
-import officer.cashdesc.volkdem.com.officer.utils.DateUtil;
+import officer.cashdesc.volkdem.com.officer.R;
+import com.volkdem.ecashier.officer.utils.DateUtil;
 
 /**
  * Created by Evgeny on 21.05.2016.

@@ -1,4 +1,4 @@
-package officer.cashdesc.volkdem.com.officer;
+package com.volkdem.ecashier.officer;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -6,7 +6,6 @@ import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,17 +18,18 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.common.model.Order;
-import com.common.model.Product;
+
 import java.util.List;
-import java.util.Map;
+
+import officer.cashdesc.volkdem.com.officer.R;
 
 public class SearchOrdersActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
     private static final String TAG = SearchOrdersActivity.class.getName();
     private OrderListAdapter orderListAdapter = null;
     private OrdersSearchCriteria searchCriteria = new OrdersSearchCriteria();
 
-    private static final String AUTHORITY = "officer.cashdesc.volkdem.com.officer.provider";
-    private static final String ACCOUNT_TYPE = "officer.cashdesc.volkdem";
+    private static final String AUTHORITY = "com.volkdem.ecashier.officer.provider";
+    private static final String ACCOUNT_TYPE = "com.volkdem.ecashier.officer";
     private static final String ACCOUNT = "officer";
     private Account account;
 

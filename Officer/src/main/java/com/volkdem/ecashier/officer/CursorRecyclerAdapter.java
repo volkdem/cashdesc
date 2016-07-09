@@ -1,4 +1,4 @@
-package officer.cashdesc.volkdem.com.officer;
+package com.volkdem.ecashier.officer;
 /*
  * The MIT License (MIT)
  *

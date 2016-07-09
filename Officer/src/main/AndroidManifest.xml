@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".SearchOrdersActivity"
+        <activity android:name="com.volkdem.ecashier.officer.SearchOrdersActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +27,7 @@
                 android:resource="@xml/order_searchable"/>
         </activity>
 
-        <service android:name=".services.AuthenticatorService">
+        <service android:name="com.volkdem.ecashier.officer.services.AuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
@@ -37,7 +37,7 @@
         </service>
 
         
-        <service android:name="officer.cashdesc.volkdem.com.officer.services.OrderSyncService"
+        <service android:name="com.volkdem.ecashier.officer.services.OrderSyncService"
             android:exported="true"
             android:process=":sync">
 
@@ -51,8 +51,8 @@
         </service>
 
         <provider
-            android:authorities="officer.cashdesc.volkdem.com.officer.provider"
-            android:name="officer.cashdesc.volkdem.com.officer.OrderProvider"
+            android:authorities="com.volkdem.ecashier.officer.provider"
+            android:name="com.volkdem.ecashier.officer.OrderProvider"
             android:exported="false"
             android:syncable="true"/>
 

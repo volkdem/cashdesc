@@ -1,4 +1,4 @@
-package officer.cashdesc.volkdem.com.officer;
+package com.volkdem.ecashier.officer;
 
 import android.accounts.Account;
 import android.content.AbstractThreadedSyncAdapter;

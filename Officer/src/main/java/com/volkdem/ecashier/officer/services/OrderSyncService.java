@@ -1,11 +1,11 @@
-package officer.cashdesc.volkdem.com.officer.services;
+package com.volkdem.ecashier.officer.services;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import officer.cashdesc.volkdem.com.officer.OrdersSyncAdapter;
+import com.volkdem.ecashier.officer.OrdersSyncAdapter;
 
 /**
  * Created by Evgeny on 07.07.2016.

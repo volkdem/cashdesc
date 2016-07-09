@@ -1,4 +1,4 @@
-package officer.cashdesc.volkdem.com.officer.utils;
+package com.volkdem.ecashier.officer.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
