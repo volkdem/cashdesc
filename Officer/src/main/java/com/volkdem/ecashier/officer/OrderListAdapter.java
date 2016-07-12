@@ -54,9 +54,6 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
         TextView paymentDateView = (TextView) itemView.findViewById( R.id.payment_date );
         paymentDateView.setText( DateUtil.format( order.getPaymentDate() ) );
 
-        TextView orderSizePostfixView = (TextView) itemView.findViewById( R.id.order_size_postfix );
-        orderSizePostfixView.setText( getOrderSizePrefixId( order ) );
-
         TextView orderSize = (TextView) itemView.findViewById( R.id.order_size );
         orderSize.setText( String.valueOf( order.getTotalSize() ) );
 
@@ -117,16 +114,6 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
         }
     }
 
-    private int getOrderSizePrefixId(Order order) {
-        int tail = order.getTotalSize() % 10;
-        if( tail == 1 ) {
-            return R.string.good1;
-        } else if( 1 < tail && tail < 5 ) {
-            return R.string.good2;
-        } else {
-            return R.string.good5;
-        }
-    }
 
     private boolean isOrderExpired(Order order) {
         final int expirationTime = 30; // in minutes

@@ -9,7 +9,5 @@
     <string name="unckeded">Непроверенные</string>
     <string name="checked">Проверенные</string>
     <string name="all">Все</string>
-    <string name="good1">товар</string>
-    <string name="good2">товара</string>
-    <string name="good5">товаров</string>
+    <string name="goods_count">шт.</string>
 </resources>

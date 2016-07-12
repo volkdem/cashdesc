@@ -38,7 +38,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:text="@string/good1"/>
+            android:text="@string/goods_count"/>
 
     </RelativeLayout>
 
