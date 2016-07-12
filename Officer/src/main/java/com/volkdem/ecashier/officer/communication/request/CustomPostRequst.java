@@ -1,20 +1,10 @@
-package com.volkdem.cashdesc.buyer.communication.requests;
+package com.volkdem.ecashier.officer.communication.request;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.common.jackson.ProductDeserializer;
-import com.common.model.Order;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 /**
  * Created by Evgeny on 19.06.2016.
@@ -25,7 +15,7 @@ public class CustomPostRequst<R,A> extends CustomRequst<A> {
 
 
     public CustomPostRequst(Class<A> classOfA, String url, R requestObject, Module module, Response.Listener<A> successlistener, Response.ErrorListener errorlistener) {
-        super(classOfA, Method.POST, url, module, successlistener, errorlistener);
+        super(classOfA, Request.Method.POST, url, module, successlistener, errorlistener);
         this.requestObject = requestObject;
     }
 

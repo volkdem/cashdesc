@@ -63,7 +63,7 @@ public abstract class CursorRecyclerAdapter<VH
 
     public CursorRecyclerAdapter( Cursor cursor) {
         init(cursor);
-        Log.d( "CursorRecyclerAdapter:", "count = " + cursor.getCount() );
+        Log.d( "CursorRecyclerAdapter:", "count = " + ( ( cursor != null ) ? cursor.getCount() : 0 ) );
     }
 
     void init(Cursor c) {

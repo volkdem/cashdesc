@@ -11,7 +11,9 @@ import android.util.Log;
 import com.common.model.Order;
 import com.common.model.Product;
 
+import java.lang.reflect.Array;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +29,21 @@ class OrdersDatabase {
     private static final String PRODUCTS_TABLE_NAME = "PRODUCTS";
 
     private final DatabaseOpenHelper openHelper;
+    private static OrdersDatabase ordersDatabase;
 
-    public OrdersDatabase(Context context) {
+    public static OrdersDatabase getDatabase( Context context ) {
+        if( ordersDatabase == null ) {
+            synchronized ( TAG ) {
+                if( ordersDatabase == null ) {
+                    ordersDatabase = new OrdersDatabase( context );
+                }
+            }
+        }
+
+        return ordersDatabase;
+    }
+
+    private OrdersDatabase(Context context) {
         openHelper = new DatabaseOpenHelper( context );
     }
 
@@ -216,6 +231,26 @@ class OrdersDatabase {
         if( count != 1 ) {
             throw new RuntimeException( "No one row has been updated (count=" + count + ")");
         }
+    }
+
+    public Long getLastOrderId() {
+        final String[] columns = new String[] { OrderColumn.ID };
+
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        builder.setTables( ORDERS_TABLE_NAME );
+        builder.appendColumns( new StringBuilder(), columns);
+        Cursor cursor = builder.query( openHelper.getReadableDatabase(), columns, null, null, null, null, OrderColumn.ID + " desc" );
+
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) {
+            cursor.close();
+            return null;
+        }
+
+        Log.d( TAG, " count: " + cursor.getCount() + " names: " + Arrays.toString( cursor.getColumnNames() ) );
+
+        return cursor.getLong( 0 );
     }
 
 }

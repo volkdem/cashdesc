@@ -1,4 +1,4 @@
-package com.volkdem.cashdesc.buyer.communication.requests;
+package com.volkdem.ecashier.officer.communication.request;
 
 /**
  * Created by Evgeny on 19.06.2016.
@@ -9,34 +9,19 @@ import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.common.jackson.ProductDeserializer;
-import com.common.model.Order;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
-
-import com.android.volley.NetworkResponse;
-import com.android.volley.ParseError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.common.jackson.ProductDeserializer;
-import com.common.model.Order;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
 /**
  * Created by Evgeny on 19.06.2016.
  */
-// TODO: put it into the separate Android library
 public abstract class CustomRequst<A> extends Request<A> {
     private Response.Listener<A> successListener = null;
     private ObjectMapper mapper = new ObjectMapper();
-    public Class<A> classOfA;
+    private Class<A> classOfA;
+    private TypeReference<A> typeReference;
 
 
     public CustomRequst(Class<A> classOfA, int method, String url, Module module, Response.Listener<A> successlistener, Response.ErrorListener errorlistener) {
@@ -44,6 +29,17 @@ public abstract class CustomRequst<A> extends Request<A> {
 
         this.successListener = successlistener;
         this.classOfA = classOfA;
+
+        if( module != null ) {
+            mapper.registerModule(module);
+        }
+    }
+
+    public CustomRequst(TypeReference<A> typeReference, int method, String url, Module module, Response.Listener<A> successlistener, Response.ErrorListener errorlistener) {
+        super(method, url, errorlistener );
+
+        this.successListener = successlistener;
+        this.typeReference= typeReference;
 
         if( module != null ) {
             mapper.registerModule(module);
@@ -60,8 +56,12 @@ public abstract class CustomRequst<A> extends Request<A> {
         try {
             String json = new String(response.data,
                     HttpHeaderParser.parseCharset(response.headers));
-
-            answer = mapper.readValue(json, classOfA );
+            mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+            if( typeReference != null) {
+                answer = mapper.readValue(json, typeReference);
+            } else {
+                answer = mapper.readValue(json, classOfA );
+            }
         } catch (Exception e) {
             ParseError error = new ParseError( e);
             return Response.error(  error );

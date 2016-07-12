@@ -6,6 +6,7 @@ import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.common.model.Order;
 
@@ -26,7 +28,7 @@ import java.util.TimerTask;
 
 import officer.cashdesc.volkdem.com.officer.R;
 
-public class SearchOrdersActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
+public class SearchOrdersActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, View.OnClickListener {
     private static final String TAG = SearchOrdersActivity.class.getName();
     private OrderListAdapter orderListAdapter = null;
     private OrdersSearchCriteria searchCriteria = new OrdersSearchCriteria();
@@ -63,24 +65,11 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
         RecyclerView.LayoutManager orderListLayoutManager = new LinearLayoutManager( this );
         orderListView.setLayoutManager( orderListLayoutManager );
 
-        LinearLayout extendedSearch = (LinearLayout) findViewById(R.id.extended_search );
-        extendedSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LinearLayout searchPanel = (LinearLayout) findViewById( R.id.search_panel );
-                if(  searchPanel.getVisibility() == View.GONE ) {
-                    searchPanel.setVisibility( View.VISIBLE );
-                } else {
-                    searchPanel.setVisibility( View.GONE );
-                }
-            }
-        });
 
-        // TODO: remove stub
-        List< Order > orders = OrderFactory.generateOrders( 100, 5 );
-
-        OrdersDatabase ordersDB = new OrdersDatabase( this );
+        final OrdersDatabase ordersDB = OrdersDatabase.getDatabase( this );
+        List<Order> orders = OrderFactory.generateOrders( 20, 10 );
         ordersDB.addOrders( orders );
+
 
         orderListAdapter = new OrderListAdapter( ordersDB, searchCriteria );
         orderListView.setAdapter( orderListAdapter );
@@ -99,7 +88,7 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
                     }
                 });
             }
-        }, 0, 2000);
+        }, 0, 10000);
 
     }
 
@@ -116,8 +105,11 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem( R.id.search ).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo( getComponentName() ) );
+        searchView.setIconified(false);
+        searchView.setIconifiedByDefault(false);
+        searchView.setClickable(true);
         searchView.setOnQueryTextListener( this );
-
+        searchView.setOnClickListener(this);
         return true;
     }
 
@@ -126,27 +118,24 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
 
             String query = intent.getStringExtra( SearchManager.QUERY );
             Log.d( TAG, "handle search, query=" + query );
-            searchCriteria.setPaymentCode( query );
-            orderListAdapter.setSearchCriteria( searchCriteria );
-
-            forseSyncRequest();
+            onQueryChanged(query);
         }
     }
 
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        searchCriteria.setPaymentCode( query );
-        orderListAdapter.setSearchCriteria( searchCriteria );
-        forseSyncRequest();
-        return true;
+        return onQueryChanged( query );
     }
 
     @Override
     public boolean onQueryTextChange(String query ) {
+        return onQueryChanged( query );
+    }
+
+    private boolean onQueryChanged(String query) {
         searchCriteria.setPaymentCode( query );
         orderListAdapter.setSearchCriteria( searchCriteria );
-        forseSyncRequest();
         return true;
     }
 
@@ -157,6 +146,7 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
         if (accountManager.addAccountExplicitly( newAccount, null, null ) ) {
 
         } else {
+            // TODO: report to server or identify WHY?
             Log.e( TAG, "Can not add account");
             //throw new RuntimeException( "Can not add new account");
         }
@@ -169,6 +159,18 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
         settingsBugnle.putBoolean( ContentResolver.SYNC_EXTRAS_MANUAL, true);
         settingsBugnle.putBoolean( ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         ContentResolver.requestSync( account, AUTHORITY, settingsBugnle );
+    }
+
+    @Override
+    public void onClick(View v) {
+        Log.d( TAG, "onSearchClick()");
+        RelativeLayout searchPanel = (RelativeLayout) findViewById(R.id.extended_search );
+
+        if(  searchPanel.getVisibility() == View.GONE ) {
+            searchPanel.setVisibility( View.VISIBLE );
+        } else {
+            searchPanel.setVisibility( View.GONE );
+        }
     }
 }
 /*s
