@@ -17,4 +17,17 @@
         <item name="android:textSize">@dimen/product_item_text_size</item>
         <item name="android:layout_margin">@dimen/product_item_margin</item>
     </style>
+
+    <style name="SearchOrderFooterText">
+        <item name="android:textSize">@dimen/search_order_footer_text_size</item>
+        <item name="android:textColor">@color/search_order_footer_text</item>
+        <item name="android:layout_marginLeft">@dimen/search_order_footer_text_margin</item>
+        <item name="android:layout_marginRight">@dimen/search_order_footer_text_margin</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+
+
+
 </resources>

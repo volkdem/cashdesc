@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="grey">#DDDDDD</color>
     <color name="newOrder">#F87877</color>
     <color name="expiredOrder">#F1F1F1</color>
     <color name="approvedOrder">#81C97D</color>
+    <color name="search_order_footer_text">#ffffff</color>
 </resources>

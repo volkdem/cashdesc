@@ -10,4 +10,6 @@
     <string name="checked">Проверенные</string>
     <string name="all">Все</string>
     <string name="goods_count">шт.</string>
+    <string name="payed">Оплаченных:</string>
+    <string name="expired">Просроченных:</string>
 </resources>

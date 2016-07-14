@@ -17,4 +17,10 @@
     <dimen name="product_text_margin_right">20dp</dimen>
     <dimen name="product_text_margin_left">50dp</dimen>
     <dimen name="payment_code_left_margin">15dp</dimen>
+    <dimen name="order_status_mark_height">15dp</dimen>
+    <dimen name="order_status_mark_width">10dp</dimen>
+    <dimen name="search_order_footer_padding">10dp</dimen>
+    <dimen name="search_order_footer_text_size">15dp</dimen>
+    <dimen name="search_order_footer_text_margin">5dp</dimen>
+    <dimen name="search_order_footer_delimiter">20dp</dimen>
 </resources>

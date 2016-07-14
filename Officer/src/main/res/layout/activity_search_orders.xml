@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context="com.volkdem.ecashier.officer.SearchOrdersActivity">
 
+    <RelativeLayout
+        android:id="@+id/search_orders_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </RelativeLayout>
+
 
 
     <android.support.v7.widget.RecyclerView
@@ -13,6 +19,8 @@
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/search_orders_header"
+        android:layout_above="@+id/search_orders_footer"
         android:layout_alignParentTop="true"/>
 
     <RelativeLayout
@@ -114,6 +122,60 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@id/search_orders_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:padding="@dimen/search_order_footer_padding">
+
+            <ImageView
+                android:layout_width="@dimen/order_status_mark_width"
+                android:layout_height="@dimen/order_status_mark_height"
+                android:layout_gravity="center_vertical"
+                android:background="@color/approvedOrder"
+                />
+
+            <TextView style="@style/SearchOrderFooterText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/payed"/>
+
+            <TextView style="@style/SearchOrderFooterText"
+                android:id="@+id/payed_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"/>
+
+            <ImageView
+                android:layout_width="@dimen/order_status_mark_width"
+                android:layout_height="@dimen/order_status_mark_height"
+                android:background="@color/expiredOrder"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/search_order_footer_delimiter"/>
+
+            <TextView style="@style/SearchOrderFooterText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/expired"/>
+
+            <TextView style="@style/SearchOrderFooterText"
+                android:id="@+id/expired_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"/>
+        </LinearLayout>
+
+
 
     </RelativeLayout>
 
