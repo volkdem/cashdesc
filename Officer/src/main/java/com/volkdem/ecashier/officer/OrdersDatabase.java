@@ -153,7 +153,6 @@ class OrdersDatabase {
             initialValues.put( OrderColumn.PAYMENT_DATE, OrderMapper.formatDatetime( order.getPaymentDate() ) );
             // TODO: get check status from the Order
             int checkStatus = ( order.isCheckStatus() ) ? CheckStatus.CHECKED : CheckStatus.UNCHECKED;
-            Log.d( TAG, "addOrder(), checkStatus=" + checkStatus );
             initialValues.put( OrderColumn.CHECK_STATUS, checkStatus );
 
             database.beginTransaction();
