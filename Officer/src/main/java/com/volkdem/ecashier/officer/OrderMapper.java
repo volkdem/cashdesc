@@ -1,6 +1,7 @@
 package com.volkdem.ecashier.officer;
 
 import android.database.Cursor;
+import android.provider.ContactsContract;
 
 import com.common.model.Order;
 import com.common.model.Product;
@@ -16,7 +17,10 @@ import java.util.Map;
  * Created by Evgeny on 31.05.2016.
  */
 public class OrderMapper {
-    private static final SimpleDateFormat FULL_DATETIME_FORMAT = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss");
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String TIME_FORMAT = "HH:mm:ss.SSS";
+    private static final SimpleDateFormat FULL_DATETIME_FORMAT = new SimpleDateFormat( DATE_FORMAT + " " + TIME_FORMAT );
+    private static final SimpleDateFormat JUST_DATE_FORMAT = new SimpleDateFormat( DATE_FORMAT );
     public static Order getOrder(Cursor cursor ) {
         Order order = new Order();
         int columnIndex = 0;
@@ -53,6 +57,21 @@ public class OrderMapper {
     public static Date parseDatetime( String date) {
         try {
             return FULL_DATETIME_FORMAT.parse( date );
+        } catch (ParseException e) {
+            // TODO: write error to DB to send it for analyze to server
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public static String formatJustDate(Date date) {
+        return JUST_DATE_FORMAT.format( date );
+    }
+
+    public static Date parseJustDate(String date) {
+        try {
+            return JUST_DATE_FORMAT.parse( date );
         } catch (ParseException e) {
             // TODO: write error to DB to send it for analyze to server
             e.printStackTrace();

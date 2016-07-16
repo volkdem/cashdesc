@@ -10,9 +10,13 @@ import android.util.Log;
 
 import com.common.model.Order;
 import com.common.model.Product;
+import com.volkdem.ecashier.officer.services.OrderSyncService;
 
 import java.lang.reflect.Array;
+import java.text.DateFormat;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -47,9 +51,13 @@ class OrdersDatabase {
         openHelper = new DatabaseOpenHelper( context );
     }
 
-    class CheckStatus {
+    static class CheckStatus {
         public static final int UNCHECKED = 0;
         public static final int CHECKED = 1;
+
+        public static int convertCheckStatus( Boolean checkStatus) {
+            return ( checkStatus ) ? CHECKED : UNCHECKED;
+        }
     }
 
 
@@ -145,6 +153,7 @@ class OrdersDatabase {
             initialValues.put( OrderColumn.PAYMENT_DATE, OrderMapper.formatDatetime( order.getPaymentDate() ) );
             // TODO: get check status from the Order
             int checkStatus = ( order.isCheckStatus() ) ? CheckStatus.CHECKED : CheckStatus.UNCHECKED;
+            Log.d( TAG, "addOrder(), checkStatus=" + checkStatus );
             initialValues.put( OrderColumn.CHECK_STATUS, checkStatus );
 
             database.beginTransaction();
@@ -182,25 +191,95 @@ class OrdersDatabase {
     public Cursor getOrders( OrdersSearchCriteria searchCriteria ) {
         final String[] columns = new String[] { OrderColumn.ID, OrderColumn.PAYMENT_CODE, OrderColumn.PAYMENT_DATE, OrderColumn.CHECK_STATUS };
 
+        return buildQuery( columns, searchCriteria, null, OrderColumn.PAYMENT_DATE + " desc");
+    }
+
+    private Cursor buildQuery( String[] columns, OrdersSearchCriteria searchCriteria, String groupBy, String orderBy ) {
+        Log.d( TAG, MessageFormat.format( "buildQuery(), columns={0}, searchCriteria={1}", Arrays.toString( columns ), searchCriteria ) );
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables( ORDERS_TABLE_NAME );
         builder.appendColumns( new StringBuilder(), columns);
-        String paymentCode = ( searchCriteria.getPaymentCode() == null ) ? "" : searchCriteria.getPaymentCode();
-        /*Cursor cursor = builder.query( openHelper.getReadableDatabase(), columns,
-                OrderColumn.PAYMENT_CODE + " LIKE ? "
-                + " and " + OrderColumn.CHECK_STATUS + " = " + CheckStatus.CHECKED,
-                new String[] { paymentCode + "%" }, null, null, null );*/
-        Cursor cursor = builder.query( openHelper.getReadableDatabase(), columns,
-                OrderColumn.PAYMENT_CODE + " LIKE ? ",
-                new String[] { paymentCode + "%" }, null, null, null );
+        String paymentCodeWhere = OrderColumn.PAYMENT_CODE + " LIKE ? ";
+        String paymentCodeParam = ( searchCriteria.getPaymentCode() == null ) ? "%" : searchCriteria.getPaymentCode() + "%";
+        String checkStatusWhere = ( searchCriteria.getChecked() == null ) ? null : OrderColumn.CHECK_STATUS + " LIKE ? ";
+        String checkStatusParam = ( searchCriteria.getChecked() == null ) ? null : String.valueOf( CheckStatus.convertCheckStatus( searchCriteria.getChecked() ) );
+        String paymentDateFromWhere = ( searchCriteria.getFrom() == null ) ? null : OrderColumn.PAYMENT_DATE + " > ? ";
+        String paymentDateFromParam = ( searchCriteria.getFrom() == null ) ? null : OrderMapper.formatDatetime( searchCriteria.getFrom() );
+        String paymentDateToWhere = ( searchCriteria.getTo() == null ) ? null : OrderColumn.PAYMENT_DATE + " <= ? ";
+        String paymentDateToParam = ( searchCriteria.getTo() == null ) ? null : OrderMapper.formatDatetime( searchCriteria.getTo() );
+        Cursor cursor = builder.query(
+                openHelper.getReadableDatabase(),
+                columns,
+                concatWhereParamsByAnd(paymentCodeWhere, checkStatusWhere, paymentDateFromWhere, paymentDateToWhere ),
+                selectNonNullParams( paymentCodeParam, checkStatusParam, paymentDateFromParam, paymentDateToParam ),
+                groupBy,
+                null,
+                orderBy );
 
         if (cursor == null) {
+            Log.d(TAG, "buildQuery(): no curosr" );
             return null;
         } else if (!cursor.moveToFirst()) {
+            Log.d(TAG, "buildQuery(): empty curosr" );
             cursor.close();
             return null;
         }
+
+        Log.d(TAG, "buildQuery(): count=" + cursor.getCount() );
+
         return cursor;
+    }
+
+    private String concatWhereParamsByAnd(String ... params) {
+        Log.d( TAG, "concatWhereParamsByAnd(), input: " + Arrays.asList( params ) );
+        StringBuilder builder = new StringBuilder();
+        boolean first = true;
+        for( String param: params ) {
+            Log.d(TAG, "concatWhereParamsByAnd(), param=" + param + ", first=" + first);
+            if( param == null ) {
+                continue;
+            }
+
+            if( !first ) {
+                builder.append(" and ");
+            } else {
+                first = false;
+            }
+
+            builder.append( param );
+        }
+
+        if ( builder.length() == 0 ) {
+            Log.d( TAG, "concatWhereParamsByAnd(), output: null" );
+            return null;
+        }
+
+
+        Log.d( TAG, "concatWhereParamsByAnd(), output: " + builder.toString() );
+
+        return builder.toString();
+    }
+
+    private String[] selectNonNullParams(String ... params) {
+        Log.d( TAG, "selectNonNullParams(), input: " + Arrays.asList( params ) );
+        List<String> paramsRes = new ArrayList<String>(params.length);
+        for( String param: params ) {
+            if( param != null ) {
+                paramsRes.add( param );
+            }
+        }
+
+        if( paramsRes.isEmpty() ) {
+            Log.d( TAG, "selectNonNullParams(), output: null" );
+            return null;
+        }
+
+
+        Log.d( TAG, "selectNonNullParams(), output: " + paramsRes );
+
+        String[] p = paramsRes.toArray( new String[0] );
+
+        return p;
     }
 
     public Cursor getProducts( Long orderId ) {
@@ -250,16 +329,76 @@ class OrdersDatabase {
 
         Log.d( TAG, " count: " + cursor.getCount() + " names: " + Arrays.toString( cursor.getColumnNames() ) );
 
-        return cursor.getLong( 0 );
+        Long count = cursor.getLong( 0 );
+        cursor.close();
+
+        return count;
     }
 
+    public Long getNewOrdersCount(OrdersSearchCriteria baseCriteria) {
+        OrdersSearchCriteria searchCriteria = cloneCriteria(baseCriteria);
+        searchCriteria.setFrom( OrderListAdapter.getExpiredTime().getTime() );
+
+        return getUncheckedOrder(searchCriteria);
+    }
+
+    public Long getExpiredOrdersCount(OrdersSearchCriteria baseCriteria) {
+        OrdersSearchCriteria searchCriteria = cloneCriteria(baseCriteria);
+        searchCriteria.setTo( OrderListAdapter.getExpiredTime().getTime() );
+
+        return getUncheckedOrder(searchCriteria);
+    }
+
+    private Long getUncheckedOrder(OrdersSearchCriteria searchCriteria) {
+        final String[] columns = new String[] { "count( 1 )" };
+
+        searchCriteria.setChecked( false );
+
+        return getFirstAndClose( buildQuery(columns, searchCriteria, null, null ) );
+    }
+
+
+
+    private OrdersSearchCriteria cloneCriteria(OrdersSearchCriteria baseCriteria) {
+        try {
+            return (OrdersSearchCriteria) baseCriteria.clone();
+        } catch (CloneNotSupportedException e) {
+            // TODO: log it right way
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private Long getFirstAndClose( Cursor cursor) {
+        Long value = cursor.getLong( 0 );
+        Log.d(TAG, "getFirstAndClose(), value=" + value);
+        cursor.close();
+
+        return value;
+    }
+
+    public Long getPayedOrdersCount(OrdersSearchCriteria baseCriteria) {
+        final String[] columns = new String[] { "count( 1 )" };
+
+        OrdersSearchCriteria searchCriteria = cloneCriteria( baseCriteria );
+        searchCriteria.setChecked( true );
+
+        return getFirstAndClose( buildQuery(columns, searchCriteria, null, null ) );
+    }
+
+    /**
+     *
+     * @param moreOreLess ( ">" or "<=" )
+     * @return
+     */
 }
 
 
-class OrdersSearchCriteria {
+
+class OrdersSearchCriteria implements Cloneable {
     private String paymentCode;
-    private Date from;
-    private Date to;
+    private Date from;          // strictly more then order's date
+    private Date to;            // less or equals then order's date
     private Boolean checked;
 
     public String getPaymentCode() {
@@ -292,5 +431,25 @@ class OrdersSearchCriteria {
 
     public void setChecked(Boolean checked) {
         this.checked = checked;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        OrdersSearchCriteria searchCriteria = new OrdersSearchCriteria();
+        searchCriteria.setPaymentCode( paymentCode );
+        searchCriteria.setChecked( checked );
+        searchCriteria.setFrom( from );
+        searchCriteria.setTo( to );
+        return searchCriteria;
+    }
+
+    @Override
+    public String toString() {
+        return "OrdersSearchCriteria{" +
+                "paymentCode='" + paymentCode + '\'' +
+                ", from=" + from +
+                ", to=" + to +
+                ", checked=" + checked +
+                '}';
     }
 }

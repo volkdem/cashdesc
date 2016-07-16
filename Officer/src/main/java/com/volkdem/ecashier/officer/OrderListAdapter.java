@@ -24,6 +24,7 @@ import com.volkdem.ecashier.officer.utils.DateUtil;
  */
 public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHolder> {
     private static final String TAG = OrderListAdapter.class.getName();
+    private static final int EXPIRATION_TIME = 30; // in minutes
     private final int NONE = -1;
     private int expanded = NONE;
     private OrdersDatabase db;
@@ -116,12 +117,16 @@ public class OrderListAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
 
 
     private boolean isOrderExpired(Order order) {
-        final int expirationTime = 30; // in minutes
-        Calendar cur = Calendar.getInstance();
+        Calendar expiredTime = getExpiredTime();
         Calendar payDate = Calendar.getInstance();
         payDate.setTime( order.getPaymentDate() );
-        payDate.add(Calendar.MINUTE, 30 );
-        return cur.compareTo( payDate ) > 0;
+        return expiredTime.compareTo( payDate ) > 0; // NOTE: striclty more (syncrhonized with OrdersSearchCriteria from/to interpretation in the OrdersDatabase requests
+    }
+
+    public static Calendar getExpiredTime() {
+        Calendar cur = Calendar.getInstance();
+        cur.add(Calendar.MINUTE, -EXPIRATION_TIME );
+        return cur;
     }
 
     @Override

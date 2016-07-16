@@ -13,12 +13,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.common.model.Order;
 
@@ -39,9 +42,9 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
     private Account account;
     private Timer timer = new Timer();
     private Handler hander = new Handler();
-
-
+    private OrdersDatabase ordersDB;
     private ContentResolver contentResolver;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,15 +69,15 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
         orderListView.setLayoutManager( orderListLayoutManager );
 
 
-        final OrdersDatabase ordersDB = OrdersDatabase.getDatabase( this );
-        List<Order> orders = OrderFactory.generateOrders( 20, 10 );
+        ordersDB = OrdersDatabase.getDatabase( this );
+        List<Order> orders = OrderFactory.generateOrders( 1000, 10 );
         ordersDB.addOrders( orders );
 
 
         orderListAdapter = new OrderListAdapter( ordersDB, searchCriteria );
         orderListView.setAdapter( orderListAdapter );
 
-        orderListAdapter.notifyDataSetChanged();
+        onQueryChanged("");
 
         timer.schedule(new TimerTask() {
             @Override
@@ -110,6 +113,7 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
         searchView.setClickable(true);
         searchView.setOnQueryTextListener( this );
         searchView.setOnClickListener(this);
+
         return true;
     }
 
@@ -136,6 +140,12 @@ public class SearchOrdersActivity extends AppCompatActivity implements SearchVie
     private boolean onQueryChanged(String query) {
         searchCriteria.setPaymentCode( query );
         orderListAdapter.setSearchCriteria( searchCriteria );
+
+        TextView approvedOrdersCountView = (TextView) findViewById(R.id.payed_orders_count);
+        approvedOrdersCountView.setText( ordersDB.getPayedOrdersCount( searchCriteria).toString() );
+
+        TextView expiredOrdersCountView = (TextView) findViewById(R.id.expired_orders_count);
+        expiredOrdersCountView.setText( ordersDB.getExpiredOrdersCount(searchCriteria).toString() );
         return true;
     }
 
